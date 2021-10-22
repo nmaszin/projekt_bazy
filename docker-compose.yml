@@ -20,7 +20,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - "./api/index.js:/app/index.js:rw"
+      - "./api/src:/app/src:rw"
     links:
       - uczelnia-mysql
   
