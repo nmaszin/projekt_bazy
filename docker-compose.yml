@@ -1,12 +1,26 @@
 version: '3'
 services:
+  uczelnia-web:
+    build: ./web
+    container_name: uczelnia-web
+    ports:
+      - 3000:3000
+    volumes:
+      - "./web/public:/app/public:rw"
+      - "./web/src:/app/src:rw"
+
+    links:
+      - uczelnia-api
+      - uczelnia-mysql
+    stdin_open: true
+
   uczelnia-api:
     build: ./api
     container_name: uczelnia-api
     ports:
       - 8080:8080
     volumes:
-      - "./api:/usr/src/app:rw"
+      - "./api/src:/app/src:rw"
     links:
       - uczelnia-mysql
   
