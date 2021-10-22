@@ -1,0 +1,22 @@
+version: '3'
+services:
+  uczelnia-api:
+    build: ./api
+    container_name: uczelnia-api
+    ports:
+      - 8080:8080
+    volumes:
+      - "./api:/usr/src/app:rw"
+    links:
+      - uczelnia-mysql
+  
+  uczelnia-mysql:
+    image: mysql:8.0.27
+    container_name: uczelnia-mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=uczelnia
+      - MYSQL_DATABASE=uczelnia
+      - MYSQL_USER=uczelnia
+      - MYSQL_PASSWORD=uczelnia
