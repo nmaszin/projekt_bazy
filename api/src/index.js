@@ -1,5 +1,4 @@
 import express from 'express'
-import config from './config'
 import endpoints from './endpoints'
 
 const app = express()
@@ -13,4 +12,5 @@ app.use('/', (req, res) => {
     })
 })
 
-app.listen(config.port, () => console.log(`Running on http://localhost:${config.port}`))
+const port = process.env.PORT
+app.listen(port, () => console.log(`Running on http://localhost:${port}`))

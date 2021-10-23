@@ -23,6 +23,8 @@ services:
       - "./api/src:/app/src:rw"
     links:
       - uczelnia-mysql
+    env_file:
+      - "./api/.env"
   
   uczelnia-mysql:
     image: mysql:8.0.27
