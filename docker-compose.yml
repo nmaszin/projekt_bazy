@@ -29,8 +29,6 @@ services:
     container_name: uczelnia-mysql
     ports:
       - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=uczelnia
-      - MYSQL_DATABASE=uczelnia
-      - MYSQL_USER=uczelnia
-      - MYSQL_PASSWORD=uczelnia
+    env_file:
+      - "./api/.env"
+
