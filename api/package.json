@@ -1,10 +1,9 @@
 {
-  "type": "module",
-  "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon --legacy-watch src/index.js"
+    "start": "nodemon --legacy-watch -r esm src/index.js"
   },
   "dependencies": {
+    "esm": "^3.2.25",
     "express": "^4.17.1"
   }
 }
