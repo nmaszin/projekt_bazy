@@ -1,14 +1,16 @@
-const express = require('express')
-
-const port = 8080
+import express from 'express'
+import endpoints from './endpoints'
 
 const app = express()
-app.get('/', (req, res) => {
-    res.send({
-        message: 'Hello world'
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+app.use(endpoints)
+app.use('/', (req, res) => {
+    res.status(404).send({
+        message: 'Unknown route'
     })
 })
 
-app.listen(port, () => {
-    console.log(`Running on https://localhost:${port}`)
-})
+const port = process.env.PORT
+app.listen(port, () => console.log(`Running on http://localhost:${port}`))

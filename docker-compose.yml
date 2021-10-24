@@ -23,14 +23,14 @@ services:
       - "./api/src:/app/src:rw"
     links:
       - uczelnia-mysql
+    env_file:
+      - "./api/.env"
   
   uczelnia-mysql:
     image: mysql:8.0.27
     container_name: uczelnia-mysql
     ports:
       - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=uczelnia
-      - MYSQL_DATABASE=uczelnia
-      - MYSQL_USER=uczelnia
-      - MYSQL_PASSWORD=uczelnia
+    env_file:
+      - "./api/.env"
+
