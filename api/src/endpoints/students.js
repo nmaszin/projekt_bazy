@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import Student from '@/model/student'
+import Student from '@/models/student'
+import { catchErrors } from '@/middlewares/errors'
 
 const router = Router()
 
-router.get('/students', async (req, res) => {
+router.get('/students', catchErrors(async (req, res) => {
     const students = (await Student.selectAll())
         .map(student => ({
             id: student['id'],
@@ -12,10 +13,10 @@ router.get('/students', async (req, res) => {
         }))
 
     res.send({ students })
-})
+}))
 
 
-router.get('/students/:id(\\d+)', async (req, res) => {
+router.get('/students/:id(\\d+)', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
     const student = (await Student.selectById(id))[0]
     if (student === undefined) {
@@ -25,10 +26,10 @@ router.get('/students/:id(\\d+)', async (req, res) => {
     }
 
     res.status(200).send({ student })
-})
+}))
 
 
-router.post('/students', async(req, res) => {
+router.post('/students', catchErrors(async(req, res) => {
     const { firstName, lastName } = req.body
     if (!firstName || !lastName) {
         return res.status(400).send({
@@ -38,10 +39,10 @@ router.post('/students', async(req, res) => {
 
     await Student.insert({ firstName, lastName })
     res.status(201).send({ message: 'Created' })
-})
+}))
 
 
-router.put('/students/:id(\\d+)', async (req, res) => {
+router.put('/students/:id(\\d+)', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
     const { firstName, lastName } = req.body
     if (!firstName || !lastName) {
@@ -58,10 +59,10 @@ router.put('/students/:id(\\d+)', async (req, res) => {
     res.status(200).send({
         message: 'Updated'
     })
-})
+}))
 
 
-router.delete('/students/:id', async (req, res) => {
+router.delete('/students/:id', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
 
     if (!(await Student.exists(id))) {
@@ -75,6 +76,6 @@ router.delete('/students/:id', async (req, res) => {
     res.status(200).send({
         message: 'Student deleted successfully'
     })
-})
+}))
 
 export default router
