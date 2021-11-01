@@ -1,20 +1,23 @@
 import { Router } from 'express'
-
-let students = [
-    { id: 1, firstname: 'Eryk', surname: 'Andrzejewski' },
-    { id: 2, firstname: 'Konrad', surname: 'Bankiewicz' },
-    { id: 3, firstname: 'Paweł', surname: 'Błoch' }
-]
+import Student from '@/model/student'
 
 const router = Router()
 
-router.get('/students', (req, res) => {
+router.get('/students', async (req, res) => {
+    const students = (await Student.selectAll())
+        .map(student => ({
+            id: student['id'],
+            firstName: student['first_name'],
+            lastName: student['last_name']
+        }))
+
     res.send({ students })
 })
 
-router.get('/students/:id(\\d+)', (req, res) => {
+
+router.get('/students/:id(\\d+)', async (req, res) => {
     const id = parseInt(req.params.id)
-    const student = students.find(student => student.id === id)
+    const student = (await Student.selectById(id))[0]
     if (student === undefined) {
         return res.status(404).send({
             message: 'This student not exists'
@@ -24,76 +27,50 @@ router.get('/students/:id(\\d+)', (req, res) => {
     res.status(200).send({ student })
 })
 
-router.post('/students', (req, res) => {
-    const { firstname, surname } = req.body
-    if (!firstname || !surname) {
+
+router.post('/students', async(req, res) => {
+    const { firstName, lastName } = req.body
+    if (!firstName || !lastName) {
         return res.status(400).send({
             message: 'You should give name and surname fields in request body'
         })
     }
 
-    const id = Math.max(...students.map(student => student.id)) + 1
-    students.push({ id, firstname, surname })
-
+    await Student.insert({ firstName, lastName })
     res.status(201).send({ message: 'Created' })
 })
 
-router.put('/students/:id(\\d+)', (req, res) => {
+
+router.put('/students/:id(\\d+)', async (req, res) => {
     const id = parseInt(req.params.id)
-    const { firstname, surname } = req.body
-    if (!firstname || !surname) {
+    const { firstName, lastName } = req.body
+    if (!firstName || !lastName) {
         return res.status(400).send({
             message: 'You should give both name and surname fields in request body'
         })
-    }
-
-    const index = students.findIndex(student => student.id === id)
-    if (index === -1) {
+    } else if (!(await Student.exists(id))) {
         return res.status(404).send({
             message: 'Student with given id does not exist'
         })
     }
 
-    students[index] = { id, firstname, surname }
+    await Student.update({ id, firstName, lastName })
     res.status(200).send({
         message: 'Updated'
     })
 })
 
-router.patch('/students/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    const { firstname, surname } = req.body
 
-    const index = students.findIndex(student => student.id === id)
-    if (index === -1) {
-        return res.status(404).send({
-            message: 'Student with given id does not exist'
-        })
-    }
-
-    if (firstname !== undefined) {
-        students[index].firstname = firstname
-    }
-    if (surname !== undefined) {
-        students[index].surname = surname
-    }
-
-    res.status(200).send({
-        message: 'Updated'
-    })
-})
-
-router.delete('/students/:id', (req, res) => {
+router.delete('/students/:id', async (req, res) => {
     const id = parseInt(req.params.id)
 
-    const index = students.findIndex(student => student.id === id)
-    if (index === -1) {
+    if (!(await Student.exists(id))) {
         return res.status(404).send({
             message: 'This student not exists'
         })
     }
 
-    students.splice(index, 1)
+    await Student.deleteById(id)
 
     res.status(200).send({
         message: 'Student deleted successfully'
