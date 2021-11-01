@@ -1,5 +1,15 @@
 import database from "@/database";
 
+function mapRow(row) {
+    return {
+        id: row.id,
+        data: {
+            firstName: row['first_name'],
+            lastName: row['last_name']
+        }
+    }
+}
+
 export default {
     async init() {
         const db = await database.connect()
@@ -24,38 +34,44 @@ export default {
             `, [student.firstName, student.lastName])
         }
     },
+
     async insert(student) {
         const db = await database.connect()
         await db.query(`
             INSERT INTO Student(first_name, last_name)
             VALUES(?, ?)
         `, [student.firstName, student.lastName])
-    }, 
+    },
+
     async selectAll() {
         const db = await database.connect()
-        const [fields, _] = await db.query(`SELECT * FROM Student`)
-        return fields
+        const [rows, _] = await db.query(`SELECT * FROM Student`)
+        return rows.map(mapRow)
     },
+
     async selectById(id) {
         const db = await database.connect()
-        const [fields, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
-        return fields
+        const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
+        return rows.map(mapRow)[0]
     },
+
     async exists(id) {
         const db = await database.connect()
-        const [fields, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
-        return fields[0] !== undefined
+        const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
+        return rows[0] !== undefined
     },
+    
     async deleteById(id) {
         const db = await database.connect()
         await db.query(`DELETE FROM Student WHERE id = ?`, [id])
     },
-    async update(student) {
+
+    async updateById(id, student) {
         const db = await database.connect()
         await db.query(`
             UPDATE Student
             SET first_name = ?, last_name = ?
             WHERE id = ?
-        `, [student.firstName, student.lastName, student.id])
+        `, [student.firstName, student.lastName, id])
     }
 }

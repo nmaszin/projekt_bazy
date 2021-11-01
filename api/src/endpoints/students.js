@@ -6,10 +6,9 @@ const router = Router()
 
 router.get('/students', catchErrors(async (req, res) => {
     const students = (await Student.selectAll())
-        .map(student => ({
-            id: student['id'],
-            firstName: student['first_name'],
-            lastName: student['last_name']
+        .map(row => ({
+            id: row.id,
+            ...row.data,
         }))
 
     res.send({ students })
@@ -18,7 +17,7 @@ router.get('/students', catchErrors(async (req, res) => {
 
 router.get('/students/:id(\\d+)', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
-    const student = (await Student.selectById(id))[0]
+    const student = await Student.selectById(id)
     if (student === undefined) {
         return res.status(404).send({
             message: 'This student not exists'
@@ -55,7 +54,7 @@ router.put('/students/:id(\\d+)', catchErrors(async (req, res) => {
         })
     }
 
-    await Student.update({ id, firstName, lastName })
+    await Student.updateById(id, { firstName, lastName })
     res.status(200).send({
         message: 'Updated'
     })
