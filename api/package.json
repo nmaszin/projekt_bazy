@@ -1,9 +1,14 @@
 {
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon --legacy-watch -r esm src/index.js"
+    "start": "nodemon --legacy-watch -r esm -r module-alias/register src/index.js"
   },
   "dependencies": {
     "esm": "^3.2.25",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2"
+  },
+  "_moduleAliases": {
+    "@": "src"
   }
 }

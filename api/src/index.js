@@ -1,5 +1,5 @@
 import express from 'express'
-import endpoints from './endpoints'
+import endpoints from '@/endpoints'
 
 const app = express()
 app.use(express.json())
