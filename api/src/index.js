@@ -12,5 +12,7 @@ app.use('/', (req, res) => {
     })
 })
 
+console.log(process.env.MYSQL_HOST)
+
 const port = process.env.PORT
 app.listen(port, () => console.log(`Running on http://localhost:${port}`))
