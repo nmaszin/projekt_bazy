@@ -13,7 +13,7 @@ router.get('/students', catchErrors(async (req, res) => {
 
 router.get('/students/:id(\\d+)', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
-    const student = await Student.selectById(id)
+    const student = flattenSelect(await Student.selectById(id))
     if (student === undefined) {
         return res.status(404).send({
             message: 'This student not exists'
