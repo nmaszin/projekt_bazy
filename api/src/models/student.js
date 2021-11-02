@@ -1,18 +1,12 @@
-import database from "@/database";
+import { genericMapRow, injectDb } from '@/models';
 
-function mapRow(row) {
-    return {
-        id: row.id,
-        data: {
-            firstName: row['first_name'],
-            lastName: row['last_name']
-        }
-    }
-}
+const mapRow = row => genericMapRow(row, {
+    firstName: 'first_name',
+    lastName: 'last_name'
+})
 
-export default {
-    async init() {
-        const db = await database.connect()
+export default injectDb({
+    async init(db) {
         await db.query(`
             CREATE TABLE Student(
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,43 +29,37 @@ export default {
         }
     },
 
-    async insert(student) {
-        const db = await database.connect()
+    async insert(db, student) {
         await db.query(`
             INSERT INTO Student(first_name, last_name)
             VALUES(?, ?)
         `, [student.firstName, student.lastName])
     },
 
-    async selectAll() {
-        const db = await database.connect()
+    async selectAll(db) {
         const [rows, _] = await db.query(`SELECT * FROM Student`)
         return rows.map(mapRow)
     },
 
-    async selectById(id) {
-        const db = await database.connect()
+    async selectById(db, id) {
         const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
         return rows.map(mapRow)[0]
     },
 
-    async exists(id) {
-        const db = await database.connect()
+    async exists(db, id) {
         const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
         return rows[0] !== undefined
     },
     
-    async deleteById(id) {
-        const db = await database.connect()
+    async deleteById(db, id) {
         await db.query(`DELETE FROM Student WHERE id = ?`, [id])
     },
 
-    async updateById(id, student) {
-        const db = await database.connect()
+    async updateById(db, id, student) {
         await db.query(`
             UPDATE Student
             SET first_name = ?, last_name = ?
             WHERE id = ?
         `, [student.firstName, student.lastName, id])
     }
-}
+})
