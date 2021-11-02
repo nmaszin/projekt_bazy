@@ -1,17 +1,13 @@
 import { Router } from 'express'
+import { flattenSelect } from '@/models'
 import Student from '@/models/student'
 import { catchErrors } from '@/middlewares/errors'
 
 const router = Router()
 
 router.get('/students', catchErrors(async (req, res) => {
-    const students = (await Student.selectAll())
-        .map(row => ({
-            id: row.id,
-            ...row.data,
-        }))
-
-    res.send({ students })
+    const students = (await Student.selectAll()).map(flattenSelect)
+    res.send({ data: students })
 }))
 
 
@@ -24,7 +20,7 @@ router.get('/students/:id(\\d+)', catchErrors(async (req, res) => {
         })
     }
 
-    res.status(200).send({ student })
+    res.status(200).send({ data: student })
 }))
 
 

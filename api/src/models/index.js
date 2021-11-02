@@ -11,6 +11,14 @@ export function genericMapRow(row, mapping) {
     return { id, data }
 }
 
+export function flattenSelect(row) {
+    return {
+        id: row.id,
+        ...row.data
+    }
+}
+
+
 export function injectDb(model) {
     return Object.fromEntries(
         Object.entries(model)
