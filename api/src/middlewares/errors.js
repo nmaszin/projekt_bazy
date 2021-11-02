@@ -6,12 +6,12 @@ export function notFoundRoute (req, res) {
 
 export function catchErrors(controller) {
     return async (req, res, next) => {
-        try {
+        //try {
             await controller(req, res, next)
-        } catch (err) {
+        /*} catch (err) {
             res.status(err.status || 500).send({
                 message: err.message
             })
-        }
+        }*/
     }
 }

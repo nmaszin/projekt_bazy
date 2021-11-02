@@ -1,12 +1,12 @@
-import { genericMapRow, injectDb } from '@/models';
+import { createModel } from '@/models'
 
-const mapRow = row => genericMapRow(row, {
-    firstName: 'first_name',
-    lastName: 'last_name'
-})
+export default createModel({
+    fields: {
+        firstName: 'first_name',
+        lastName: 'last_name'
+    },
 
-export default injectDb({
-    async init(db) {
+    async initialize(db) {
         await db.query(`
             CREATE TABLE Student(
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -29,37 +29,45 @@ export default injectDb({
         }
     },
 
-    async insert(db, student) {
-        await db.query(`
-            INSERT INTO Student(first_name, last_name)
-            VALUES(?, ?)
-        `, [student.firstName, student.lastName])
+    async deinitialize(db) {
+        await db.query(`DROP TABLE Student`)
     },
 
-    async selectAll(db) {
-        const [rows, _] = await db.query(`SELECT * FROM Student`)
-        return rows.map(mapRow)
+    select: {
+        single: {
+            async selectById(db, id) {
+                return await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
+            },
+        },
+        many: {
+            async selectAll(db) {
+                return await db.query(`SELECT * FROM Student`)
+            },
+        }
     },
 
-    async selectById(db, id) {
-        const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
-        return rows.map(mapRow)[0]
+    insert: {
+        async insert(db, student) {
+            await db.query(`
+                INSERT INTO Student(first_name, last_name)
+                VALUES(?, ?)
+            `, [student.firstName, student.lastName])
+        },
     },
 
-    async exists(db, id) {
-        const [rows, _] = await db.query(`SELECT * FROM Student WHERE id = ?`, [id])
-        return rows[0] !== undefined
-    },
-    
-    async deleteById(db, id) {
-        await db.query(`DELETE FROM Student WHERE id = ?`, [id])
+    update: {
+        async updateById(db, id, student) {
+            await db.query(`
+                UPDATE Student
+                SET first_name = ?, last_name = ?
+                WHERE id = ?
+            `, [student.firstName, student.lastName, id])
+        }
     },
 
-    async updateById(db, id, student) {
-        await db.query(`
-            UPDATE Student
-            SET first_name = ?, last_name = ?
-            WHERE id = ?
-        `, [student.firstName, student.lastName, id])
+    delete: {
+        async deleteById(db, id) {
+            await db.query(`DELETE FROM Student WHERE id = ?`, [id])
+        },
     }
 })
