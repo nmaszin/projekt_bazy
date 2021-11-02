@@ -11,11 +11,14 @@ export function genericMapRow(row, mapping) {
     return { id, data }
 }
 
-export function injectDb(method) {
-    return async (...params) => {
-        const db = await database.connect()
-        return await method(db, ...params)
-    }
+export function injectDb(model) {
+    return Object.fromEntries(
+        Object.entries(model)
+            .map(([name, callback]) => [name, async (...params) => {
+                const db = await database.connect()
+                return await callback(db, ...params)
+            }])
+    )
 }
 
 export function createModel(object) {
@@ -26,8 +29,8 @@ export function createModel(object) {
     }
 
     const model = {
-        initialize: async (...params) => injectDb(object.initialize)(...params),
-        deinitialize: async (...params) => injectDb(object.deinitialize)(...params)
+        initialize: object.initialize,
+        deinitialize: object.initialize
     }
 
     if (object.select !== undefined) {
@@ -35,7 +38,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.single)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await injectDb(fn)(...params)
+                    const [rows, _] = await fn(...params)
                     return rows.map(row => genericMapRow(row, object.fields))[0]
                 }
             }
@@ -45,7 +48,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.many)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await injectDb(fn)(...params)
+                    const [rows, _] = await fn(...params)
                     return rows.map(row => genericMapRow(row, object.fields))
                 }
             }
@@ -55,23 +58,26 @@ export function createModel(object) {
     if (object.insert !== undefined) {
         for (const [name, fn] of Object.entries(object.insert)) {
             checkIfAlreadyExists(model[name])
-            model[name] = async (...params) => await injectDb(fn)(...params)
+            model[name] = fn
         }
     }
 
-    if (object.delete !== undefined) {
-        for (const [name, fn] of Object.entries(object.delete)) {
-            checkIfAlreadyExists(model[name])
-            model[name] = async (...params) => await injectDb(fn)(...params)
-        }
-    }
 
-    if (object.update !== undefined) {
-        for (const [name, fn] of Object.entries(object.update)) {
-            checkIfAlreadyExists(model[name])
-            model[name] = async (...params) => await injectDb(fn)(...params)
+    [object.update, object.delete].forEach(entry => {
+        if (entry !== undefined) {
+            for (const [name, { checkBefore, fn }] of Object.entries(entry)) {
+                checkIfAlreadyExists(model[name])
+                model[name] = async (...params) => {
+                    if ((await model[checkBefore](...params)) === undefined) {
+                        return false
+                    }
+    
+                    await fn(...params)
+                    return true
+                }
+            }
         }
-    }
+    })
 
-    return model
+    return injectDb(model)
 }

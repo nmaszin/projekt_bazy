@@ -56,18 +56,24 @@ export default createModel({
     },
 
     update: {
-        async updateById(db, id, student) {
-            await db.query(`
-                UPDATE Student
-                SET first_name = ?, last_name = ?
-                WHERE id = ?
-            `, [student.firstName, student.lastName, id])
+        updateById: {
+            checkBefore: 'selectById',
+            fn: async (db, id, student) => {
+                await db.query(`
+                    UPDATE Student
+                    SET first_name = ?, last_name = ?
+                    WHERE id = ?
+                `, [student.firstName, student.lastName, id])
+            }
         }
     },
 
     delete: {
-        async deleteById(db, id) {
-            await db.query(`DELETE FROM Student WHERE id = ?`, [id])
-        },
+        deleteById: {
+            checkBefore: 'selectById',
+            fn: async (db, id) => {
+                await db.query(`DELETE FROM Student WHERE id = ?`, [id])
+            }
+        }
     }
 })

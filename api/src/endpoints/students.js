@@ -48,13 +48,14 @@ router.put('/students/:id(\\d+)', catchErrors(async (req, res) => {
         return res.status(400).send({
             message: 'You should give both name and surname fields in request body'
         })
-    } else if (!(await Student.exists(id))) {
+    }
+    
+    if (!await Student.updateById(id, { firstName, lastName })) {
         return res.status(404).send({
             message: 'Student with given id does not exist'
         })
     }
-
-    await Student.updateById(id, { firstName, lastName })
+    
     res.status(200).send({
         message: 'Updated'
     })
@@ -64,13 +65,11 @@ router.put('/students/:id(\\d+)', catchErrors(async (req, res) => {
 router.delete('/students/:id', catchErrors(async (req, res) => {
     const id = parseInt(req.params.id)
 
-    if (!(await Student.exists(id))) {
+    if (!await Student.deleteById(id)) {
         return res.status(404).send({
             message: 'This student not exists'
         })
     }
-
-    await Student.deleteById(id)
 
     res.status(200).send({
         message: 'Student deleted successfully'
