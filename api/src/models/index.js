@@ -39,7 +39,7 @@ export function createModel(object) {
 
     const model = {
         initialize: object.initialize,
-        deinitialize: object.initialize
+        deinitialize: object.deinitialize
     }
 
     if (object.select !== undefined) {
