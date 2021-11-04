@@ -1,3 +1,11 @@
+export function jsonParsingError(err, req, res, next) {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        res.status(400).send({ message: "JSON parsing error" })
+    } else {
+        next()
+    }
+}
+
 export function notFoundRoute (req, res) {
     res.status(404).send({
         message: 'Unknown route'

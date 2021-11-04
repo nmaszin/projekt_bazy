@@ -1,9 +1,10 @@
-import express from 'express'
+import express, { json } from 'express'
 import endpoints from '@/endpoints'
-import { notFoundRoute } from '@/middlewares/errors'
+import { notFoundRoute, jsonParsingError } from '@/middlewares/errors'
 
 const app = express()
 app.use(express.json())
+app.use(jsonParsingError)
 app.use(express.urlencoded({ extended: false }))
 
 app.use(endpoints)
