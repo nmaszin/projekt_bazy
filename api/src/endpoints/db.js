@@ -5,20 +5,15 @@ import Database from '@/models/db'
 const router = Router()
 
 router.post('/db', makeController(async (req, res) => {
-    try {
-        await Database.initialize()
-    } catch (err) {}
-    
+    await Database.initialize()
     res.status(200).send({
         message: 'Database succesfully initialized'
     })
 }))
 
 router.put('/db', makeController(async (req, res) => {
-    try {
-        await Database.deinitialize()
-        await Database.initialize()
-    } catch (err) {}
+    await Database.deinitialize()
+    await Database.initialize()
 
     res.status(200).send({
         message: 'Database succesfully reinitialized'
@@ -26,10 +21,7 @@ router.put('/db', makeController(async (req, res) => {
 }))
 
 router.delete('/db', makeController(async (req, res) => {
-    try {
-        await Database.deinitialize()
-    } catch (err) {}
-
+    await Database.deinitialize()
     res.status(200).send({
         message: 'Database succesfully deinitialized'
     })
