@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { catchErrors } from '@/middlewares/errors'
-import Student from '@/models/student'
+import { makeController } from '@/middlewares/errors'
+import Database from '@/models/db'
 
 const router = Router()
 
-router.post('/db', catchErrors(async (req, res) => {
+router.post('/db', makeController(async (req, res) => {
     try {
-        await Student.initialize()
+        await Database.initialize()
     } catch (err) {}
     
     res.status(200).send({
@@ -14,10 +14,10 @@ router.post('/db', catchErrors(async (req, res) => {
     })
 }))
 
-router.put('/db', catchErrors(async (req, res) => {
+router.put('/db', makeController(async (req, res) => {
     try {
-        await Student.deinitialize()
-        await Student.initialize()
+        await Database.deinitialize()
+        await Database.initialize()
     } catch (err) {}
 
     res.status(200).send({
@@ -25,9 +25,9 @@ router.put('/db', catchErrors(async (req, res) => {
     })
 }))
 
-router.delete('/db', catchErrors(async (req, res) => {
+router.delete('/db', makeController(async (req, res) => {
     try {
-        await Student.deinitialize()
+        await Database.deinitialize()
     } catch (err) {}
 
     res.status(200).send({

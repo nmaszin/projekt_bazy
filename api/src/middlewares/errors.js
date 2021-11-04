@@ -6,13 +6,13 @@ export function jsonParsingError(err, req, res, next) {
     }
 }
 
-export function notFoundRoute (req, res) {
+export function notFoundRoute(req, res) {
     res.status(404).send({
         message: 'Unknown route'
     })
 }
 
-export function catchErrors(controller) {
+function catchPromiseErrors(controller) {
     return async (req, res, next) => {
         try {
             await controller(req, res, next)
@@ -22,4 +22,8 @@ export function catchErrors(controller) {
             })
         }
     }
+}
+
+export function makeController(controller) {
+    return catchPromiseErrors(controller)
 }

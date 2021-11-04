@@ -89,23 +89,26 @@ export function createModel(object) {
     })
 
     const resultModel = injectDb(model)
-    resultModel.validate = data => {
-        const errors = validatejs(data, object.constraints)
-
-        const redundantFieldsErrors = {}
-        for (const attribute of Object.keys(data)) {
-            if (object.constraints[attribute] === undefined) {
-                redundantFieldsErrors[attribute] = ['redundant attribute']
+    if (object.constraints !== undefined) {
+        resultModel.validate = data => {
+            const errors = validatejs(data, object.constraints)
+    
+            const redundantFieldsErrors = {}
+            for (const attribute of Object.keys(data)) {
+                if (object.constraints[attribute] === undefined) {
+                    redundantFieldsErrors[attribute] = ['Redundant attribute']
+                }
+            }
+    
+            if (errors !== undefined) {
+                return { ...errors, ...redundantFieldsErrors }
+            } else if (Object.keys(redundantFieldsErrors).length > 0) {
+                return redundantFieldsErrors
+            } else {
+                return undefined
             }
         }
-
-        if (errors !== undefined) {
-            return { ...errors, ...redundantFieldsErrors }
-        } else if (Object.keys(redundantFieldsErrors).length > 0) {
-            return redundantFieldsErrors
-        } else {
-            return undefined
-        }
     }
+    
     return resultModel
 }
