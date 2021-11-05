@@ -88,7 +88,19 @@ export function createModel(object) {
         }
     })
 
+    validatejs.validators.validIdentifier = value => {
+        const requirement = Number.isInteger(value) && value >= 1
+        if (!requirement) {
+            return "is not valid identifier"
+        }
+    }
+
     validatejs.validators.foreignKey = async (id, model) => {
+        const result = validatejs.validators.validIdentifier(id)
+        if (result !== undefined) {
+            return result
+        }
+
         const record = await model.selectById(id)
         if (record === undefined) {
             return "refers to non existing record"
