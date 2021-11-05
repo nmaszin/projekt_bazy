@@ -1,17 +1,17 @@
 import { Router } from 'express'
-import { makeController } from '@/middlewares/errors'
+import { controller } from '@/middlewares/controller'
 import Database from '@/models/db'
 
 const router = Router()
 
-router.post('/db', makeController(async (req, res) => {
+router.post('/db', controller(async (req, res) => {
     await Database.initialize()
     res.status(200).send({
         message: 'Database succesfully initialized'
     })
 }))
 
-router.put('/db', makeController(async (req, res) => {
+router.put('/db', controller(async (req, res) => {
     await Database.deinitialize()
     await Database.initialize()
 
@@ -20,7 +20,7 @@ router.put('/db', makeController(async (req, res) => {
     })
 }))
 
-router.delete('/db', makeController(async (req, res) => {
+router.delete('/db', controller(async (req, res) => {
     await Database.deinitialize()
     res.status(200).send({
         message: 'Database succesfully deinitialized'

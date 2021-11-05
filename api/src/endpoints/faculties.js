@@ -1,12 +1,13 @@
 import { Router } from 'express'
 import { flattenSelect } from '@/models'
 import Faculty from '@/models/faculty'
-import { makeController } from '@/middlewares/errors'
-import { modelValidator } from '@/middlewares/validator'
+import FacultyForm from '@/forms/faculty'
+import { controller } from '@/middlewares/controller'
+import { validator } from '@/middlewares/validator'
 
 const router = Router()
 
-router.get('/faculties', makeController(async (req, res) => {
+router.get('/faculties', controller(async (req, res) => {
     const faculties = await Faculty.selectAll()
     res.send({
         data: faculties.map(flattenSelect)
@@ -14,7 +15,7 @@ router.get('/faculties', makeController(async (req, res) => {
 }))
 
 
-router.get('/faculties/:id(\\d+)', makeController(async (req, res) => {
+router.get('/faculties/:id(\\d+)', controller(async (req, res) => {
     const id = parseInt(req.params.id)
     const faculty = await Faculty.selectById(id)
     if (faculty === undefined) {
@@ -29,7 +30,7 @@ router.get('/faculties/:id(\\d+)', makeController(async (req, res) => {
 }))
 
 
-router.post('/faculties', modelValidator(Faculty), makeController(async(req, res) => {
+router.post('/faculties', validator(FacultyForm), controller(async(req, res) => {
     await Faculty.insert(req.body)
     res.status(201).send({
         message: 'Created'
@@ -37,7 +38,7 @@ router.post('/faculties', modelValidator(Faculty), makeController(async(req, res
 }))
 
 
-router.put('/faculties/:id(\\d+)', modelValidator(Faculty), makeController(async (req, res) => {
+router.put('/faculties/:id(\\d+)', validator(FacultyForm), controller(async (req, res) => {
     const id = parseInt(req.params.id)
     if (!await Faculty.updateById(id, req.body)) {
         return res.status(404).send({
@@ -51,7 +52,7 @@ router.put('/faculties/:id(\\d+)', modelValidator(Faculty), makeController(async
 }))
 
 
-router.delete('/faculties/:id', makeController(async (req, res) => {
+router.delete('/faculties/:id', controller(async (req, res) => {
     const id = parseInt(req.params.id)
 
     if (!await Faculty.deleteById(id)) {

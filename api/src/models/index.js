@@ -1,5 +1,4 @@
 import database from '@/database'
-import validatejs from 'validate.js'
 
 export function genericMapRow(row, mapping) {
     const { id } = row
@@ -88,50 +87,5 @@ export function createModel(object) {
         }
     })
 
-    validatejs.validators.validIdentifier = value => {
-        const requirement = Number.isInteger(value) && value >= 1
-        if (!requirement) {
-            return "is not valid identifier"
-        }
-    }
-
-    validatejs.validators.foreignKey = async (id, model) => {
-        const result = validatejs.validators.validIdentifier(id)
-        if (result !== undefined) {
-            return result
-        }
-
-        const record = await model.selectById(id)
-        if (record === undefined) {
-            return "refers to non existing record"
-        }
-    }
-
-    const resultModel = injectDb(model)
-    if (object.constraints !== undefined) {
-        resultModel.validate = async data => {
-            const errors = await new Promise(resolve => {
-                validatejs.async(data, object.constraints)
-                    .then(() => resolve())
-                    .catch(resolve)
-            })
-
-            const redundantFieldsErrors = {}
-            for (const attribute of Object.keys(data)) {
-                if (object.constraints[attribute] === undefined) {
-                    redundantFieldsErrors[attribute] = ['Redundant attribute']
-                }
-            }
-    
-            if (errors !== undefined) {
-                return { ...errors, ...redundantFieldsErrors }
-            } else if (Object.keys(redundantFieldsErrors).length > 0) {
-                return redundantFieldsErrors
-            } else {
-                return undefined
-            }
-        }
-    }
-    
-    return resultModel
+    return injectDb(model)
 }

@@ -1,39 +1,20 @@
 import { createModel } from '@/models'
-import Faculty from '@/models/faculty'
-
-const maxLengths = {
-    name: 100
-}
 
 export default createModel({
     fields: {
         name: 'name',
         facultyId: 'faculty_id'
     },
-    
-    constraints: {
-        name: {
-            presence: true,
-            length: {
-                minimum: 1,
-                maximum: maxLengths.name
-            }
-        },
-        facultyId: {
-            presence: true,
-            foreignKey: Faculty
-        }
-    },
 
     async initialize(db) {
         await db.query(`
             CREATE TABLE Laboratory(
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(?) NOT NULL,
+                name VARCHAR(100) NOT NULL,
                 faculty_id INT NOT NULL,
                 FOREIGN KEY(faculty_id) REFERENCES Faculty(id)
             );
-        `, [maxLengths.name])
+        `)
 
         const laboratories = [
             { name: 'Zakład Algorytmów i Struktur Danych', facultyId: 1 },

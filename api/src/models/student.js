@@ -1,41 +1,19 @@
 import { createModel } from '@/models'
 
-const maxLengths = {
-    firstName: 30,
-    lastName: 30
-}
-
 export default createModel({
     fields: {
         firstName: 'first_name',
         lastName: 'last_name'
-    },
-    
-    constraints: {
-        firstName: {
-            presence: true,
-            length: {
-                minimum: 1,
-                maximum: maxLengths.firstName
-            }
-        },
-        lastName: {
-            presence: true,
-            length: {
-                minimum: 1,
-                maximum: maxLengths.lastName,
-            }
-        }
     },
 
     async initialize(db) {
         await db.query(`
             CREATE TABLE Student(
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                first_name VARCHAR(?) NOT NULL,
-                last_name VARCHAR(?) NOT NULL
+                first_name VARCHAR(30) NOT NULL,
+                last_name VARCHAR(30) NOT NULL
             );
-        `, [maxLengths.firstName, maxLengths.lastName])
+        `)
 
         const students = [
             { firstName: 'Eryk', lastName: 'Andrzejewski' },

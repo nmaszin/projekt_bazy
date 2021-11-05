@@ -1,6 +1,6 @@
-export function modelValidator(model) {
+export function validator(form) {
     return async (req, res, next) => {
-        const validationErrors = await model.validate(req.body)
+        const validationErrors = await form.validate(req.body)
 
         if (validationErrors !== undefined) {
             return res.status(400).send({
