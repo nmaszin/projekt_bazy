@@ -45,7 +45,7 @@ router.put('/students/:id(\\d+)', modelValidator(Student), makeController(async 
 }))
 
 
-router.delete('/students/:id', makeController(async (req, res) => {
+router.delete('/students/:id(\\d+)', makeController(async (req, res) => {
     const id = parseInt(req.params.id)
 
     if (!await Student.deleteById(id)) {
