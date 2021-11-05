@@ -16,14 +16,14 @@ export default createModel({
             presence: true,
             length: {
                 minimum: 1,
-                maximum: maxLengths.firstName
+                maximum: maxLengths.name
             }
         },
         address: {
             presence: true,
             length: {
                 minimum: 1,
-                maximum: maxLengths.lastName,
+                maximum: maxLengths.address,
             }
         }
     },

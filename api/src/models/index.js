@@ -88,11 +88,22 @@ export function createModel(object) {
         }
     })
 
+    validatejs.validators.foreignKey = async (id, model) => {
+        const record = await model.selectById(id)
+        if (record === undefined) {
+            return "refers to non existing record"
+        }
+    }
+
     const resultModel = injectDb(model)
     if (object.constraints !== undefined) {
-        resultModel.validate = data => {
-            const errors = validatejs(data, object.constraints)
-    
+        resultModel.validate = async data => {
+            const errors = await new Promise(resolve => {
+                validatejs.async(data, object.constraints)
+                    .then(() => resolve())
+                    .catch(resolve)
+            })
+
             const redundantFieldsErrors = {}
             for (const attribute of Object.keys(data)) {
                 if (object.constraints[attribute] === undefined) {
