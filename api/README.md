@@ -55,3 +55,4 @@ Zasób ten przechowuje informacje na temat poszczególnych **wydziałów**.
 | PUT /faculties/{id}    | Aktualizuje dane wydziału o danym identyfikatorze. Wymagane jest przesłanie wszystkich danych wydziału w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy wydział o podanym identyfikatorze nie istnieje; **400 (Bad request)** w razie błędu walidacji |
 | DELETE /faculties/{id} | Usuwa wydział o podanym identyfikatorze.                     | **200 (OK) w razie powodzenia**; **404 (Not found)** w przypadku, gdy wydział o podanym identyfikatorze nie istnieje |
 
+
