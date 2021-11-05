@@ -1,13 +1,21 @@
+import fs from 'fs'
+import path from 'path'
 import { Router } from 'express'
-import dbRouter from '@/endpoints/db'
-import studentsRouter from '@/endpoints/students'
-import facultiesRouter from '@/endpoints/faculties'
-import laboratoriesRouter from '@/endpoints/laboratories'
 
-const router = Router()
-router.use(dbRouter)
-router.use(facultiesRouter)
-router.use(laboratoriesRouter)
-router.use(studentsRouter)
+// The following function load all endpoints routers and bind them into a new one
+// I assume that all files in current directory (except current file) are endpoints files
+export async function loadAllEndpoints() {
+    const currentFile = path.basename(__filename);
+    const endpointsDirectory = path.dirname(__filename)
 
-export default router
+    const endpointFiles = fs.readdirSync(endpointsDirectory)
+        .filter(filename => filename != currentFile)
+
+    const router = Router()
+    for (const endpointFile of endpointFiles) {
+        const endpointRouter = (await import(`./${endpointFile}`)).default
+        router.use(endpointRouter)
+    }
+
+    return router
+}
