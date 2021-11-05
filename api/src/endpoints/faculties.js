@@ -8,7 +8,9 @@ const router = Router()
 
 router.get('/faculties', makeController(async (req, res) => {
     const faculties = await Faculty.selectAll()
-    res.send({ data: faculties.map(flattenSelect) })
+    res.send({
+        data: faculties.map(flattenSelect)
+    })
 }))
 
 
@@ -21,13 +23,17 @@ router.get('/faculties/:id(\\d+)', makeController(async (req, res) => {
         })
     }
 
-    res.status(200).send({ data: flattenSelect(faculty) })
+    res.status(200).send({
+        data: flattenSelect(faculty)
+    })
 }))
 
 
 router.post('/faculties', modelValidator(Faculty), makeController(async(req, res) => {
     await Faculty.insert(req.body)
-    res.status(201).send({ message: 'Created' })
+    res.status(201).send({
+        message: 'Created'
+    })
 }))
 
 
