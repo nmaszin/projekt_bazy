@@ -1,10 +1,18 @@
-export function notFoundRoute (req, res) {
+export function jsonParsingError(err, req, res, next) {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        res.status(400).send({ message: "JSON parsing error" })
+    } else {
+        next()
+    }
+}
+
+export function notFoundRoute(req, res) {
     res.status(404).send({
         message: 'Unknown route'
     })
 }
 
-export function catchErrors(controller) {
+function catchPromiseErrors(controller) {
     return async (req, res, next) => {
         try {
             await controller(req, res, next)
@@ -14,4 +22,8 @@ export function catchErrors(controller) {
             })
         }
     }
+}
+
+export function makeController(controller) {
+    return catchPromiseErrors(controller)
 }

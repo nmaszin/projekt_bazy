@@ -1,4 +1,5 @@
 import database from '@/database'
+import validatejs from 'validate.js'
 
 export function genericMapRow(row, mapping) {
     const { id } = row
@@ -38,7 +39,7 @@ export function createModel(object) {
 
     const model = {
         initialize: object.initialize,
-        deinitialize: object.initialize
+        deinitialize: object.deinitialize
     }
 
     if (object.select !== undefined) {
@@ -87,5 +88,27 @@ export function createModel(object) {
         }
     })
 
-    return injectDb(model)
+    const resultModel = injectDb(model)
+    if (object.constraints !== undefined) {
+        resultModel.validate = data => {
+            const errors = validatejs(data, object.constraints)
+    
+            const redundantFieldsErrors = {}
+            for (const attribute of Object.keys(data)) {
+                if (object.constraints[attribute] === undefined) {
+                    redundantFieldsErrors[attribute] = ['Redundant attribute']
+                }
+            }
+    
+            if (errors !== undefined) {
+                return { ...errors, ...redundantFieldsErrors }
+            } else if (Object.keys(redundantFieldsErrors).length > 0) {
+                return redundantFieldsErrors
+            } else {
+                return undefined
+            }
+        }
+    }
+    
+    return resultModel
 }
