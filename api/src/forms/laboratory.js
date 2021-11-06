@@ -8,8 +8,11 @@ export default createForm({
             length: { minimum: 1, maximum: 100 }
         },
         facultyId: {
-            presence: true,
-            foreignKey: Faculty
+            chain: [
+                { presence: true },
+                { validIdentifier: true },
+                { foreignKey: Faculty }
+            ]
         }
     },
 })

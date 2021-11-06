@@ -14,4 +14,41 @@ validatejs.validators.foreignKey = async (id, model) => {
     }
 }
 
-export default validatejs
+// Process validators in given order
+// If particular validator returns any errors, the chain won't call the rest of validators
+validatejs.validators.chain = async (value, rules, attribute) => {
+    for (const rule of rules) {
+        const data = { [attribute]: value }
+        const constraints = { [attribute]: rule }
+
+        const errors = await validator(data, constraints, { fullMessages: false })
+        if (errors !== undefined) {
+            return errors[attribute]
+        }
+    }
+}
+
+async function validator(data, constraints, options) {
+    const errors = await new Promise(resolve =>
+        validatejs.async(data, constraints, options)
+            .then(() => resolve())
+            .catch(errors => resolve(errors))
+    )
+
+    const redundantFieldsErrors = {}
+    for (const attribute of Object.keys(data)) {
+        if (constraints[attribute] === undefined) {
+            redundantFieldsErrors[attribute] = ['Redundant attribute']
+        }
+    }
+
+    if (errors !== undefined) {
+        return { ...errors, ...redundantFieldsErrors }
+    } else if (Object.keys(redundantFieldsErrors).length > 0) {
+        return redundantFieldsErrors
+    } else {
+        return undefined
+    }
+}
+
+export default validator
