@@ -28,6 +28,9 @@ validatejs.validators.chain = async (value, rules, attribute) => {
     }
 }
 
+// Validators default messages override
+validatejs.validators.presence.message = 'is required'
+
 async function validator(data, constraints, options) {
     const errors = await new Promise(resolve =>
         validatejs.async(data, constraints, options)
