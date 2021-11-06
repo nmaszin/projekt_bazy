@@ -38,12 +38,12 @@ export default createModel({
     select: {
         single: {
             async selectById(db, id) {
-                return await db.query(`SELECT * FROM Faculty WHERE id = ?`, [id])
+                return db.query(`SELECT * FROM Faculty WHERE id = ?`, [id])
             },
         },
         many: {
             async selectAll(db) {
-                return await db.query(`SELECT * FROM Faculty`)
+                return db.query(`SELECT * FROM Faculty`)
             },
         }
     },

@@ -46,12 +46,12 @@ export default createModel({
     select: {
         single: {
             async selectById(db, id) {
-                return await db.query(`SELECT * FROM Semester WHERE id = ?`, [id])
+                return db.query(`SELECT * FROM Semester WHERE id = ?`, [id])
             },
         },
         many: {
             async selectAll(db) {
-                return await db.query(`SELECT * FROM Semester`)
+                return db.query(`SELECT * FROM Semester`)
             },
         }
     },
