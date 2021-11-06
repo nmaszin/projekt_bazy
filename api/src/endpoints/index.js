@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import { Router } from 'express'
 import { loadDirectoryModules } from '@/utils/directoryLoader';
 
