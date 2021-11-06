@@ -1,41 +1,21 @@
 import { createModel } from '@/models'
 
-const maxLengths = {
-    name: 100,
-    address: 100
-}
-
 export default createModel({
+    name: 'Faculty',
+
     fields: {
         name: 'name',
         address: 'address'
-    },
-    
-    constraints: {
-        name: {
-            presence: true,
-            length: {
-                minimum: 1,
-                maximum: maxLengths.name
-            }
-        },
-        address: {
-            presence: true,
-            length: {
-                minimum: 1,
-                maximum: maxLengths.address,
-            }
-        }
     },
 
     async initialize(db) {
         await db.query(`
             CREATE TABLE Faculty(
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(?) NOT NULL,
-                address VARCHAR(?) NOT NULL
+                name VARCHAR(100) NOT NULL,
+                address VARCHAR(100) NOT NULL
             );
-        `, [maxLengths.name, maxLengths.address])
+        `)
 
         const faculties = [
             { name: 'Wydział Informatyki i Telekomunikacji', address: 'Poznań' },

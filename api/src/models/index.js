@@ -1,5 +1,4 @@
-import database from '@/database'
-import validatejs from 'validate.js'
+import database from '@/services/database'
 
 export function genericMapRow(row, mapping) {
     const { id } = row
@@ -19,15 +18,11 @@ export function flattenSelect(row) {
     }
 }
 
-
-export function injectDb(model) {
-    return Object.fromEntries(
-        Object.entries(model)
-            .map(([name, callback]) => [name, async (...params) => {
-                const db = await database.connect()
-                return await callback(db, ...params)
-            }])
-    )
+export function injectDb(callback) {
+    return async (...params) => {
+        const db = await database.connect()
+        return callback(db, ...params)
+    }
 }
 
 export function createModel(object) {
@@ -38,8 +33,11 @@ export function createModel(object) {
     }
 
     const model = {
-        initialize: object.initialize,
-        deinitialize: object.deinitialize
+        name: object.name,
+        depends: object.depends === undefined ? [] : object.depends,
+
+        initialize: injectDb(object.initialize),
+        deinitialize: injectDb(object.deinitialize)
     }
 
     if (object.select !== undefined) {
@@ -47,7 +45,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.single)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await fn(...params)
+                    const [rows, _] = await injectDb(fn)(...params)
                     return rows.map(row => genericMapRow(row, object.fields))[0]
                 }
             }
@@ -57,7 +55,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.many)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await fn(...params)
+                    const [rows, _] = await injectDb(fn)(...params)
                     return rows.map(row => genericMapRow(row, object.fields))
                 }
             }
@@ -67,7 +65,7 @@ export function createModel(object) {
     if (object.insert !== undefined) {
         for (const [name, fn] of Object.entries(object.insert)) {
             checkIfAlreadyExists(model[name])
-            model[name] = fn
+            model[name] = injectDb(fn)
         }
     }
 
@@ -81,57 +79,12 @@ export function createModel(object) {
                         return false
                     }
     
-                    await fn(...params)
+                    await injectDb(fn)(...params)
                     return true
                 }
             }
         }
     })
 
-    validatejs.validators.validIdentifier = value => {
-        const requirement = Number.isInteger(value) && value >= 1
-        if (!requirement) {
-            return "is not valid identifier"
-        }
-    }
-
-    validatejs.validators.foreignKey = async (id, model) => {
-        const result = validatejs.validators.validIdentifier(id)
-        if (result !== undefined) {
-            return result
-        }
-
-        const record = await model.selectById(id)
-        if (record === undefined) {
-            return "refers to non existing record"
-        }
-    }
-
-    const resultModel = injectDb(model)
-    if (object.constraints !== undefined) {
-        resultModel.validate = async data => {
-            const errors = await new Promise(resolve => {
-                validatejs.async(data, object.constraints)
-                    .then(() => resolve())
-                    .catch(resolve)
-            })
-
-            const redundantFieldsErrors = {}
-            for (const attribute of Object.keys(data)) {
-                if (object.constraints[attribute] === undefined) {
-                    redundantFieldsErrors[attribute] = ['Redundant attribute']
-                }
-            }
-    
-            if (errors !== undefined) {
-                return { ...errors, ...redundantFieldsErrors }
-            } else if (Object.keys(redundantFieldsErrors).length > 0) {
-                return redundantFieldsErrors
-            } else {
-                return undefined
-            }
-        }
-    }
-    
-    return resultModel
+    return model
 }

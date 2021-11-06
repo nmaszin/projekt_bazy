@@ -12,7 +12,7 @@ export function notFoundRoute(req, res) {
     })
 }
 
-function catchPromiseErrors(controller) {
+export function catchAllExceptions(controller) {
     return async (req, res, next) => {
         try {
             await controller(req, res, next)
@@ -22,8 +22,4 @@ function catchPromiseErrors(controller) {
             })
         }
     }
-}
-
-export function makeController(controller) {
-    return catchPromiseErrors(controller)
 }
