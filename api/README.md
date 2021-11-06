@@ -80,3 +80,24 @@ Zasób ten przechowuje informacje na temat poszczególnych **zakładów**.
 | PUT /laboratories/{id}    | Aktualizuje dane zakładu o danym identyfikatorze. Wymagane jest przesłanie wszystkich danych zakładu w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy zakład o podanym identyfikatorze nie istnieje; **400 (Bad request)** w razie błędu walidacji |
 | DELETE /laboratories/{id} | Usuwa zakład o podanym identyfikatorze.                      | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy zakład o podanym identyfikatorze nie istnieje |
 
+### subjects
+
+Zasób ten przechowuje informacje na temat poszczególnych **kierunków**.
+
+#### Atrybuty
+
+| Nazwa atrybutu | Opis atrybutu                                                | Typ                              | Wymagane |
+| -------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
+| name           | Nazwa kierunku                                               | Tekst (od 1 do 100 znaków)       | Tak      |
+| facultyId      | Identyfikator wydziału, do którego będzie przypisany kierunek; musi odnosić się do istniejącego wydziału | Identyfikator (liczba całkowita) | Tak      |
+
+#### Akcje
+
+| Metoda HTTP i ścieżka | Opis                                                         | Zwracany status HTTP                                         |
+| --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| GET /subjects         | Pobiera listę z informacjami na temat wszystkich kierunków. Informacje te zawierają także ich identyfikatory. | **200 (OK)**                                                 |
+| GET /subjects/{id}    | Pobiera informacje na temat wybranego kierunku, wskazanego przy użyciu jego identyfikatora. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy kierunek o podanym identyfikatorze nie istnieje |
+| POST /subjects        | Wstawia informacje na temat jednego kierunku. Wymaga przesłania danych kierunku w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **201 (Created)** w razie powodzenia; **400 (Bad request)** w razie błędu walidacji |
+| PUT /subjects/{id}    | Aktualizuje dane kierunku o danym identyfikatorze. Wymagane jest przesłanie wszystkich danych kierunku w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy kierunek o podanym identyfikatorze nie istnieje; **400 (Bad request)** w razie błędu walidacji |
+| DELETE /subjects/{id} | Usuwa kierunek o podanym identyfikatorze.                    | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy kierunek o podanym identyfikatorze nie istnieje |
+
