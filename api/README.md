@@ -4,6 +4,10 @@
 
 API działa domyślnie na porcie 8080 (taki jest ustawiony w konfiguracji, która mieści się w pliku `.env`).
 
+## Odpowiedzi
+
+Na każde zapytanie użytkownika API (także takie zdefiniowane niepoprawnie) powinno udzielić odpowiedzi w formacie JSON. O powodzeniu lub niepowodzeniu operacji mówi status HTTP odpowiedzi.
+
 ## Zasoby
 
 Poniżej znajduje się lista wszystkich zasobów obsługiwanych przez API. Każdy zasób jest pokrótce opisany i opatrzony dwiema tabelami. Pierwsza z nich opisuje pola zasobu i wymagania co do ich obecności i zawartości. Druga tabela wymienia akcje, które mogą zostać wykonane na zasobie i podaje możliwe wyniki ich wykonania.
@@ -55,4 +59,24 @@ Zasób ten przechowuje informacje na temat poszczególnych **wydziałów**.
 | PUT /faculties/{id}    | Aktualizuje dane wydziału o danym identyfikatorze. Wymagane jest przesłanie wszystkich danych wydziału w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy wydział o podanym identyfikatorze nie istnieje; **400 (Bad request)** w razie błędu walidacji |
 | DELETE /faculties/{id} | Usuwa wydział o podanym identyfikatorze.                     | **200 (OK) w razie powodzenia**; **404 (Not found)** w przypadku, gdy wydział o podanym identyfikatorze nie istnieje |
 
+### laboratories
+
+Zasób ten przechowuje informacje na temat poszczególnych **zakładów**.
+
+#### Atrybuty
+
+| Nazwa atrybutu | Opis atrybutu                                                | Typ                              | Wymagane |
+| -------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
+| name           | Nazwa zakładu                                                | Tekst (od 1 do 100 znaków)       | Tak      |
+| facultyId      | Identyfikator wydziału, do którego będzie przypisany zakład; musi odnosić się do istniejącego wydziału | Identyfikator (liczba całkowita) | Tak      |
+
+#### Akcje
+
+| Metoda HTTP i ścieżka     | Opis                                                         | Zwracany status HTTP                                         |
+| ------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| GET /laboratories         | Pobiera listę z informacjami na temat wszystkich zakładów. Informacje te zawierają także ich identyfikatory. | **200 (OK)**                                                 |
+| GET /laboratories/{id}    | Pobiera informacje na temat wybranego zakładu, wskazanego przy użyciu jego identyfikatora. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy zakład o podanym identyfikatorze nie istnieje |
+| POST /laboratories        | Wstawia informacje na temat jednego zakładu. Wymaga przesłania danych zakładu w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **201 (Created)** w razie powodzenia; **400 (Bad request)** w razie błędu walidacji |
+| PUT /laboratories/{id}    | Aktualizuje dane zakładu o danym identyfikatorze. Wymagane jest przesłanie wszystkich danych zakładu w ciele pakietu, w formacie opisanym w pierwszej tabeli. | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy zakład o podanym identyfikatorze nie istnieje; **400 (Bad request)** w razie błędu walidacji |
+| DELETE /laboratories/{id} | Usuwa zakład o podanym identyfikatorze.                      | **200 (OK)** w razie powodzenia; **404 (Not found)** w przypadku, gdy zakład o podanym identyfikatorze nie istnieje |
 
