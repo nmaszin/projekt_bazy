@@ -1,6 +1,8 @@
 import { createModel } from '@/models'
 
 export default createModel({
+    name: 'Faculty',
+
     fields: {
         name: 'name',
         address: 'address'

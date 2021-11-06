@@ -19,7 +19,7 @@ export function flattenSelect(row) {
 }
 
 
-export function injectDb(model) {
+/*export function injectDb(model) {
     return Object.fromEntries(
         Object.entries(model)
             .map(([name, callback]) => [name, async (...params) => {
@@ -27,6 +27,14 @@ export function injectDb(model) {
                 return await callback(db, ...params)
             }])
     )
+}*/
+
+
+export function injectDb(callback) {
+    return async (...params) => {
+        const db = await database.connect()
+        return callback(db, ...params)
+    }
 }
 
 export function createModel(object) {
@@ -37,8 +45,11 @@ export function createModel(object) {
     }
 
     const model = {
-        initialize: object.initialize,
-        deinitialize: object.deinitialize
+        name: object.name,
+        depends: object.depends === undefined ? [] : object.depends,
+
+        initialize: injectDb(object.initialize),
+        deinitialize: injectDb(object.deinitialize)
     }
 
     if (object.select !== undefined) {
@@ -46,7 +57,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.single)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await fn(...params)
+                    const [rows, _] = await injectDb(fn)(...params)
                     return rows.map(row => genericMapRow(row, object.fields))[0]
                 }
             }
@@ -56,7 +67,7 @@ export function createModel(object) {
             for (const [name, fn] of Object.entries(object.select.many)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    const [rows, _] = await fn(...params)
+                    const [rows, _] = await injectDb(fn)(...params)
                     return rows.map(row => genericMapRow(row, object.fields))
                 }
             }
@@ -66,7 +77,7 @@ export function createModel(object) {
     if (object.insert !== undefined) {
         for (const [name, fn] of Object.entries(object.insert)) {
             checkIfAlreadyExists(model[name])
-            model[name] = fn
+            model[name] = injectDb(fn)
         }
     }
 
@@ -80,12 +91,12 @@ export function createModel(object) {
                         return false
                     }
     
-                    await fn(...params)
+                    await injectDb(fn)(...params)
                     return true
                 }
             }
         }
     })
 
-    return injectDb(model)
+    return model
 }

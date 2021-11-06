@@ -1,10 +1,16 @@
 import { createModel } from '@/models'
 
 export default createModel({
+    name: 'Laboratory',
+
     fields: {
         name: 'name',
         facultyId: 'faculty_id'
     },
+
+    depends: [
+        'Faculty'
+    ],
 
     async initialize(db) {
         await db.query(`
