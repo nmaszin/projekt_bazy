@@ -5,8 +5,6 @@ import { loadDirectoryModules } from '@/utils/directoryLoader'
 const getModels = async () => loadDirectoryModules(__dirname, ['index.js', 'db.js'])
 
 function sortModelsByDependencies(models) {
-    // TODO: ogarnąć dodawanie pustej tablicy dependencies jako domyślnej w modelu
-
     const modelByName = Object.fromEntries(models.map(model => [model.name, model]))
     const dependencyGraph = models.map(
         model => model.depends.map(dependency => [model.name, dependency])
@@ -21,10 +19,6 @@ function sortModelsByDependencies(models) {
 
     return order.map(name => modelByName[name])
 }
-
-const sleep = time => new Promise(
-    resolve => setTimeout(() => resolve(), time)
-)
 
 export default createModel({
     name: 'Db',

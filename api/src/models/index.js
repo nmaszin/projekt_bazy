@@ -18,18 +18,6 @@ export function flattenSelect(row) {
     }
 }
 
-
-/*export function injectDb(model) {
-    return Object.fromEntries(
-        Object.entries(model)
-            .map(([name, callback]) => [name, async (...params) => {
-                const db = await database.connect()
-                return await callback(db, ...params)
-            }])
-    )
-}*/
-
-
 export function injectDb(callback) {
     return async (...params) => {
         const db = await database.connect()
