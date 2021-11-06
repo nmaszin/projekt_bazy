@@ -1,4 +1,4 @@
-import database from '@/database'
+import database from '@/services/database'
 
 export function genericMapRow(row, mapping) {
     const { id } = row

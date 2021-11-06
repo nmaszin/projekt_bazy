@@ -1,4 +1,4 @@
-import validator from '@/validator'
+import validator from '@/services/validator'
 
 export function createForm(object) {
     return {
