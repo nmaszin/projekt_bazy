@@ -75,15 +75,11 @@ export function createModel(object) {
 
     [object.update, object.delete].forEach(entry => {
         if (entry !== undefined) {
-            for (const [name, { checkBefore, fn }] of Object.entries(entry)) {
+            for (const [name, fn] of Object.entries(entry)) {
                 checkIfAlreadyExists(model[name])
                 model[name] = async (...params) => {
-                    if ((await model[checkBefore](...params)) === undefined) {
-                        return false
-                    }
-    
-                    await injectDb(fn)(...params)
-                    return true
+                    const [fields, _] = await injectDb(fn)(...params)
+                    return fields.affectedRows > 0
                 }
             }
         }
