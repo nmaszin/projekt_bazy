@@ -36,10 +36,10 @@ router.get('/subjects/:id(\\d+)',
 router.post('/subjects',
     validator(SubjectForm),
     controller(async(req, res) => {
-        await Subject.insert(req.body)
-        res.status(201).send({
-            message: 'Created'
-        })
+        const id = await Subject.insert(req.body)
+        const data = { id, ...req.body }
+
+        res.status(201).send({ data })
     })
 )
 

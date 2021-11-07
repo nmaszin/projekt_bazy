@@ -36,10 +36,10 @@ router.get('/semesters/:id(\\d+)',
 router.post('/semesters',
     validator(SemesterForm),
     controller(async(req, res) => {
-        await Semester.insert(req.body)
-        res.status(201).send({
-            message: 'Created'
-        })
+        const id = await Semester.insert(req.body)
+        const data = { id, ...req.body }
+
+        res.status(201).send({ data })
     })
 )
 

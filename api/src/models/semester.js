@@ -58,7 +58,7 @@ export default createModel({
 
     insert: {
         async insert(db, semester) {
-            await db.query(`
+            return db.query(`
                 INSERT INTO Semester(number, year, subject_id)
                 VALUES(?, ?, ?)
             `, [semester.number, semester.year, semester.subjectId])

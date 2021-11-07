@@ -55,7 +55,7 @@ export default createModel({
 
     insert: {
         async insert(db, subject) {
-            await db.query(`
+            return db.query(`
                 INSERT INTO Subject(name, faculty_id)
                 VALUES(?, ?)
             `, [subject.name, subject.facultyId])

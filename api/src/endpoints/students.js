@@ -35,10 +35,10 @@ router.get('/students/:id(\\d+)',
 router.post('/students',
     validator(StudentForm),
     controller(async(req, res) => {
-        await Student.insert(req.body)
-        res.status(201).send({
-            message: 'Created'
-        })
+        const id = await Student.insert(req.body)
+        const data = { id, ...req.body }
+
+        res.status(201).send({ data })
     })
 )
 

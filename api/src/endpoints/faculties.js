@@ -10,9 +10,9 @@ const router = Router()
 router.get('/faculties',
     controller(async (req, res) => {
         const faculties = await Faculty.selectAll()
-        res.send({
-            data: faculties.map(flattenSelect)
-        })
+        const data = faculties.map(flattenSelect)
+        
+        res.send({ data })
     })
 )
 
@@ -35,11 +35,10 @@ router.get('/faculties/:id(\\d+)',
 router.post('/faculties',
     validator(FacultyForm),
     controller(async(req, res) => {
-        await Faculty.insert(req.body)
+        const id = await Faculty.insert(req.body)
+        const data = { id, ...req.body }
 
-        res.status(201).send({
-            message: 'Created'
-        })
+        res.status(201).send({ data })
     })
 )
 

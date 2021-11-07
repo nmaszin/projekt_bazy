@@ -36,10 +36,10 @@ router.get('/laboratories/:id(\\d+)',
 router.post('/laboratories',
     validator(LaboratoryForm),
     controller(async(req, res) => {
-        await Laboratory.insert(req.body)
-        res.status(201).send({
-            message: 'Created'
-        })
+        const id = await Laboratory.insert(req.body)
+        const data = { id, ...req.body }
+
+        res.status(201).send({ data })
     })
 )
 

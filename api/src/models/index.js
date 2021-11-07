@@ -65,7 +65,10 @@ export function createModel(object) {
     if (object.insert !== undefined) {
         for (const [name, fn] of Object.entries(object.insert)) {
             checkIfAlreadyExists(model[name])
-            model[name] = injectDb(fn)
+            model[name] = async (...params) => {
+                const [rows, _] = await injectDb(fn)(...params)
+                return rows.insertId
+            }
         }
     }
 

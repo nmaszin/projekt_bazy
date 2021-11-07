@@ -54,7 +54,7 @@ export default createModel({
 
     insert: {
         async insert(db, laboratory) {
-            await db.query(`
+            return db.query(`
                 INSERT INTO Laboratory(name, faculty_id)
                 VALUES(?, ?)
             `, [laboratory.name, laboratory.facultyId])
