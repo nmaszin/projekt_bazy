@@ -38,43 +38,5 @@ export default createModel({
 
     async deinitialize(db) {
         await db.query(`DROP TABLE Subject`)
-    },
-
-    select: {
-        single: {
-            async selectById(db, id) {
-                return db.query(`SELECT * FROM Subject WHERE id = ?`, [id])
-            },
-        },
-        many: {
-            async selectAll(db) {
-                return db.query(`SELECT * FROM Subject`)
-            },
-        }
-    },
-
-    insert: {
-        async insert(db, subject) {
-            return db.query(`
-                INSERT INTO Subject(name, faculty_id)
-                VALUES(?, ?)
-            `, [subject.name, subject.facultyId])
-        },
-    },
-
-    update: {
-        async updateById(db, id, subject) {
-            return db.query(`
-                UPDATE Subject
-                SET name = ?, faculty_id = ?
-                WHERE id = ?
-            `, [subject.name, subject.facultyId, id])
-        }
-    },
-
-    delete: {
-        async deleteById(db, id) {
-            return db.query(`DELETE FROM Subject WHERE id = ?`, [id])
-        }
     }
 })

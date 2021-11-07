@@ -37,43 +37,5 @@ export default createModel({
 
     async deinitialize(db) {
         await db.query(`DROP TABLE Laboratory`)
-    },
-
-    select: {
-        single: {
-            async selectById(db, id) {
-                return db.query(`SELECT * FROM Laboratory WHERE id = ?`, [id])
-            },
-        },
-        many: {
-            async selectAll(db) {
-                return db.query(`SELECT * FROM Laboratory`)
-            },
-        }
-    },
-
-    insert: {
-        async insert(db, laboratory) {
-            return db.query(`
-                INSERT INTO Laboratory(name, faculty_id)
-                VALUES(?, ?)
-            `, [laboratory.name, laboratory.facultyId])
-        },
-    },
-
-    update: {
-        async updateById(db, id, laboratory) {
-            return db.query(`
-                UPDATE Laboratory
-                SET name = ?, faculty_id = ?
-                WHERE id = ?
-            `, [laboratory.name, laboratory.facultyId, id])
-        }
-    },
-
-    delete: {
-        async deleteById(db, id) {
-            return db.query(`DELETE FROM Laboratory WHERE id = ?`, [id])
-        }
     }
 })

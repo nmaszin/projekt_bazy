@@ -33,43 +33,5 @@ export default createModel({
 
     async deinitialize(db) {
         await db.query(`DROP TABLE Student`)
-    },
-
-    select: {
-        single: {
-            async selectById(db, id) {
-                return db.query(`SELECT * FROM Student WHERE id = ?`, [id])
-            },
-        },
-        many: {
-            async selectAll(db) {
-                return db.query(`SELECT * FROM Student`)
-            },
-        }
-    },
-
-    insert: {
-        async insert(db, student) {
-            return db.query(`
-                INSERT INTO Student(first_name, last_name)
-                VALUES(?, ?)
-            `, [student.firstName, student.lastName])
-        },
-    },
-
-    update: {
-        async updateById(db, id, student) {
-            return db.query(`
-                UPDATE Student
-                SET first_name = ?, last_name = ?
-                WHERE id = ?
-            `, [student.firstName, student.lastName, id])
-        }
-    },
-
-    delete: {
-        async deleteById(db, id) {
-            return db.query(`DELETE FROM Student WHERE id = ?`, [id])
-        }
     }
 })

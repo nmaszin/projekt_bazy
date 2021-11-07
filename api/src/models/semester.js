@@ -41,43 +41,5 @@ export default createModel({
 
     async deinitialize(db) {
         await db.query(`DROP TABLE Semester`)
-    },
-
-    select: {
-        single: {
-            async selectById(db, id) {
-                return db.query(`SELECT * FROM Semester WHERE id = ?`, [id])
-            },
-        },
-        many: {
-            async selectAll(db) {
-                return db.query(`SELECT * FROM Semester`)
-            },
-        }
-    },
-
-    insert: {
-        async insert(db, semester) {
-            return db.query(`
-                INSERT INTO Semester(number, year, subject_id)
-                VALUES(?, ?, ?)
-            `, [semester.number, semester.year, semester.subjectId])
-        },
-    },
-
-    update: {
-        async updateById(db, id, semester) {
-            return db.query(`
-                UPDATE Semester
-                SET number = ?, year = ?, subject_id = ?
-                WHERE id = ?
-            `, [semester.number, semester.year, semester.subjectId, id])
-        }
-    },
-
-    delete: {
-        async deleteById(db, id) {
-            return db.query(`DELETE FROM Semester WHERE id = ?`, [id])
-        }
     }
 })

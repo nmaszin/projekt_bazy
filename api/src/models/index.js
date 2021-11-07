@@ -1,3 +1,4 @@
+import lodash from 'lodash'
 import database from '@/services/database'
 
 export function genericMapRow(row, mapping) {
@@ -25,13 +26,71 @@ export function injectDb(callback) {
     }
 }
 
-export function createModel(object) {
-    const checkIfAlreadyExists = method => {
-        if (method !== undefined) {
-            throw new Error(`Method ${method} already exists in model`)
+const checkIfAlreadyExists = method => {
+    if (method !== undefined) {
+        throw new Error(`Method ${method} already exists in model`)
+    }
+}
+
+const defaultImplementation = model => ({
+    select: {
+        single: {
+            async selectById(db, id) {
+                return db.query(`SELECT * FROM ${model.name} WHERE id = ?`, [id])
+            }
+        },
+        many: {
+            async selectAll(db) {
+                return db.query(`SELECT * FROM ${model.name}`)
+            },
+        }
+    },
+
+    insert: {
+        async insert(db, data) {
+            const fieldsValuesMapping = Object.entries(model.fields)
+                .map(([attribute, dbField]) => [dbField, data[attribute]])
+
+            const fields = fieldsValuesMapping.map(e => e[0])
+            const values = fieldsValuesMapping.map(e => e[1])
+            const questionMarks = Array(values.length).fill('?')
+
+            return db.query(`
+                INSERT INTO ${model.name}(${fields.join(', ')})
+                VALUES(${questionMarks.join(', ')})
+            `, values)
+        },
+    },
+
+    update: {
+        async updateById(db, id, data) {
+            const fieldsValuesMapping = Object.entries(model.fields)
+                .map(([attribute, dbField]) => [dbField, data[attribute]])
+
+            const fields = fieldsValuesMapping.map(e => e[0])
+            const values = fieldsValuesMapping.map(e => e[1])
+
+            return db.query(`
+                UPDATE ${model.name}
+                SET ${fields.map(f => `${f} = ?`).join(', ')}
+                WHERE id = ?
+            `, [...values, id])
+        }
+    },
+
+    delete: {
+        async deleteById(db, id) {
+            return db.query(`DELETE FROM ${model.name} WHERE id = ?`, [id])
         }
     }
+})
 
+export function createModel(object) {
+    object = lodash.merge(
+        defaultImplementation(object),
+        object
+    )
+    
     const model = {
         name: object.name,
         depends: object.depends === undefined ? [] : object.depends,
@@ -71,7 +130,6 @@ export function createModel(object) {
             }
         }
     }
-
 
     [object.update, object.delete].forEach(entry => {
         if (entry !== undefined) {
