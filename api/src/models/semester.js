@@ -13,6 +13,12 @@ export default createModel({
         'Subject'
     ],
 
+    rows: [
+        { number: 1, year: 2019, subjectId: 1 },
+        { number: 3, year: 2019, subjectId: 1 },
+        { number: 1, year: 2020, subjectId: 1 },
+    ],
+
     async initialize(db) {
         await db.query(`
             CREATE TABLE Semester(
@@ -24,19 +30,6 @@ export default createModel({
                 UNIQUE(number, year, subject_id)
             );
         `)
-
-        const semesters = [
-            { number: 1, year: 2019, subjectId: 1 },
-            { number: 3, year: 2019, subjectId: 1 },
-            { number: 1, year: 2020, subjectId: 1 },
-        ]
-
-        for (const semester of semesters) {
-            await db.query(`
-                INSERT INTO Semester (number, year, subject_id)
-                VALUES (?, ?, ?);
-            `, [semester.number, semester.year, semester.subjectId])
-        }
     },
 
     async deinitialize(db) {

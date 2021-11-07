@@ -33,6 +33,9 @@ const checkIfAlreadyExists = method => {
 }
 
 const defaultImplementation = model => ({
+    depends: [],
+    rows: [],
+
     select: {
         single: {
             async selectById(db, id) {
@@ -93,10 +96,7 @@ export function createModel(object) {
     
     const model = {
         name: object.name,
-        depends: object.depends === undefined ? [] : object.depends,
-
-        initialize: injectDb(object.initialize),
-        deinitialize: injectDb(object.deinitialize)
+        depends: object.depends
     }
 
     if (object.select !== undefined) {
@@ -142,6 +142,19 @@ export function createModel(object) {
             }
         }
     })
+
+    if (object.initialize !== undefined) {
+        model.initialize = async (...params) => {
+            await injectDb(object.initialize)()
+            for (const row of object.rows) {
+                await model.insert(row)
+            }
+        }
+    }
+
+    if (object.deinitialize !== undefined) {
+        model.deinitialize = injectDb(object.deinitialize)
+    }
 
     return model
 }

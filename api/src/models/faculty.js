@@ -8,6 +8,12 @@ export default createModel({
         address: 'address'
     },
 
+    rows: [
+        { name: 'Wydział Informatyki i Telekomunikacji', address: 'Poznań' },
+        { name: 'Wydział Elektryczny', address: 'Poznań' },
+        { name: 'Wydział Budowy Maszyn', address: 'Poznań' }
+    ],
+
     async initialize(db) {
         await db.query(`
             CREATE TABLE Faculty(
@@ -16,19 +22,6 @@ export default createModel({
                 address VARCHAR(100) NOT NULL
             );
         `)
-
-        const faculties = [
-            { name: 'Wydział Informatyki i Telekomunikacji', address: 'Poznań' },
-            { name: 'Wydział Elektryczny', address: 'Poznań' },
-            { name: 'Wydział Budowy Maszyn', address: 'Poznań' }
-        ]
-
-        for (const faculty of faculties) {
-            await db.query(`
-                INSERT INTO Faculty (name, address)
-                VALUES (?, ?);
-            `, [faculty.name, faculty.address])
-        }
     },
 
     async deinitialize(db) {

@@ -8,6 +8,12 @@ export default createModel({
         lastName: 'last_name'
     },
 
+    rows: [
+        { firstName: 'Eryk', lastName: 'Andrzejewski' },
+        { firstName: 'Konrad', lastName: 'Bankiewicz' },
+        { firstName: 'Paweł', lastName: 'Błoch' }
+    ],
+
     async initialize(db) {
         await db.query(`
             CREATE TABLE Student(
@@ -16,19 +22,6 @@ export default createModel({
                 last_name VARCHAR(30) NOT NULL
             );
         `)
-
-        const students = [
-            { firstName: 'Eryk', lastName: 'Andrzejewski' },
-            { firstName: 'Konrad', lastName: 'Bankiewicz' },
-            { firstName: 'Paweł', lastName: 'Błoch' }
-        ]
-
-        for (const student of students) {
-            await db.query(`
-                INSERT INTO Student (first_name, last_name)
-                VALUES (?, ?);
-            `, [student.firstName, student.lastName])
-        }
     },
 
     async deinitialize(db) {

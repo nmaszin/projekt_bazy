@@ -8,6 +8,12 @@ export default createModel({
         address: 'address'
     },
 
+    rows: [
+        { name: 'DS1', address: 'ul. Kórnicka 1, 12-345 Poznań' },
+        { name: 'DS2', address: 'ul. Kórnicka 2, 12-345 Poznań' },
+        { name: 'DS3', address: 'ul. Kórnicka 3, 12-345 Poznań' },
+    ],
+
     async initialize(db) {
         await db.query(`
             CREATE TABLE Dormitory(
@@ -16,19 +22,6 @@ export default createModel({
                 address VARCHAR(100) NOT NULL
             );
         `)
-
-        const dormitories = [
-            { name: 'DS1', address: 'ul. Kórnicka 1, 12-345 Poznań' },
-            { name: 'DS2', address: 'ul. Kórnicka 2, 12-345 Poznań' },
-            { name: 'DS3', address: 'ul. Kórnicka 3, 12-345 Poznań' },
-        ]
-
-        for (const dormitory of dormitories) {
-            await db.query(`
-                INSERT INTO Dormitory (name, address)
-                VALUES (?, ?);
-            `, [dormitory.name, dormitory.address])
-        }
     },
 
     async deinitialize(db) {
