@@ -46,15 +46,14 @@ router.put('/faculties/:id(\\d+)',
     validator(FacultyForm),
     controller(async (req, res) => {
         const id = parseInt(req.params.id)
+        const data = { id, ...req.body }
         if (!await Faculty.updateById(id, req.body)) {
             return res.status(404).send({
                 message: 'Faculty with given id does not exist'
             })
         }
 
-        res.status(200).send({
-            message: 'Updated'
-        })
+        res.status(200).send({ data })
     })
 )
 

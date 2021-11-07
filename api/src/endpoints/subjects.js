@@ -48,15 +48,14 @@ router.put('/subjects/:id(\\d+)',
     validator(SubjectForm),
     controller(async (req, res) => {
         const id = parseInt(req.params.id)
+        const data = { id, ...req.body }
         if (!await Subject.updateById(id, req.body)) {
             return res.status(404).send({
                 message: 'Subject with given id does not exist'
             })
         }
 
-        res.status(200).send({
-            message: 'Updated'
-        })
+        res.status(200).send({ data })
     })
 )
 

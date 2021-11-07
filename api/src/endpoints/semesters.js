@@ -48,15 +48,14 @@ router.put('/semesters/:id(\\d+)',
     validator(SemesterForm),
     controller(async (req, res) => {
         const id = parseInt(req.params.id)
+        const data = { id, ...req.body }
         if (!await Semester.updateById(id, req.body)) {
             return res.status(404).send({
                 message: 'Semester with given id does not exist'
             })
         }
 
-        res.status(200).send({
-            message: 'Updated'
-        })
+        res.status(200).send({ data })
     })
 )
 
