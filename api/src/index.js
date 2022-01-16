@@ -1,4 +1,5 @@
 import express from 'express'
+import passport from '@/services/passport'
 import { loadAllEndpoints } from '@/endpoints'
 import { notFoundRoute, jsonParsingError } from '@/middlewares/errors'
 
@@ -11,6 +12,8 @@ import { notFoundRoute, jsonParsingError } from '@/middlewares/errors'
     app.use(await loadAllEndpoints())
     app.use(notFoundRoute)
     
+    passport()
+
     const port = process.env.PORT
     app.listen(port, () => console.log(`Running on http://localhost:${port}`))    
 })()

@@ -125,8 +125,12 @@ export function createModel(object) {
         for (const [name, fn] of Object.entries(object.insert)) {
             checkIfAlreadyExists(model[name])
             model[name] = async (...params) => {
-                const [rows, _] = await injectDb(fn)(...params)
-                return rows.insertId
+                try {
+                    const [rows, _] = await injectDb(fn)(...params)
+                    return rows.insertId
+                } catch (e) {
+                    return undefined
+                }
             }
         }
     }
@@ -154,6 +158,13 @@ export function createModel(object) {
 
     if (object.deinitialize !== undefined) {
         model.deinitialize = injectDb(object.deinitialize)
+    }
+
+    if (object.custom !== undefined) {
+        for (const [name, fn] of Object.entries(object.custom)) {
+            checkIfAlreadyExists(model[name])
+            model[name] = injectDb(fn)
+        }
     }
 
     return model
