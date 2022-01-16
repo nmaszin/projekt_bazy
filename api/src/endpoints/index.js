@@ -54,6 +54,12 @@ export function generateEndpoint(path, model, form) {
         validator(form),
         controller(async(req, res) => {
             const id = await model.insert(req.body)
+            if (id === undefined) {
+                return res.status(400).send({
+                    message: 'Could not add record to database'
+                })
+            }
+
             const data = { id, ...req.body }
             res.status(201).send({ data })
         })

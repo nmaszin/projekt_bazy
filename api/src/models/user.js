@@ -16,6 +16,8 @@ export default createModel({
     },
 
     rows: [
+        { username: 'czytelnik', password: 'czytelnik', role: 0 },
+        { username: 'pisarzyna', password: 'pisarzyna', role: 1 },
         { username: 'administrator', password: 'administrator', role: 2 }
     ],
 
