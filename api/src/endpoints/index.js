@@ -3,6 +3,8 @@ import { loadDirectoryModules } from '@/utils/directoryLoader';
 import { flattenSelect } from '@/models'
 import { controller } from '@/middlewares/controller'
 import { validator } from '@/middlewares/validator'
+import { jwtAuth } from '@/middlewares/auth'
+import { atLeastReader, atLeastWriter } from '@/middlewares/roles'
 
 // The following function load all endpoints routers and bind them into a new one
 // I assume that all files in current directory (except current file) are endpoints files
@@ -18,6 +20,8 @@ export function generateEndpoint(path, model, form) {
     const router = Router()
 
     router.get(path,
+        jwtAuth,
+        atLeastReader,
         controller(async (req, res) => {
             const data = await model.selectAll()
             res.send({
@@ -27,6 +31,8 @@ export function generateEndpoint(path, model, form) {
     )
 
     router.get(`${path}/:id(\\d+)`,
+        jwtAuth,
+        atLeastReader,
         controller(async (req, res) => {
             const id = parseInt(req.params.id)
             const data = await model.selectById(id)
@@ -43,6 +49,8 @@ export function generateEndpoint(path, model, form) {
     )
 
     router.post(path,
+        jwtAuth,
+        atLeastWriter,
         validator(form),
         controller(async(req, res) => {
             const id = await model.insert(req.body)
@@ -52,6 +60,8 @@ export function generateEndpoint(path, model, form) {
     )
 
     router.put(`${path}/:id(\\d+)`,
+        jwtAuth,
+        atLeastWriter,
         validator(form),
         controller(async (req, res) => {
             const id = parseInt(req.params.id)
@@ -67,6 +77,8 @@ export function generateEndpoint(path, model, form) {
     )
 
     router.delete(`${path}/:id(\\d+)`,
+        jwtAuth,
+        atLeastWriter,
         controller(async (req, res) => {
             const id = parseInt(req.params.id)
             if (!await model.deleteById(id)) {

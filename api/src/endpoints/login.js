@@ -1,16 +1,15 @@
-import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import { Router } from 'express'
 import { controller } from '@/middlewares/controller'
 import { validator } from '@/middlewares/validator'
-import User from '@/models/user'
+import { loginAuth } from '@/middlewares/auth'
 import LoginForm from '@/forms/login'
 
 const router = Router()
 
 router.post('/login',
     validator(LoginForm),
-    passport.authenticate('local', { session: false }),
+    loginAuth,
     controller(async (req, res) => {
         const user = req.user
         const token = jwt.sign(

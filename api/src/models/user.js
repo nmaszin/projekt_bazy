@@ -1,13 +1,23 @@
 import bcrypt from 'bcrypt'
 import { createModel } from '@/models'
 
+// Available roles:
+// role 0 - reader
+// role 1 - writer
+// role 2 - admin
+
 export default createModel({
     name: 'User',
 
     fields: {
         username: 'username',
-        password: 'password'
+        password: 'password',
+        role: 'role'
     },
+
+    rows: [
+        { username: 'administrator', password: 'administrator', role: 2 }
+    ],
 
     async initialize(db) {
         await db.query(`
@@ -15,6 +25,7 @@ export default createModel({
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(100) NOT NULL,
                 password VARCHAR(60) NOT NULL,
+                role INT NOT NULL,
                 UNIQUE(username)
             );
         `)
@@ -25,7 +36,7 @@ export default createModel({
     },
 
     select: {
-        async selectByUsername(db, username, password) {
+        async selectByUsername(db, username) {
             return db.query(`
                 SELECT * FROM User
                 WHERE username = ?
@@ -36,14 +47,14 @@ export default createModel({
     insert: {
         // Override
         async insert(db, user) {
-            const { username, password } = user
+            const { username, password, role } = user
             const salt = await bcrypt.genSalt()
             const hash = await bcrypt.hash(password, salt)
 
             return db.query(`
-                INSERT INTO User(username, password)
-                VALUES(?, ?)
-            `, [username, hash])
+                INSERT INTO User(username, password, role)
+                VALUES(?, ?, ?)
+            `, [username, hash, role])
         }
     },
 

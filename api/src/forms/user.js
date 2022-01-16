@@ -21,6 +21,19 @@ export default createForm({
                 { type: 'string' },
                 { length: { minimum: 8 } },
             ],
+        },
+        role: {
+            chain: [
+                { presence: true },
+                { type: 'integer' },
+                {
+                    numericality: {
+                        onlyInteger: true,
+                        greaterThanOrEqualTo: 0,
+                        lessThanOrEqualTo: 2
+                    }
+                }
+            ]
         }
     },
 })
