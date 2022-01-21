@@ -1,7 +1,7 @@
 import { createModel } from '@/models'
 
 export default createModel({
-    name: 'Faculty',
+    name: 'Dormitory',
 
     fields: {
         name: 'name',
@@ -9,14 +9,14 @@ export default createModel({
     },
 
     rows: [
-        { name: 'Wydział Informatyki i Telekomunikacji', address: 'Poznań' },
-        { name: 'Wydział Elektryczny', address: 'Poznań' },
-        { name: 'Wydział Budowy Maszyn', address: 'Poznań' }
+        { name: 'DS1', address: 'ul. Kórnicka 1, 12-345 Poznań' },
+        { name: 'DS2', address: 'ul. Kórnicka 2, 12-345 Poznań' },
+        { name: 'DS3', address: 'ul. Kórnicka 3, 12-345 Poznań' },
     ],
 
     async initialize(db) {
         await db.query(`
-            CREATE TABLE Faculty(
+            CREATE TABLE Dormitory(
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
                 address VARCHAR(100) NOT NULL
@@ -25,6 +25,6 @@ export default createModel({
     },
 
     async deinitialize(db) {
-        await db.query(`DROP TABLE Faculty`)
+        await db.query(`DROP TABLE Dormitory`)
     }
 })
