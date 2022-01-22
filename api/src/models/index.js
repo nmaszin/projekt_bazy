@@ -6,7 +6,7 @@ export function genericMapRow(row, mapping) {
     const data = Object.fromEntries(
         Object.entries(mapping)
             .map(([modelKey, dbKey]) => [modelKey, row[dbKey]])
-            .filter(([_, value]) => value !== undefined)
+            .filter(([_, value]) => value != null)
     )
 
     return { id, data }

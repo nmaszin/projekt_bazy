@@ -3,20 +3,9 @@ import Person from '@/models/person'
 
 export default createForm({
     constraints: {
-        identifier: {
-            chain: [
-                { presence: true },
-                { length: { minimum: 5, maximum: 10 } },
-                {
-                    format: {
-                        pattern: /[0-9]{5, 10}/,
-                        message: 'have to consist of digits'
-                    }
-                }
-            ],
-        },
         degree: {
             chain: [
+                { presence: true },
                 { type: 'string' },
                 { length: { minimum: 1, maximum: 30 } },
                 {

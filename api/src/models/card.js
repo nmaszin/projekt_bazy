@@ -6,7 +6,7 @@ export default createModel({
     fields: {
         dateOfIssue: 'date_of_issue',
         expiryDate: 'expiry_date',
-        studentId: 'student_id'
+        studentId: 'id'
     },
 
     depends: [
@@ -22,12 +22,10 @@ export default createModel({
     async initialize(db) {
         await db.query(`
             CREATE TABLE Card(
-                id INT PRIMARY KEY AUTO_INCREMENT,
+                id INT PRIMARY KEY,
                 date_of_issue DATE NOT NULL,
                 expiry_date DATE NOT NULL,
-                student_id INT NOT NULL,
-                FOREIGN KEY(student_id) REFERENCES Student(id),
-                UNIQUE(student_id)
+                FOREIGN KEY(id) REFERENCES Student(id)
             );
         `)
     },
