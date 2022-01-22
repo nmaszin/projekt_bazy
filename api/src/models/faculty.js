@@ -19,7 +19,8 @@ export default createModel({
             CREATE TABLE Faculty(
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
-                address VARCHAR(100) NOT NULL
+                address VARCHAR(100) NOT NULL,
+                UNIQUE(name, address)
             );
         `)
     },

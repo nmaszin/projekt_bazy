@@ -23,7 +23,8 @@ export default createModel({
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
                 faculty_id INT NOT NULL,
-                FOREIGN KEY(faculty_id) REFERENCES Faculty(id)
+                FOREIGN KEY(faculty_id) REFERENCES Faculty(id),
+                UNIQUE(name)
             );
         `)
     },
