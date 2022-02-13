@@ -1,4 +1,8 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import Raport from '../components/Raport';
+import config from '../config'
+import RaportWrapper from '../components/RaportWrapper';
 import '../styles/Raporty.css'
 
 export const RaportyR = () => {
@@ -10,11 +14,29 @@ export const RaportyR = () => {
 };
 
 export const StudenciR = () => {
-  return (
-    <div className='reports'>
-      <h1>Raporty/studenci</h1>
+
+
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: data => data.id
+    },
+    {
+      label: 'Imie',
+      value: data => data.firstName
+    },
+    {
+      label: 'Nazwisko',
+      value: data => data.lastName
+    }
+  ]
+
+  return(
+    <div className='students'>
+      <RaportWrapper path='students' columns={c} />
     </div>
-  );
+  )
+
 };
 
 export const PracownicyR = () => {
@@ -66,9 +88,27 @@ export const Dane_osoboweR = () => {
 };
 
 export const KierunkiR = () => {
+
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: data => data.id
+    },
+    {
+      label: 'Nazwa kierunku',
+      value: data => data.name
+    },
+    {
+      label: 'Identyfikator wydziału',
+      value: data => data.facultyId
+    }
+  ]
+
   return (
     <div className='reports'>
-      <h1>Raporty/kierunki</h1>
+      
+      <RaportWrapper path='subjects' columns={c} />
+
     </div>
   );
 };

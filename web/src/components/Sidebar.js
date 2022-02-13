@@ -38,7 +38,7 @@ const Sidebar = () => {
           </div>
           <div className="tytul"><a href="/" className='t2'>System wspomagania uczelni wyższej 4.0</a></div>
           <Link href='/login'><i class="fas fa-sign-in-alt"></i></Link>
-          <Link href='/signin'><i class="fas fa-user-plus"></i></Link>
+          {/* <Link href='/signin'><i class="fas fa-user-plus"></i></Link> */}
         </div>
 
 

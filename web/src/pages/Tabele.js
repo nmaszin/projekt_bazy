@@ -1,5 +1,10 @@
 import React from 'react';
 import '../styles/Tabele.css'
+import { useState, useEffect } from 'react';
+import Raport from '../components/Raport';
+import config from '../config'
+import TabelaWrapper from '../components/TabelaWrapper';
+import '../styles/Raporty.css'
 
 export const RaportyT = () => {
   return (
@@ -10,11 +15,29 @@ export const RaportyT = () => {
 };
 
 export const StudenciT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/studenci</h1>
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: data => data.id,
+      type: 'immutable'
+    },
+    {
+      label: 'Imie',
+      value: data => data.firstName,
+      type: 'text'
+    },
+    {
+      label: 'Nazwisko',
+      value: data => data.lastName,
+      type: 'text'
+    }
+  ]
+
+  return(
+    <div className='students'>
+      <TabelaWrapper path='students' columns={c} />
     </div>
-  );
+  )
 };
 
 export const PracownicyT = () => {
@@ -66,11 +89,32 @@ export const Dane_osoboweT = () => {
 };
 
 export const KierunkiT = () => {
-  return (
+
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: data => data.id,
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa',
+      value: data => data.name,
+      type: 'text'
+    },
+    {
+      label: 'Wydział',
+      path: 'faculties',
+      name: data => data.name,
+      value: data => data.facultyId,
+      type: 'list'
+    }
+  ]
+
+  return(
     <div className='reports'>
-      <h1>Tabele/kierunki</h1>
+      <TabelaWrapper path='subjects' columns={c} />
     </div>
-  );
+  )
 };
 
 export const OpiekunowieT = () => {
