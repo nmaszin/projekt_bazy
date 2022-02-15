@@ -25,7 +25,7 @@ export default createModel({
                 id INT PRIMARY KEY,
                 date_of_issue DATE NOT NULL,
                 expiry_date DATE NOT NULL,
-                FOREIGN KEY(id) REFERENCES Student(id)
+                FOREIGN KEY(id) REFERENCES Student(id) ON DELETE CASCADE
             );
         `)
     },

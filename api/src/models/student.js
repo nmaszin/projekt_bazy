@@ -28,9 +28,9 @@ export default createModel({
                 id INT PRIMARY KEY,
                 identifier VARCHAR(10) NOT NULL,
                 degree VARCHAR(30),
-                group_id INT NOT NULL,
-                FOREIGN KEY(id) REFERENCES Person(id),
-                FOREIGN KEY(group_id) REFERENCES GGroup(id)
+                group_id INT NULL,
+                FOREIGN KEY(id) REFERENCES Person(id) ON DELETE CASCADE,
+                FOREIGN KEY(group_id) REFERENCES GGroup(id) ON DELETE SET NULL
             );
         `)
     },

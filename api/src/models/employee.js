@@ -22,7 +22,7 @@ export default createModel({
             CREATE TABLE Employee(
                 id INT PRIMARY KEY,
                 degree VARCHAR(30) NOT NULL,
-                FOREIGN KEY (id) REFERENCES Person(id)
+                FOREIGN KEY (id) REFERENCES Person(id) ON DELETE CASCADE
             );
         `)
     },

@@ -24,8 +24,8 @@ export default createModel({
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 employee_id INT NOT NULL,
                 course_id INT NOT NULL,
-                FOREIGN KEY(employee_id) REFERENCES Employee(id),
-                FOREIGN KEY(course_id) REFERENCES Course(id)
+                FOREIGN KEY(employee_id) REFERENCES Employee(id) ON DELETE CASCADE,
+                FOREIGN KEY(course_id) REFERENCES Course(id) ON DELETE CASCADE
             );
         `)
     },

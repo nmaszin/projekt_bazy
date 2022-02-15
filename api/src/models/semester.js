@@ -26,7 +26,7 @@ export default createModel({
                 number INT NOT NULL,
                 year INT NOT NULL,
                 subject_id INT NOT NULL,
-                FOREIGN KEY(subject_id) REFERENCES Subject(id),
+                FOREIGN KEY(subject_id) REFERENCES Subject(id) ON DELETE CASCADE,
                 UNIQUE(number, year, subject_id)
             );
         `)

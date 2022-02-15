@@ -28,7 +28,7 @@ export default createModel({
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 number INT NOT NULL,
                 dormitory_id INT NOT NULL,
-                FOREIGN KEY(dormitory_id) REFERENCES Dormitory(id),
+                FOREIGN KEY(dormitory_id) REFERENCES Dormitory(id) ON DELETE CASCADE,
                 UNIQUE(number, dormitory_id)
             );
         `)

@@ -24,7 +24,7 @@ export default createModel({
                 id INT PRIMARY KEY,
                 base_salary INT NOT NULL,
                 year_bonus INT NOT NULL,
-                FOREIGN KEY(id) REFERENCES Employee(id)
+                FOREIGN KEY(id) REFERENCES Employee(id) ON DELETE CASCADE
             );
         `)
     },

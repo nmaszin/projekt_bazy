@@ -30,7 +30,7 @@ export default createModel({
                 capacity INT NOT NULL,
                 cost INT NOT NULL,
                 floor_id INT NOT NULL,
-                FOREIGN KEY(floor_id) REFERENCES Floor(id),
+                FOREIGN KEY(floor_id) REFERENCES Floor(id) ON DELETE CASCADE,
                 UNIQUE(number, floor_id)
             );
         `)

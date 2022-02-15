@@ -23,8 +23,8 @@ export default createModel({
             CREATE TABLE Subject(
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
-                faculty_id INT NOT NULL,
-                FOREIGN KEY(faculty_id) REFERENCES Faculty(id)
+                faculty_id INT,
+                FOREIGN KEY(faculty_id) REFERENCES Faculty(id) ON DELETE SET NULL
             );
         `)
     },

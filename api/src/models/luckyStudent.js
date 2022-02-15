@@ -21,8 +21,8 @@ export default createModel({
                 date DATE NOT NULL,
                 group_id INT NOT NULL,
                 student_id INT NOT NULL,
-                FOREIGN KEY(group_id) REFERENCES GGroup(id),
-                FOREIGN KEY(student_id) REFERENCES Student(id)
+                FOREIGN KEY(group_id) REFERENCES GGroup(id) ON DELETE CASCADE,
+                FOREIGN KEY(student_id) REFERENCES Student(id) ON DELETE CASCADE
             );
         `)
 
