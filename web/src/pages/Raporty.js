@@ -1,7 +1,4 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import Raport from '../components/Raport';
-import config from '../config'
 import RaportWrapper from '../components/RaportWrapper';
 import '../styles/Raporty.css'
 
@@ -24,18 +21,23 @@ export const StudenciR = () => {
     },
     {
       label: 'Imie',
-      value: data => data.firstName,
-      type: 'text'
+      path: 'people',
+      name: data => data.firstName,
+      value: data => data.personId,
+      type: 'list'
     },
     {
       label: 'Nazwisko',
-      value: data => data.lastName,
-      type: 'text'
+      path: 'people',
+      name: data => data.lastName,
+      value: data => data.personId,
+      type: 'list'
     }
   ]
 
   return(
     <div className='students'>
+      <h1>Raporty/studenci</h1>
       <RaportWrapper path='students' columns={c} />
     </div>
   )

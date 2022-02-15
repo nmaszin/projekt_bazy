@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
-import Raport from './Raport';
 import config from '../config';
 import Cookies from 'universal-cookie'
 import { useHistory } from "react-router-dom";
@@ -44,7 +43,7 @@ const ApiSelect = (props) => {
               setError(error);
             }
           )
-      }, [])
+      }, [history, props.path])
       
       if (error || !isLoaded) {
         return <select></select>;

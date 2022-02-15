@@ -91,49 +91,48 @@ const Tabela = (props) => {
         <>
         <div className='wrapper'>
             <table>
-                <thead>
-                    <tr>{
+                <tr>
+                    {
                         props.columns.map((column, index) => (
                             <th key={index}>{column.label}</th>
                         ))      
                     }
-                    <th></th>
-                    <th></th>  
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((row, rowIndex) => (
-                            <>
-                            <tr key={rowIndex} className={getRowClass(rowIndex)}>{
-                                props.columns.map((column, columnIndex) =>(
-                                    <td key={columnIndex}>{   
-                                        (() => {
-                                            // console.log(column)
-                                            if (column.type === 'immutable') {
-                                            return row[column.value];
-                                            } else if(column.type === 'list') {
+                    <th className='action-column'></th>
+                </tr>
+                {
+                    data.map((row, rowIndex) => (
+                        <>
+                            <tr key={rowIndex} className={getRowClass(rowIndex)}>
+                                {
+                                    props.columns.map((column, columnIndex) =>(
+                                        <td key={columnIndex}>{   
+                                            (() => {
+                                                // console.log(column)
+                                                if (column.type === 'immutable') {
+                                                return row[column.value];
+                                                } else if(column.type === 'list') {
+                                                    return (
+                                                        <ApiSelect onChange={handleInput(rowIndex, column)} path={column.path} name={column.name} value={row[column.value]}/>
+                                                    )
+                                                } else {
                                                 return (
-                                                    <ApiSelect onChange={handleInput(rowIndex, column)} path={column.path} name={column.name} value={row[column.value]}/>
+                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]}/>
                                                 )
-                                            } else {
-                                            return (
-                                                <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]}/>
-                                            )
-                                            }
-                                        })()
-                                    }</td>
-                                ))
-                            }
-                            <td><button onClick={handleDelete(rowIndex)} className='usun'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button></td>
-                            <td><button onClick={handleRestore(rowIndex)} className='cofnij'>Cofnij zmiany</button></td>
+                                                }
+                                            })()
+                                        }</td>
+                                    ))
+                                }
+                                <td className='action-column'>
+                                    <button onClick={handleDelete(rowIndex)} className='usun'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button>
+                                    <button onClick={handleRestore(rowIndex)} className='cofnij'>Cofnij zmiany</button>
+                                </td>
                             </tr>
-                            
-                            </>
-                        ))   
-                    }
-                </tbody>
+                        </>
+                    ))   
+                }
             </table>
+
             <div className='buttons'>
                 <button onClick={handleUpdate}>Aktualizuj</button>
                 <button onClick={handleAddRow}>Dodaj łekołd</button>

@@ -1,7 +1,6 @@
 import './App.css';
 import Sidebar from './components/Sidebar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Signin from './pages/Signin'
 import Login from './pages/Login';
 import Forgot from './pages/Forgot';
 import Main from './pages/Main'
@@ -11,17 +10,16 @@ import { RaportyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, Wynag
 import { Autorzy } from './pages/Autorzy';
 import { Kontakt } from './pages/Kontakt';
 
-function App() {
+
+const LoggedUserPage = () => {
   return (
-    <Router>
+    <>
       <Sidebar />
       <Switch>
         <Route path='/' exact component={Main} />
-        <Route path='/login' exact component={Login} />
-        {/* <Route path='/signIn' exact component={Signin} /> */}
+        <Route path='/login'exact component={Login} />
         <Route path='/forgot' exact component={Forgot} />
         <Route path='/nawigacja' exact component={Nawigacja} />
-
         <Route path='/raporty' exact component={RaportyR} />
         <Route path='/raporty/studenci' exact component={StudenciR} />
         <Route path='/raporty/pracownicy' exact component={PracownicyR} />
@@ -58,6 +56,18 @@ function App() {
 
         <Route path='/authors' exact component={Autorzy} />
         <Route path='/kontakt' exact component={Kontakt} />
+      </Switch>
+    </>
+  );
+}
+
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path='/login' component={Login} />
+        <Route path='/' component={LoggedUserPage} />
       </Switch>
     </Router>
   );

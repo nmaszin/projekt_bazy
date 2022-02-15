@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-table {
+.wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,3 +19,6 @@ td, th {
     border: 1px solid black;
 }
 
+.action-column {
+    border: none;
+}

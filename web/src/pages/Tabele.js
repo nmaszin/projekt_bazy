@@ -1,8 +1,5 @@
 import React from 'react';
 import '../styles/Tabele.css'
-import { useState, useEffect } from 'react';
-import Raport from '../components/Raport';
-import config from '../config'
 import TabelaWrapper from '../components/TabelaWrapper';
 import '../styles/Raporty.css'
 

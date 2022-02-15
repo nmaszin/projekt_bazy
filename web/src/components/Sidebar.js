@@ -37,14 +37,14 @@ const Sidebar = () => {
             <FaIcons.FaBars onClick={showSidebar} />
           </div>
           <div className="tytul"><a href="/" className='t2'>System wspomagania uczelni wyższej 4.0</a></div>
-          <Link href='/login'><i class="fas fa-sign-in-alt"></i></Link>
+          <Link href='/login'><i className="fas fa-sign-in-alt"></i></Link>
           {/* <Link href='/signin'><i class="fas fa-user-plus"></i></Link> */}
         </div>
 
 
 
         <SidebarNav sidebar={sidebar}>
-          <div class="wrap">
+          <div className="wrap">
             <div className="NavIcon" to='#'>
               <AiIcons.AiOutlineClose onClick={showSidebar} />
             </div>
