@@ -39,7 +39,7 @@ const Login=()=>{
             const cookies = new Cookies();
             cookies.set('loginToken', data.token, { path: '/' });
             setMessage('Pomyślnie zalogowano')
-            setTimeout(() => history.replace('/'), 1000)
+            window.location.reload()
         } else if (res.status === 401) {
             setMessage('Niepoprawna nazwa użytkownika lub hasło')
         } else {
@@ -57,20 +57,7 @@ const Login=()=>{
                 </Grid>
                 <TextField onChange={e => setLogin(e.target.value)} label='Username' placeholder='Enter username' fullWidth required/>
                 <TextField onChange={e => setPassword(e.target.value)} label='Password' placeholder='Enter password' type='password' fullWidth required/>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            name="checkedB"
-                            color="primary"
-                        />
-                    }
-                    label="Remember me"
-                 />
                 <Button onClick={handleClick} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
-                <Typography>
-                     <Link href="/forgot">Forgot password?</Link>
-                </Typography>
-
                 <div class="message">{message}</div>
             </Paper>
         </Grid>

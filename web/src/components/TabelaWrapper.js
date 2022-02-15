@@ -16,10 +16,6 @@ const RaportWrapper = (props) => {
       const cookies = new Cookies();
       const token = cookies.get('loginToken');
 
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       const data = JSON.parse(JSON.stringify(row));
       data.id = undefined;
 
@@ -34,7 +30,8 @@ const RaportWrapper = (props) => {
       })
         .then(res => {
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
@@ -55,11 +52,6 @@ const RaportWrapper = (props) => {
     const handleDelete = (row) => {
       const cookies = new Cookies();
       const token = cookies.get('loginToken');
-
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       fetch(`${config.API_URL}/${props.path}/${row.id}`, {
         method: 'DELETE',
         headers: {
@@ -69,7 +61,8 @@ const RaportWrapper = (props) => {
       })
         .then(res => {
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
@@ -90,11 +83,6 @@ const RaportWrapper = (props) => {
     const handleUpdate = (row) => {
       const cookies = new Cookies();
       const token = cookies.get('loginToken');
-
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       const data = JSON.parse(JSON.stringify(row));
       data.id = undefined;
 
@@ -109,7 +97,8 @@ const RaportWrapper = (props) => {
       })
         .then(res => {
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
@@ -131,11 +120,6 @@ const RaportWrapper = (props) => {
     
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-
-        if (token === undefined) {
-          history.push("/login");
-        }
-
         return fetch(`${config.API_URL}/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -143,7 +127,8 @@ const RaportWrapper = (props) => {
         })
           .then(res => {
             if (res.status === 401) {
-              history.push("/login");
+              cookies.remove('loginToken');
+              window.location.reload();
             } else {
               return res;
             }

@@ -6,21 +6,13 @@ import Cookies from 'universal-cookie'
 import { useHistory } from "react-router-dom";
 
 const RaportWrapper = (props) => {
-
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const history = useHistory();
 
     useEffect(() => {
-    
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-
-        if (token === undefined) {
-          history.push("/login");
-        }
-
         fetch(`${config.API_URL}/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -28,7 +20,8 @@ const RaportWrapper = (props) => {
         })
           .then(res => {
             if (res.status === 401) {
-              history.push("/login");
+              cookies.remove('loginToken');
+              window.location.reload();
             } else {
               return res;
             }

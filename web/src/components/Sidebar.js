@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {Link } from '@material-ui/core'
+import { Link } from '@material-ui/core'
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
+import Cookies from 'universal-cookie'
 import '../styles/main.css'
 
 
@@ -29,6 +30,12 @@ const Sidebar = () => {
 
   const showSidebar = () => setSidebar(!sidebar);
 
+  const handleLogout = () => {
+    const cookies = new Cookies()
+    cookies.remove('loginToken');
+    window.location.reload();
+  }
+
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -37,7 +44,7 @@ const Sidebar = () => {
             <FaIcons.FaBars onClick={showSidebar} />
           </div>
           <div className="tytul"><a href="/" className='t2'>System wspomagania uczelni wyższej 4.0</a></div>
-          <Link href='/login'><i className="fas fa-sign-in-alt"></i></Link>
+          <Link onClick={handleLogout}><i className="fas fa-sign-in-alt"></i></Link>
           {/* <Link href='/signin'><i class="fas fa-user-plus"></i></Link> */}
         </div>
 

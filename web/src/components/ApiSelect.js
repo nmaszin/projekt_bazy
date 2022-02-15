@@ -12,14 +12,8 @@ const ApiSelect = (props) => {
     const history = useHistory();
 
     useEffect(() => {
-    
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-
-        if (token === undefined) {
-          history.push("/login");
-        }
-
         fetch(`${config.API_URL}/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -27,7 +21,8 @@ const ApiSelect = (props) => {
         })
           .then(res => {
             if (res.status === 401) {
-              history.push("/login");
+              cookies.remove('loginToken');
+              window.location.reload();
             } else {
               return res;
             }
@@ -35,12 +30,12 @@ const ApiSelect = (props) => {
           .then(res => res.json())
           .then(
             (result) => {
-              setIsLoaded(true);
               setItems(result.data);
+              setIsLoaded(true);
             },
             (error) => {
-              setIsLoaded(true);
               setError(error);
+              setIsLoaded(true);
             }
           )
       }, [history, props.path])
