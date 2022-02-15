@@ -18,17 +18,17 @@ export const StudenciT = () => {
   const c = [
     {
       label: 'Identyfikator',
-      value: data => data.id,
+      value: 'id',
       type: 'immutable'
     },
     {
       label: 'Imie',
-      value: data => data.firstName,
+      value: 'firstName',
       type: 'text'
     },
     {
       label: 'Nazwisko',
-      value: data => data.lastName,
+      value: 'lastName',
       type: 'text'
     }
   ]
@@ -49,11 +49,29 @@ export const PracownicyT = () => {
 };
 
 export const WydzialyT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/wydzialy</h1>
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa Wydziału',
+      value: 'name',
+      type: 'text'
+    },
+    {
+      label: 'Adres',
+      value: 'address',
+      type: 'text'
+    }
+  ]
+
+  return(
+    <div className='faculties'>
+      <TabelaWrapper path='faculties' columns={c} />
     </div>
-  );
+  )
 };
 
 export const UczelniaT = () => {
@@ -93,19 +111,19 @@ export const KierunkiT = () => {
   const c = [
     {
       label: 'Identyfikator',
-      value: data => data.id,
+      value: 'id',
       type: 'immutable'
     },
     {
       label: 'Nazwa',
-      value: data => data.name,
+      value: 'name',
       type: 'text'
     },
     {
       label: 'Wydział',
       path: 'faculties',
       name: data => data.name,
-      value: data => data.facultyId,
+      value: 'facultyId',
       type: 'list'
     }
   ]

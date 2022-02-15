@@ -4,20 +4,18 @@
     box-sizing: border-box;
 }
 
-table {
+.wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* min-height: 10vh; */
-    /* margin-top: -110px; */
 }
 
-td, th {
+ td, th {
     padding: 20px 40px;
     margin: 5px;
     border: 1px solid black;
-}
+} 
 
 button {
     padding: 10px 20px;
@@ -27,4 +25,10 @@ button {
 .buttons {
     padding: 10px 20px;
 }
+.deleted-row {
+    background-color: red;
+}
 
+.updated-row {
+    background-color: orange;
+}

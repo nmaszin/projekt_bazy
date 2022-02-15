@@ -1,9 +1,12 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Raport.css';
+import config from '../config';
+import Cookies from 'universal-cookie'
+import { useHistory } from "react-router-dom";
+import ApiSelectSpecjal from './ApiSelectSpecjal';
 
 const Raport = (props) => {
-
-    console.log(props.data);
 
     return(
         <table>
@@ -20,7 +23,16 @@ const Raport = (props) => {
                     props.data.map((row, index) => (
                         <tr key={index}>{
                             props.columns.map((column, index) =>(
-                                <td key={index}>{column.value(row)}</td>
+                                <td key={index}>{
+                                    (() => {
+                                        // console.log(column);
+                                        if (column.type === 'list') {
+                                            return <ApiSelectSpecjal value={column.value(row)} name={column.name} path={column.path}/>
+                                        } else {
+                                            return column.value(row);
+                                        }
+                                    })()
+                                }</td>
                             ))
                         }</tr>
                       ))   

@@ -1,15 +1,14 @@
 import React from 'react';
 import { useState, useEffect} from 'react';
-import Raport from './Raport';
 import config from '../config';
 import Cookies from 'universal-cookie'
 import { useHistory } from "react-router-dom";
 
-const ApiSelect = (props) => {
+const ApiSelectSpecjal = (props) => {
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
+    const [item, setItem] = useState(null);
     const history = useHistory();
 
     useEffect(() => {
@@ -21,7 +20,7 @@ const ApiSelect = (props) => {
           history.push("/login");
         }
 
-        fetch(`${config.API_URL}/${props.path}`, {
+        fetch(`${config.API_URL}/${props.path}/${props.value}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -36,32 +35,22 @@ const ApiSelect = (props) => {
           .then(res => res.json())
           .then(
             (result) => {
+              setItem(result.data);
               setIsLoaded(true);
-              setItems(result.data);
+              console.log(props.name(result.data));
             },
             (error) => {
-              setIsLoaded(true);
               setError(error);
+              setIsLoaded(true);        
             }
           )
-      }, [])
-      
+      }, []);
+
       if (error || !isLoaded) {
-        return <select></select>;
+        return '';
       } else {
-        return (
-            <select onChange={props.onChange}>
-              <option disabled selected={props.value ? false : true} value>Wybierz z listy</option>
-              {items.map((item, index) => 
-              <option 
-                key={index} 
-                value={item.id}
-                selected={item.id === props.value}>
-                {props.name(item)}
-              </option>)}
-            </select>
-        );
+        return props.name(item);
       }
 }
 
-export default ApiSelect;
+export default ApiSelectSpecjal;

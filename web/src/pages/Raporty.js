@@ -19,15 +19,18 @@ export const StudenciR = () => {
   const c = [
     {
       label: 'Identyfikator',
-      value: data => data.id
+      value: data => data.id,
+      type: 'immutable'
     },
     {
       label: 'Imie',
-      value: data => data.firstName
+      value: data => data.firstName,
+      type: 'text'
     },
     {
       label: 'Nazwisko',
-      value: data => data.lastName
+      value: data => data.lastName,
+      type: 'text'
     }
   ]
 
@@ -92,15 +95,20 @@ export const KierunkiR = () => {
   const c = [
     {
       label: 'Identyfikator',
-      value: data => data.id
+      value: data => data.id,
+      type: 'immutable'
     },
     {
       label: 'Nazwa kierunku',
-      value: data => data.name
+      value: data => data.name,
+      type: 'text'
     },
     {
-      label: 'Identyfikator wydziału',
-      value: data => data.facultyId
+      label: 'Nazwa wydziału',
+      value: data => data.facultyId,
+      name: data => data.name,
+      path: 'faculties',
+      type: 'list'
     }
   ]
 
