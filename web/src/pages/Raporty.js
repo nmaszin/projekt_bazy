@@ -1,5 +1,6 @@
 import React from 'react';
 import RaportWrapper from '../components/RaportWrapper';
+import PermissionsChecker from '../components/PermissionsChecker';
 import '../styles/Raporty.css'
 
 export const RaportyR = () => {
@@ -38,7 +39,9 @@ export const StudenciR = () => {
   return(
     <div className='students'>
       <h1>Raporty/studenci</h1>
-      <RaportWrapper path='students' columns={c} />
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='students' columns={c} />
+      </PermissionsChecker>
     </div>
   )
 
@@ -116,9 +119,9 @@ export const KierunkiR = () => {
 
   return (
     <div className='reports'>
-      
-      <RaportWrapper path='subjects' columns={c} />
-
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='subjects' columns={c} />
+      </PermissionsChecker>
     </div>
   );
 };

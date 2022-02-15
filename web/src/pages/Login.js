@@ -18,12 +18,13 @@ const Login=()=>{
     const [message, setMessage] = useState('');
     const [username, setLogin] = useState();
     const [password, setPassword] = useState();
-    const [loginMes, setLoginMes] = useState('');
-    const [passwordMes, setPasswordMes] = useState('');
+    const [loginMes, setLoginMes] = useState(null);
+    const [passwordMes, setPasswordMes] = useState(null);
     const history = useHistory();
     
 
-    const handleClick = async() => {
+    const handleClick = async event => {
+        event.preventDefault();
         
         const res = await fetch(`${config.API_URL}/login`, {
             method: 'POST',
@@ -63,8 +64,6 @@ const Login=()=>{
         } else {
             setLoginMes('')
         }
-
-
     }
 
     const handlePassword = (e) => {
@@ -79,26 +78,27 @@ const Login=()=>{
         }
     }
 
-    return (
-        <Grid>
-            <Paper elevation={4} style={paperStyle} className="paper">
-                <Grid align='center'>
-                    <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
-                    <h2>Log In</h2>
-                </Grid>
-                <TextField onChange={handleLogin} style={text1} label='Username' placeholder='Enter username' fullWidth required/>
-                <div className='infoMessages'>{loginMes}</div>
-                <TextField onChange={handlePassword} style={text2} label='Password' placeholder='Enter password' type='password' fullWidth required/>
-                <div className='infoMessages'>{passwordMes}</div>
-                <Button onClick={handleClick} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
-                <Typography>
-                     <Link href="/forgot">Forgot password?</Link>
-                </Typography>
+    const formOk = () => loginMes != null && passwordMes != null && !loginMes && !passwordMes;
 
-                <div className="message">{message}</div>
-            </Paper>
-        </Grid>
-    )
+
+    return (
+        <form>
+            <Grid>
+                <Paper elevation={4} style={paperStyle} className="paper">
+                    <Grid align='center'>
+                        <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
+                        <h2>Log In</h2>
+                    </Grid>
+                    <TextField onChange={handleLogin} style={text1} label='Username' placeholder='Enter username' fullWidth required/>
+                    <div className='infoMessages'>{loginMes}</div>
+                    <TextField onChange={handlePassword} style={text2} label='Password' placeholder='Enter password' type='password' fullWidth required/>
+                    <div className='infoMessages'>{passwordMes}</div>
+                    <Button onClick={handleClick} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth disabled={!formOk()}>Sign in</Button>
+                    <div className="message">{message}</div>
+                </Paper>
+            </Grid>
+        </form>
+    );
 }
 
 export default Login

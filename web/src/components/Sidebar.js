@@ -7,6 +7,7 @@ import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import '../styles/main.css'
+import Cookies from 'universal-cookie'
 
 
 const SidebarNav = styled.nav`
@@ -28,6 +29,13 @@ const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
+
+  const handleLogout = () => {
+    const cookies = new Cookies()
+    cookies.remove('loginToken');
+    console.log('Usunąłem ciasteczko')
+    window.location.reload();
+  }
 
   return (
     <>
