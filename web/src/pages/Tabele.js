@@ -1,5 +1,10 @@
 import React from 'react';
 import '../styles/Tabele.css'
+import { useState, useEffect } from 'react';
+import Raport from '../components/Raport';
+import config from '../config'
+import TabelaWrapper from '../components/TabelaWrapper';
+import '../styles/Raporty.css'
 
 export const RaportyT = () => {
   return (
@@ -10,11 +15,29 @@ export const RaportyT = () => {
 };
 
 export const StudenciT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/studenci</h1>
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Imie',
+      value: 'firstName',
+      type: 'text'
+    },
+    {
+      label: 'Nazwisko',
+      value: 'lastName',
+      type: 'text'
+    }
+  ]
+
+  return(
+    <div className='students'>
+      <TabelaWrapper path='students' columns={c} />
     </div>
-  );
+  )
 };
 
 export const PracownicyT = () => {
@@ -26,11 +49,29 @@ export const PracownicyT = () => {
 };
 
 export const WydzialyT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/wydzialy</h1>
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa Wydziału',
+      value: 'name',
+      type: 'text'
+    },
+    {
+      label: 'Adres',
+      value: 'address',
+      type: 'text'
+    }
+  ]
+
+  return(
+    <div className='faculties'>
+      <TabelaWrapper path='faculties' columns={c} />
     </div>
-  );
+  )
 };
 
 export const UczelniaT = () => {
@@ -66,11 +107,32 @@ export const Dane_osoboweT = () => {
 };
 
 export const KierunkiT = () => {
-  return (
+
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa',
+      value: 'name',
+      type: 'text'
+    },
+    {
+      label: 'Wydział',
+      path: 'faculties',
+      name: data => data.name,
+      value: 'facultyId',
+      type: 'list'
+    }
+  ]
+
+  return(
     <div className='reports'>
-      <h1>Tabele/kierunki</h1>
+      <TabelaWrapper path='subjects' columns={c} />
     </div>
-  );
+  )
 };
 
 export const OpiekunowieT = () => {

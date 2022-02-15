@@ -18,7 +18,7 @@ function App() {
       <Switch>
         <Route path='/' exact component={Main} />
         <Route path='/login' exact component={Login} />
-        <Route path='/signIn' exact component={Signin} />
+        {/* <Route path='/signIn' exact component={Signin} /> */}
         <Route path='/forgot' exact component={Forgot} />
         <Route path='/nawigacja' exact component={Nawigacja} />
 
