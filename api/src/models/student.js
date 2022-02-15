@@ -7,17 +7,19 @@ export default createModel({
     fields: {
         identifier: 'identifier',
         degree: 'degree',
-        personId: 'id'
+        personId: 'id',
+        groupId: 'group_id'
     },
 
     depends: [
-        'Person'
+        'Person',
+        'GGroup'
     ],
 
     rows: [
-        { identifier: '145277', degree: 'tech.', personId: 1 },
-        { identifier: '145265', personId: 2 },
-        { identifier: '145375', personId: 3 }
+        { identifier: '145277', degree: 'tech.', personId: 1, groupId: 1 },
+        { identifier: '145265', personId: 2, groupId: 1 },
+        { identifier: '145375', personId: 3, groupId: 1 }
     ],
 
     async initialize(db) {
@@ -26,7 +28,9 @@ export default createModel({
                 id INT PRIMARY KEY,
                 identifier VARCHAR(10) NOT NULL,
                 degree VARCHAR(30),
-                FOREIGN KEY(id) REFERENCES Person(id)
+                group_id INT NOT NULL,
+                FOREIGN KEY(id) REFERENCES Person(id),
+                FOREIGN KEY(group_id) REFERENCES GGroup(id)
             );
         `)
     },

@@ -1,9 +1,5 @@
 import { createForm } from '@/forms'
 
-/*
-    address: 'address'
-*/
-
 export default createForm({
     constraints: {
         pesel: {

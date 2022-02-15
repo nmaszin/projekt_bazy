@@ -32,5 +32,5 @@ export default createModel({
 
     async deinitialize(db) {
         await db.query(`DROP TABLE GGroup`)
-    }
+    },
 })

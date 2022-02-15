@@ -15,7 +15,8 @@ export default createModel({
     rows: [
         { name: 'Analiza matematyczna', semesterId: 1 },
         { name: 'Logika obliczeniowa', semesterId: 1 },
-        { name: 'Metody probablistyczne', semesterId: 2 }
+        { name: 'Metody probablistyczne', semesterId: 2 },
+        { name: 'Podstawy programowania Python', semesterId: 2 }
     ],
 
     async initialize(db) {
