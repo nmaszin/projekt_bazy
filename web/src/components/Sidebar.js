@@ -33,6 +33,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     const cookies = new Cookies()
     cookies.remove('loginToken');
+    console.log('Usunąłem ciasteczko')
     window.location.reload();
   }
 

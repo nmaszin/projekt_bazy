@@ -21,7 +21,8 @@ const Login=()=>{
     const history = useHistory();
     
 
-    const handleClick = async() => {
+    const handleClick = async event => {
+        event.preventDefault();
         
         const res = await fetch(`${config.API_URL}/login`, {
             method: 'POST',
@@ -49,18 +50,20 @@ const Login=()=>{
     }
 
     return (
-        <Grid>
-            <Paper elevation={4} style={paperStyle} className="paper">
-                <Grid align='center'>
-                    <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
-                    <h2>Log In</h2>
-                </Grid>
-                <TextField onChange={e => setLogin(e.target.value)} label='Username' placeholder='Enter username' fullWidth required/>
-                <TextField onChange={e => setPassword(e.target.value)} label='Password' placeholder='Enter password' type='password' fullWidth required/>
-                <Button onClick={handleClick} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
-                <div class="message">{message}</div>
-            </Paper>
-        </Grid>
+        <form>
+            <Grid>
+                <Paper elevation={4} style={paperStyle} className="paper">
+                    <Grid align='center'>
+                        <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
+                        <h2>Log In</h2>
+                    </Grid>
+                    <TextField onChange={e => setLogin(e.target.value)} label='Username' placeholder='Enter username' fullWidth required/>
+                    <TextField onChange={e => setPassword(e.target.value)} label='Password' placeholder='Enter password' type='password' fullWidth required/>
+                    <Button onClick={handleClick} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
+                    <div class="message">{message}</div>
+                </Paper>
+            </Grid>
+        </form>
     )
 }
 

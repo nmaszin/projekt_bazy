@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/Tabele.css'
 import TabelaWrapper from '../components/TabelaWrapper';
+import PermissionsChecker from '../components/PermissionsChecker';
 import '../styles/Raporty.css'
 
 export const RaportyT = () => {
@@ -32,7 +33,9 @@ export const StudenciT = () => {
 
   return(
     <div className='students'>
-      <TabelaWrapper path='students' columns={c} />
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='students' columns={c} />
+      </PermissionsChecker>
     </div>
   )
 };
@@ -66,7 +69,9 @@ export const WydzialyT = () => {
 
   return(
     <div className='faculties'>
-      <TabelaWrapper path='faculties' columns={c} />
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='faculties' columns={c} />
+      </PermissionsChecker>
     </div>
   )
 };
@@ -127,7 +132,9 @@ export const KierunkiT = () => {
 
   return(
     <div className='reports'>
-      <TabelaWrapper path='subjects' columns={c} />
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='subjects' columns={c} />
+      </PermissionsChecker>
     </div>
   )
 };
