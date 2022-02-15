@@ -11,6 +11,8 @@ export const RaportyR = () => {
 };
 
 export const StudenciR = () => {
+
+
   const c = [
     {
       label: 'Identyfikator',

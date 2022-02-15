@@ -7,5 +7,14 @@
 
 .message {
     display: block;
-    margin-top: 20px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: red;
+}
+
+.infoMessages {
+    justify-content: left;
+    font-style: italic;
+    color: red;
+    font-size: 15px;
 }

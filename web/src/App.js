@@ -9,14 +9,15 @@ import { RaportyR, StudenciR, PracownicyR, WydzialyR, UczelniaR, ZakladyR, Wynag
 import { RaportyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, WynagrodzeniaT, Dane_osoboweT, KierunkiT, OpiekunowieT, PrzedmiotyT, ProwadzacyT, AkademikiT, PokojeT, PietraT, MieszkancyT } from './pages/Tabele';
 import { Autorzy } from './pages/Autorzy';
 import { Kontakt } from './pages/Kontakt';
-import Cookies from 'universal-cookie'
+
 
 const LoggedUserPage = () => {
   return (
-    <Router>
+    <>
       <Sidebar />
       <Switch>
         <Route path='/' exact component={Main} />
+        <Route path='/login'exact component={Login} />
         <Route path='/forgot' exact component={Forgot} />
         <Route path='/nawigacja' exact component={Nawigacja} />
         <Route path='/raporty' exact component={RaportyR} />
@@ -56,15 +57,20 @@ const LoggedUserPage = () => {
         <Route path='/authors' exact component={Autorzy} />
         <Route path='/kontakt' exact component={Kontakt} />
       </Switch>
-    </Router>
+    </>
   );
 }
 
 
 function App() {
-  const cookies = new Cookies();
-  const token = cookies.get('loginToken');
-  return token === undefined ? Login() : LoggedUserPage();
+  return (
+    <Router>
+      <Switch>
+        <Route exact path='/login' component={Login} />
+        <Route path='/' component={LoggedUserPage} />
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
