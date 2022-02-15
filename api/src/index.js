@@ -1,10 +1,12 @@
 import express from 'express'
+import cors from 'cors'
 import passport from '@/services/passport'
 import { loadAllEndpoints } from '@/endpoints'
 import { notFoundRoute, jsonParsingError } from '@/middlewares/errors'
 
 (async () => {
     const app = express()
+    app.use(cors())
     app.use(express.json())
     app.use(jsonParsingError)
     app.use(express.urlencoded({ extended: false }))
