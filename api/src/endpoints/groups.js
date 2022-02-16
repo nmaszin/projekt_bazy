@@ -14,19 +14,19 @@ router.get('/groups',
     jwtAuth,
     atLeastReader,
     controller(async (req, res) => {
-        const data = await GroupView.selectAll()
+        const data = await Group.selectAll()
         res.send({
             data: data.map(flattenSelect)
         })
     })
 )
 
-router.get('groups/:id(\\d+)',
+router.get('/groups/:id(\\d+)',
     jwtAuth,
     atLeastReader,
     controller(async (req, res) => {
         const id = parseInt(req.params.id)
-        const data = await GroupView.selectById(id)
+        const data = await Group.selectById(id)
         if (data === undefined) {
             return res.status(404).send({
                 message: `This group does not exist`
