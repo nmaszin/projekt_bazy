@@ -46,7 +46,7 @@ td {
     border-bottom: 1px solid #bdb4b4;
 }
 
-.tbodyTR-R:nth-child() {
+.tbodyTR-R:last-child {
     border-bottom: none;
 }
 

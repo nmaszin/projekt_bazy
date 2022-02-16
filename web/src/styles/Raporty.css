@@ -7,7 +7,8 @@
 
 h1 {
     text-align: center;
-    margin-top: 200px;
+    padding: 0;
+    margin: 10px 0 !important;
     letter-spacing: 1px;
     font-size: 30px;
 }

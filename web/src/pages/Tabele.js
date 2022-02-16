@@ -132,6 +132,7 @@ export const KierunkiT = () => {
 
   return(
     <div className='reports'>
+      <h1>Tabele/kierunki</h1>
       <PermissionsChecker minRole={1}>
         <TabelaWrapper path='subjects' columns={c} />
       </PermissionsChecker>
