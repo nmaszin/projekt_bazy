@@ -16,7 +16,7 @@ const RaportWrapper = (props) => {
     
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-        fetch(`${config.API_URL}/${props.path}`, {
+        fetch(`${config.API_URL}/views/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

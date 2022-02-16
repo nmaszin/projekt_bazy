@@ -53,13 +53,13 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Pokoje',
-        path: '/raporty/pokoje',
+        title: 'Piętra',
+        path: '/raporty/pietra',
         cName: 'sub-nav'
       },
       {
-        title: 'Piętra',
-        path: '/raporty/pietra',
+        title: 'Pokoje',
+        path: '/raporty/pokoje',
         cName: 'sub-nav'
       },
     ]
