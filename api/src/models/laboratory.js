@@ -5,7 +5,8 @@ export default createModel({
 
     fields: {
         name: 'name',
-        facultyId: 'faculty_id'
+        facultyId: 'faculty_id',
+        managerId: 'manager_id'
     },
 
     depends: [
@@ -13,8 +14,8 @@ export default createModel({
     ],
 
     rows: [
-        { name: 'Zakład Algorytmów i Struktur Danych', facultyId: 1 },
-        { name: 'Zakład o piwo', facultyId: 2 },
+        { name: 'Zakład Algorytmów i Struktur Danych', facultyId: 1, managerId: 4 },
+        { name: 'Zakład o piwo', facultyId: 2, managerId: 5 },
     ],
 
     async initialize(db) {
@@ -23,7 +24,9 @@ export default createModel({
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
                 faculty_id INT,
+                manager_id INT,
                 FOREIGN KEY(faculty_id) REFERENCES Faculty(id) ON DELETE SET NULL,
+                FOREIGN KEY(manager_id) REFERENCES Employee(id) ON DELETE SET NULL,
                 UNIQUE(name)
             );
         `)
