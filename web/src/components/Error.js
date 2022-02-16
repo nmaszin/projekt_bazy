@@ -19,7 +19,7 @@ const getErrorMessage = (statusCode) => {
 
 const Error = props => {
     return (
-        <div class="error">
+        <div className="error">
             Operacja nie powiodła się
             {getErrorMessage(props.responseStatusCode)}
         </div>

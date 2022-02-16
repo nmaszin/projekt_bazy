@@ -35,18 +35,24 @@ const Tabela = (props) => {
         // console.log(newData);        
     }
 
-    const handleUpdate = async() => {
+    const sleep = duration => new Promise(resolve => setInterval(() => resolve(), duration))
+
+    const handleUpdate = async (event) => {
+        event.preventDefault();
+
         const updatedRows = updated.map(idx => data[idx]).filter(row => row.id !== undefined);
         const deletedRows = deleted.map(idx => data[idx]).filter(row => row.id !== undefined);
         const addedRows = data.filter((_, index) => !deleted.includes(index)).filter(row => row.id === undefined);
 
-        await Promise.all(updatedRows.map(props.update));
-        await Promise.all(deletedRows.map(props.delete));
-        await Promise.all(addedRows.map(props.add));
-
         console.log('Deleted', deletedRows);
         console.log('Added', addedRows);
         console.log('Updated', updatedRows);
+
+        await Promise.all(updatedRows.map(props.update)).catch(e => console.log(e));
+        await Promise.all(deletedRows.map(props.delete)).catch(e => console.log(e));
+        await Promise.all(addedRows.map(props.add)).catch(e => console.log(e));
+
+        console.log('Skończyłem')
         window.location.reload();
     }
 
@@ -89,23 +95,26 @@ const Tabela = (props) => {
 
     return(
         <>
-        <div className='wrapper'>
+        <form className='wrapper' onSubmit={handleUpdate}>
             <table className='table-T'>
-                <tr className='tr-T'>
-                    {
-                        props.columns.map((column, index) => (
-                            <th className='th-T' key={index}>{column.label}</th>
-                        ))      
-                    }
-                    <th className='action-column th-T'></th>
-                </tr>
+                <thead>
+                    <tr className='tr-T'>
+                        {
+                            props.columns.map((column, index) => (
+                                <th className='th-T' key={index}>{column.label}</th>
+                            ))      
+                        }
+                        <th className='action-column th-T'></th>
+                    </tr>
+                </thead>
+                <tbody>
                 {
                     data.map((row, rowIndex) => (
                         <>
-                            <tr key={rowIndex} className={getRowClass(rowIndex)} class="tr-T">  
-                                {  // potencjalne źródło błędu
+                            <tr key={rowIndex} className={[getRowClass(rowIndex), "tr-T"].join(' ')}> 
+                                {
                                     props.columns.map((column, columnIndex) =>(
-                                        <td className='td-T' key={columnIndex}>{   
+                                        <td className='td-T' key={rowIndex * 997 + columnIndex + 112}>{   
                                             (() => {
                                                 // console.log(column)
                                                 if (column.type === 'immutable') {
@@ -116,7 +125,7 @@ const Tabela = (props) => {
                                                     )
                                                 } else {
                                                 return (
-                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]}/>
+                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]} pattern={column.pattern} required />
                                                 )
                                                 }
                                             })()
@@ -124,20 +133,21 @@ const Tabela = (props) => {
                                     ))
                                 }
                                 <td className='action-column td-T'>
-                                    <button onClick={handleDelete(rowIndex)} className='usun btn'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button>
-                                    <button onClick={handleRestore(rowIndex)} className='cofnij btn'>Cofnij zmiany</button>
+                                    <button type='button' onClick={handleDelete(rowIndex)} className='usun btn'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button>
+                                    <button type='button' onClick={handleRestore(rowIndex)} className='cofnij btn'>Cofnij zmiany</button>
                                 </td>
                             </tr>
                         </>
                     ))   
                 }
+                </tbody>
             </table>
 
             <div className='buttons'>
-                <button className='btns' onClick={handleUpdate}>Aktualizuj</button>
-                <button className='btns' onClick={handleAddRow}>Dodaj łekołd</button>
+                <button className='btns'>Aktualizuj</button>
+                <button type='button' className='btns' onClick={handleAddRow}>Dodaj rekord</button>
             </div>
-        </div>
+        </form>
         </>
     )
 }

@@ -47,10 +47,7 @@ const Sidebar = () => {
           </div>
           <div className="tytul"><a href="/" className='t2'>System wspomagania uczelni wyższej 4.0</a></div>
           <Link onClick={handleLogout}><i className="fas fa-sign-in-alt"></i></Link>
-          {/* <Link href='/signin'><i class="fas fa-user-plus"></i></Link> */}
         </div>
-
-
 
         <SidebarNav sidebar={sidebar}>
           <div className="wrap">

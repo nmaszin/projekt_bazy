@@ -3,26 +3,20 @@ import { useState, useEffect} from 'react';
 import Tabela from './Tabela'
 import config from '../config';
 import Cookies from 'universal-cookie'
-import { useHistory } from "react-router-dom";
+import Error from './Error'
 
 const RaportWrapper = (props) => {
-
+    const [responseStatusCode, setResponseStatusCode] = useState(null);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const history = useHistory();
 
     const handleAdd = (row) => {
-      const cookies = new Cookies();
-      const token = cookies.get('loginToken');
-
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       const data = JSON.parse(JSON.stringify(row));
       data.id = undefined;
 
+      const cookies = new Cookies();
+      const token = cookies.get('loginToken');
       return fetch(`${config.API_URL}/${props.path}`, {
         method: 'POST',
         body: JSON.stringify(data),
@@ -33,21 +27,26 @@ const RaportWrapper = (props) => {
 
       })
         .then(res => {
+          setResponseStatusCode(res.status);
+
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
+
+          throw new Error();
         })
         .then(res => res.json())
         .then(
           (result) => {
-            setIsLoaded(true);
             setItems(result.data);
+            setIsLoaded(true);
           },
           (error) => {
-            setIsLoaded(true);
             setError(error);
+            setIsLoaded(true);
           }
         )
     }
@@ -55,11 +54,6 @@ const RaportWrapper = (props) => {
     const handleDelete = (row) => {
       const cookies = new Cookies();
       const token = cookies.get('loginToken');
-
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       fetch(`${config.API_URL}/${props.path}/${row.id}`, {
         method: 'DELETE',
         headers: {
@@ -69,35 +63,33 @@ const RaportWrapper = (props) => {
       })
         .then(res => {
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
+
+          throw new Error();
         })
         .then(res => res.json())
         .then(
           (result) => {
-            setIsLoaded(true);
             setItems(result.data);
+            setIsLoaded(true);
           },
           (error) => {
-            setIsLoaded(true);
             setError(error);
+            setIsLoaded(true);
           }
         )
     }
 
     const handleUpdate = (row) => {
-      const cookies = new Cookies();
-      const token = cookies.get('loginToken');
-
-      if (token === undefined) {
-        history.push("/login");
-      }
-
       const data = JSON.parse(JSON.stringify(row));
       data.id = undefined;
 
+      const cookies = new Cookies();
+      const token = cookies.get('loginToken');
       return fetch(`${config.API_URL}/${props.path}/${row.id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -109,33 +101,30 @@ const RaportWrapper = (props) => {
       })
         .then(res => {
           if (res.status === 401) {
-            history.push("/login");
+            cookies.remove('loginToken');
+            window.location.reload();
           } else {
             return res;
           }
+
+          throw new Error();
         })
         .then(res => res.json())
         .then(
           (result) => {
-            setIsLoaded(true);
             setItems(result.data);
+            setIsLoaded(true);
           },
           (error) => {
-            setIsLoaded(true);
             setError(error);
+            setIsLoaded(true);
           }
         )
     }
 
     useEffect(() => {
-    
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-
-        if (token === undefined) {
-          history.push("/login");
-        }
-
         return fetch(`${config.API_URL}/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -143,34 +132,33 @@ const RaportWrapper = (props) => {
         })
           .then(res => {
             if (res.status === 401) {
-              history.push("/login");
+              cookies.remove('loginToken');
+              window.location.reload();
             } else {
               return res;
             }
+
+            throw new Error();
           })
           .then(res => res.json())
           .then(
             (result) => {
-              setIsLoaded(true);
               setItems(result.data);
+              setIsLoaded(true);
             },
             (error) => {
-              setIsLoaded(true);
               setError(error);
+              setIsLoaded(true);
             }
           )
-      }, [])
+      }, [props.path])
       
       if (error) {
-        return <div>Error: {error.message}</div>;
+        return <Error responseStatusCode={responseStatusCode} />;
       } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <></>;
       } else {
-        return (
-          <div className='reports'>
-          <Tabela columns={props.columns} data={items} add={handleAdd} update={handleUpdate} delete={handleDelete}/>
-        </div>
-        );
+        return <Tabela columns={props.columns} data={items} add={handleAdd} update={handleUpdate} delete={handleDelete}/>
       }
 
 }

@@ -6,7 +6,7 @@ import Forgot from './pages/Forgot';
 import Main from './pages/Main'
 import Nawigacja from './pages/Nawigacja'
 import { RaportyR, OsobyR, StudenciR, PracownicyR, WydzialyR, ZakladyR, WynagrodzeniaR, KierunkiR, PrzedmiotyR, AkademikiR, PokojeR, PietraR, GrupyR, LegitymacjeR, KolaR } from './pages/Raporty';
-import { RaportyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, WynagrodzeniaT, Dane_osoboweT, KierunkiT, OpiekunowieT, PrzedmiotyT, ProwadzacyT, AkademikiT, PokojeT, PietraT, MieszkancyT } from './pages/Tabele';
+import { RaportyT, OsobyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, WynagrodzeniaT, Dane_osoboweT, KierunkiT, OpiekunowieT, PrzedmiotyT, ProwadzacyT, AkademikiT, PokojeT, PietraT, MieszkancyT } from './pages/Tabele';
 import { Autorzy } from './pages/Autorzy';
 import { Kontakt } from './pages/Kontakt';
 import Cookies from 'universal-cookie'
@@ -36,6 +36,7 @@ const LoggedUserPage = () => {
         <Route path='/raporty/koła' exact component={KolaR} />
 
         <Route path='/tabele' exact component={RaportyT} />
+        <Route path='/tabele/osoby' exact component={OsobyT} />
         <Route path='/tabele/studenci' exact component={StudenciT} />
         <Route path='/tabele/pracownicy' exact component={PracownicyT} />
         <Route path='/tabele/wydzialy' exact component={WydzialyT} />

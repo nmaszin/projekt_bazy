@@ -4,6 +4,38 @@ import TabelaWrapper from '../components/TabelaWrapper';
 import PermissionsChecker from '../components/PermissionsChecker';
 import '../styles/Raporty.css'
 
+const letters = 'A-Za-zŻżÓóŁłĆćĘęŚśĄąŹźŃń';
+const digits = '0-9';
+const special = '.,;:/\\-';
+const whitespace = ' ';
+
+const regexFactory = (allowConf, min, max) => {
+  const allowed = [...allowConf]
+    .map(e => {
+      if (e === 'l') {
+        return letters;
+      } else if (e === 'd') {
+        return digits;
+      } else if (e === 's') {
+        return special;
+      } else if (e === 'w') {
+        return whitespace;
+      } else {
+        return '';
+      }
+    })
+    .join('');
+
+  let length;
+  if (max === undefined) {
+    length = `${min}`;
+  } else {
+    length = `${min},${max}`
+  }
+
+  return `[${allowed}]{${length}}`
+}
+
 export const RaportyT = () => {
   return (
     <div className='reports'>
@@ -11,6 +43,50 @@ export const RaportyT = () => {
     </div>
   );
 };
+
+export const OsobyT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Imię',
+      value: 'firstName',
+      type: 'text',
+      pattern: regexFactory('l', 1, 30)
+    },
+    {
+      label: 'Nazwisko',
+      value: 'lastName',
+      type: 'text',
+      pattern: regexFactory('l', 1, 30)
+    },
+    {
+      label: 'PESEL',
+      value: 'pesel',
+      type: 'text',
+      pattern: regexFactory('d', 11)
+    },
+    {
+      label: 'Adres',
+      value: 'address',
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 100)
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Tabele/osoby</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='people' columns={c} />
+      </PermissionsChecker>
+    </div>
+  )
+};
+
 
 export const StudenciT = () => {
   const c = [
@@ -31,8 +107,9 @@ export const StudenciT = () => {
     }
   ]
 
-  return(
-    <div className='students'>
+  return (
+    <div className='reports'>
+      <h1>Tabele/studenci</h1>
       <PermissionsChecker minRole={1}>
         <TabelaWrapper path='students' columns={c} />
       </PermissionsChecker>

@@ -3,7 +3,6 @@ import Cookies from 'universal-cookie'
 import { decodeToken } from 'react-jwt'
 
 const PermissionsChecker = props => {
-    console.log('Hej')
     const cookies = new Cookies()
     const token = cookies.get('loginToken')
 
