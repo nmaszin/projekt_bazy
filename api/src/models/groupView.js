@@ -12,6 +12,7 @@ export default createModel({
         facultyName: 'faculty_name',
         facultyAddress: 'faculty_address',
 
+        luckyStudentIdentifier: 'lucky_student_identifier',
         luckyStudentDegree: 'lucky_student_degree',
         luckyStudentFirstName: 'lucky_student_first_name',
         luckyStudentLastName: 'lucky_student_last_name',
@@ -43,6 +44,7 @@ export default createModel({
                 Faculty.name AS faculty_name,
                 Faculty.address AS faculty_address,
                 Student.degree AS lucky_student_degree,
+                Student.identifier AS lucky_student_identifier,
                 Person.first_name AS lucky_student_first_name,
                 Person.last_name AS lucky_student_last_name,
                 getCurrentLuckyStudentId(GGroup.id) AS lucky_student_id,

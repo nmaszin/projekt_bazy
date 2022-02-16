@@ -412,7 +412,15 @@ export const GrupyR = () => {
     },
     {
       label: 'Szczęśliwy indeksik',
-      value: data => personFormatter(data.luckyStudentDegree, data.luckyStudentFirstName, data.luckyStudentLastName),
+      value: data => {
+        if (!data.luckyStudentId) {
+          return '';
+        }
+
+        const name = personFormatter(data.luckyStudentDegree, data.luckyStudentFirstName, data.luckyStudentLastName);
+
+        return `${name} (${data.luckyStudentId})`
+      }
     }
   ]
 
