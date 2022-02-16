@@ -18,6 +18,7 @@ import RoomView from '@/models/roomView'
 import GroupView from '@/models/groupView'
 import CardView from '@/models/cardView'
 import ClubView from '@/models/clubView'
+import SemesterView from '@/models/semesterView'
 
 const views = {
     people: PersonView,
@@ -33,7 +34,8 @@ const views = {
     rooms: RoomView,
     groups: GroupView,
     cards: CardView,
-    clubs: ClubView
+    clubs: ClubView,
+    semesters: SemesterView
 }
 
 

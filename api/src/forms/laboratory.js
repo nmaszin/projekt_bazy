@@ -1,5 +1,6 @@
 import { createForm } from '@/forms'
 import Faculty from '@/models/faculty'
+import Employee from '@/models/employee'
 
 export default createForm({
     constraints: {
@@ -22,6 +23,14 @@ export default createForm({
                 { type: 'integer' },
                 { validIdentifier: true },
                 { foreignKey: Faculty }
+            ]
+        },
+        managerId: {
+            chain: [
+                { presence: true },
+                { type: 'integer' },
+                { validIdentifier: true },
+                { foreignKey: Employee }
             ]
         }
     },
