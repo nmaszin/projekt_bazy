@@ -16,11 +16,6 @@ const RaportWrapper = (props) => {
     
         const cookies = new Cookies();
         const token = cookies.get('loginToken');
-
-        if (token === undefined) {
-          history.push("/login");
-        }
-
         fetch(`${config.API_URL}/${props.path}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -28,7 +23,8 @@ const RaportWrapper = (props) => {
         })
           .then(res => {
             if (res.status === 401) {
-              history.push("/login");
+              cookies.remove('loginToken');
+              window.location.reload();
             } else {
               return res;
             }

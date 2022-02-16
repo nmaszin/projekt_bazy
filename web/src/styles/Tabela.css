@@ -32,3 +32,9 @@ button {
 .updated-row {
     background-color: orange;
 }
+
+input {
+    border: none;
+    outline: none;
+    background: none;
+}

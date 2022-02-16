@@ -42,7 +42,7 @@ const Login=()=>{
             const cookies = new Cookies();
             cookies.set('loginToken', data.token, { path: '/' });
             setMessage('Pomyślnie zalogowano')
-            setTimeout(() => history.replace('/'), 1000)
+            window.location.reload()
         } else if (res.status === 401) {
             setMessage('Niepoprawna nazwa użytkownika lub hasło')
         } else {

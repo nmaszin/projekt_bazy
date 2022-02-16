@@ -11,7 +11,7 @@ const Raport = (props) => {
                         {
                             props.columns.map((column, index) => (
                                 <th key={index}>{column.label}</th>
-                                ))    
+                            ))    
                         }
                     </tr>
                 </thead>

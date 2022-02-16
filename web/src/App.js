@@ -5,37 +5,32 @@ import Login from './pages/Login';
 import Forgot from './pages/Forgot';
 import Main from './pages/Main'
 import Nawigacja from './pages/Nawigacja'
-import { RaportyR, StudenciR, PracownicyR, WydzialyR, UczelniaR, ZakladyR, WynagrodzeniaR, Dane_osoboweR, KierunkiR, OpiekunowieR, PrzedmiotyR, ProwadzacyR, AkademikiR, PokojeR, PietraR, MieszkancyR } from './pages/Raporty';
+import { RaportyR, OsobyR, StudenciR, PracownicyR, WydzialyR, ZakladyR, WynagrodzeniaR, KierunkiR, PrzedmiotyR, AkademikiR, PokojeR, PietraR } from './pages/Raporty';
 import { RaportyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, WynagrodzeniaT, Dane_osoboweT, KierunkiT, OpiekunowieT, PrzedmiotyT, ProwadzacyT, AkademikiT, PokojeT, PietraT, MieszkancyT } from './pages/Tabele';
 import { Autorzy } from './pages/Autorzy';
 import { Kontakt } from './pages/Kontakt';
-
+import Cookies from 'universal-cookie'
 
 const LoggedUserPage = () => {
   return (
-    <>
+    <Router>
       <Sidebar />
       <Switch>
         <Route path='/' exact component={Main} />
-        <Route path='/login'exact component={Login} />
         <Route path='/forgot' exact component={Forgot} />
         <Route path='/nawigacja' exact component={Nawigacja} />
         <Route path='/raporty' exact component={RaportyR} />
+        <Route path='/raporty/osoby' exact component={OsobyR} />
         <Route path='/raporty/studenci' exact component={StudenciR} />
         <Route path='/raporty/pracownicy' exact component={PracownicyR} />
         <Route path='/raporty/wydzialy' exact component={WydzialyR} />
-        <Route path='/raporty/uczelnia' exact component={UczelniaR} />
         <Route path='/raporty/zakłady' exact component={ZakladyR} />
         <Route path='/raporty/wynagrodzenia' exact component={WynagrodzeniaR} />
-        <Route path='/raporty/dane_osobowe' exact component={Dane_osoboweR} />
         <Route path='/raporty/kierunki' exact component={KierunkiR} />
-        <Route path='/raporty/opiekunowie' exact component={OpiekunowieR} />
         <Route path='/raporty/przedmioty' exact component={PrzedmiotyR} />
-        <Route path='/raporty/prowadzacy' exact component={ProwadzacyR} />
         <Route path='/raporty/akademiki' exact component={AkademikiR} />
         <Route path='/raporty/pokoje' exact component={PokojeR} />
         <Route path='/raporty/pietra' exact component={PietraR} />
-        <Route path='/raporty/mieszkancy' exact component={MieszkancyR} />
 
         <Route path='/tabele' exact component={RaportyT} />
         <Route path='/tabele/studenci' exact component={StudenciT} />
@@ -57,20 +52,15 @@ const LoggedUserPage = () => {
         <Route path='/authors' exact component={Autorzy} />
         <Route path='/kontakt' exact component={Kontakt} />
       </Switch>
-    </>
+    </Router>
   );
 }
 
 
 function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path='/login' component={Login} />
-        <Route path='/' component={LoggedUserPage} />
-      </Switch>
-    </Router>
-  );
+  const cookies = new Cookies();
+  const token = cookies.get('loginToken');
+  return token === undefined ? Login() : LoggedUserPage();
 }
 
 export default App;
