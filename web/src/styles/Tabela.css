@@ -11,24 +11,104 @@
     flex-direction: column;
 }
 
- td, th {
-    padding: 20px 40px;
-    margin: 5px;
-    border: 1px solid black;
-} 
+.table-T {
+    justify-content: center;
+    align-items: center;
+    border-collapse: collapse;
+    box-shadow: 20px 20px 20px 5px #f4c3fd;
+    background-color: rgb(243, 232, 232);
+    text-align: left;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
 
-button {
+input, select {
+    padding: 8px 10px;
+    width: auto;
+    border-radius: 5px;
+    border: 1px solid rgb(185, 185, 185);
+}
+
+th {
+    background-color: #ecb8cc;
+    padding: 20px 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+td {
+    padding: 20px 40px;
+    font-size: 18px;
+}
+
+.tr-T {
+    font-family:'Courier New', Courier, monospace ;
+    border-bottom: 1px solid #bdb4b4;
+}
+
+.tr-T:nth-child() {
+    border-bottom: none;
+}
+
+.btn {
+    display: block;
     padding: 10px 20px;
-    margin: 10px;
+    margin: 20px auto;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: background-color .4s;
+}
+
+.usun {
+    background-color: #ff576d;
+}
+
+.usun:hover {
+    background-color: #a31528;
+}
+
+.cofnij {
+    background-color: #5dff57;
+}
+
+.cofnij:hover {
+    background-color: #15a31c;
 }
 
 .buttons {
+    margin: 50px;
     padding: 10px 20px;
+    z-index: 1000;
 }
+
+.btns {
+    margin: 0px 20px 30px;
+    padding: 25px 50px;
+    border-radius: 8px;
+    font-size: large;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    letter-spacing: 2px;
+    background-color: #ff579d;
+    border: none;
+    cursor: pointer;
+    transition: background-color .4s;
+}
+
+.btns:hover {
+    background-color: #a31557;
+}
+
 .deleted-row {
-    background-color: red;
+    background-color: rgb(236, 140, 140);
 }
 
 .updated-row {
-    background-color: orange;
+    background-color: rgb(233, 192, 115);
 }

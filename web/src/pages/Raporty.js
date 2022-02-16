@@ -37,7 +37,6 @@ export const StudenciR = () => {
 
   return(
     <div className='students'>
-      <h1>Raporty/studenci</h1>
       <RaportWrapper path='students' columns={c} />
     </div>
   )

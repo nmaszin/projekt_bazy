@@ -5,23 +5,23 @@ import ApiSelectSpecjal from './ApiSelectSpecjal';
 const Raport = (props) => {
     return(
         <div className='wrapper'>
-            <table>
-                <thead>
-                    <tr>
+            <table className='table-R'>
+                <thead className='thead-R'>
+                    <tr className='theadTR-R'>
                         {
                             props.columns.map((column, index) => (
-                                <th key={index}>{column.label}</th>
+                                <th className='theadTH-R' key={index}>{column.label}</th>
                                 ))    
                         }
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='tbody-R'>
                     {
                         props.data.map((row, index) => (
-                            <tr key={index}>
+                            <tr className='tbodyTR-R' key={index}>
                                 {
                                     props.columns.map((column, index) =>(
-                                        <td key={index}>{
+                                        <td className='tbodyTD-R' key={index}>{
                                             (() => {
                                                 // console.log(column);
                                                 if (column.type === 'list') {

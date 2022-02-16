@@ -90,22 +90,22 @@ const Tabela = (props) => {
     return(
         <>
         <div className='wrapper'>
-            <table>
-                <tr>
+            <table className='table-T'>
+                <tr className='tr-T'>
                     {
                         props.columns.map((column, index) => (
-                            <th key={index}>{column.label}</th>
+                            <th className='th-T' key={index}>{column.label}</th>
                         ))      
                     }
-                    <th className='action-column'></th>
+                    <th className='action-column th-T'></th>
                 </tr>
                 {
                     data.map((row, rowIndex) => (
                         <>
-                            <tr key={rowIndex} className={getRowClass(rowIndex)}>
-                                {
+                            <tr key={rowIndex} className={getRowClass(rowIndex)} class="tr-T">  
+                                {  // potencjalne źródło błędu
                                     props.columns.map((column, columnIndex) =>(
-                                        <td key={columnIndex}>{   
+                                        <td className='td-T' key={columnIndex}>{   
                                             (() => {
                                                 // console.log(column)
                                                 if (column.type === 'immutable') {
@@ -123,9 +123,9 @@ const Tabela = (props) => {
                                         }</td>
                                     ))
                                 }
-                                <td className='action-column'>
-                                    <button onClick={handleDelete(rowIndex)} className='usun'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button>
-                                    <button onClick={handleRestore(rowIndex)} className='cofnij'>Cofnij zmiany</button>
+                                <td className='action-column td-T'>
+                                    <button onClick={handleDelete(rowIndex)} className='usun btn'>{deleted.includes(rowIndex) ? 'Przywróć' : 'Usuń'}</button>
+                                    <button onClick={handleRestore(rowIndex)} className='cofnij btn'>Cofnij zmiany</button>
                                 </td>
                             </tr>
                         </>
@@ -134,8 +134,8 @@ const Tabela = (props) => {
             </table>
 
             <div className='buttons'>
-                <button onClick={handleUpdate}>Aktualizuj</button>
-                <button onClick={handleAddRow}>Dodaj łekołd</button>
+                <button className='btns' onClick={handleUpdate}>Aktualizuj</button>
+                <button className='btns' onClick={handleAddRow}>Dodaj łekołd</button>
             </div>
         </div>
         </>
