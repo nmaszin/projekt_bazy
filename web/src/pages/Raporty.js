@@ -30,6 +30,10 @@ function dateFormatter(dateText) {
   return dateFormat(new Date(dateText), 'dd.mm.yyyy') + ' r.'
 }
 
+function academicYearFormatter(semesterYear) {
+  return `${semesterYear}/${semesterYear + 1}`
+}
+
 
 export const RaportyR = () => {
   return (
@@ -100,8 +104,8 @@ export const StudenciR = () => {
       value: data => data.groupName,
     },
     {
-      label: 'Rok rozpoczęcia studiów',
-      value: data => data.semesterYear,
+      label: 'Rok akademicki',
+      value: data => academicYearFormatter(data.semesterYear),
     },
     {
       label: 'Numer semestru',
@@ -395,8 +399,8 @@ export const GrupyR = () => {
       value: data => data.groupName,
     },
     {
-      label: 'Rok rozpoczęcia studiów',
-      value: data => data.semesterYear,
+      label: 'Rok akademicki',
+      value: data => academicYearFormatter(data.semesterYear),
     },
     {
       label: 'Numer semestru',
@@ -419,7 +423,7 @@ export const GrupyR = () => {
 
         const name = personFormatter(data.luckyStudentDegree, data.luckyStudentFirstName, data.luckyStudentLastName);
 
-        return `${name} (${data.luckyStudentId})`
+        return `${name} (${data.luckyStudentIdentifier})`
       }
     }
   ]
