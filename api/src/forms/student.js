@@ -9,7 +9,7 @@ export default createForm({
                 { length: { minimum: 5, maximum: 10 } },
                 {
                     format: {
-                        pattern: /[0-9]{5, 10}/,
+                        pattern: /[0-9]{5,10}/,
                         message: 'have to consist of digits'
                     }
                 }
@@ -21,7 +21,7 @@ export default createForm({
                 { length: { minimum: 1, maximum: 30 } },
                 {
                     format: {
-                        pattern: /[\p{L}\p{P}]*/u,
+                        pattern: /[\p{L}\p{P} ]*/u,
                         message: 'have to consist of letters or punctuation'
                     }
                 }
