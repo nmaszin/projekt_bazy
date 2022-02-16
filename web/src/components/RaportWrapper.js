@@ -3,57 +3,56 @@ import { useState, useEffect} from 'react';
 import Raport from './Raport'
 import config from '../config';
 import Cookies from 'universal-cookie'
-import { useHistory } from "react-router-dom";
+import Error from './Error'
 
 const RaportWrapper = (props) => {
+  const [responseStatusCode, setResponseStatusCode] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState([]);
 
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
-    const history = useHistory();
-
-    useEffect(() => {
-    
-        const cookies = new Cookies();
-        const token = cookies.get('loginToken');
-        fetch(`${config.API_URL}/${props.path}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-          .then(res => {
-            if (res.status === 401) {
-              cookies.remove('loginToken');
-              window.location.reload();
-            } else {
-              return res;
-            }
-          })
-          .then(res => res.json())
-          .then(
-            (result) => {
-              setIsLoaded(true);
-              setItems(result.data);
-            },
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
-            }
-          )
-      }, [])
-      
-      if (error) {
-        return <div>Error: {error.message}</div>;
-      } else if (!isLoaded) {
-        return <div>Loading...</div>;
-      } else {
-        return (
-          <div className='reports'>
-          <Raport columns={props.columns} data={items}/>
-        </div>
-        );
+  useEffect(() => {
+    const cookies = new Cookies();
+    const token = cookies.get('loginToken');
+    fetch(`${config.API_URL}/views/${props.path}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
+    })
+      .then(res => {
+        setResponseStatusCode(res.status);
 
+        if (res.status === 401) {
+          cookies.remove('loginToken');
+          window.location.reload();
+        }
+        
+        if (res.status != 200) {
+          throw new Error();
+        }
+
+        return res;
+      })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setItems(result.data);
+          setIsLoaded(true);
+        },
+        (error) => {
+          setError(error);
+          setIsLoaded(true);
+        }
+      )
+  }, [])
+    
+  if (error) {
+    return <Error responseStatusCode={responseStatusCode} />;
+  } else if (!isLoaded) {
+    return <></>;
+  } else {
+    return <Raport columns={props.columns} data={items}/>;
+  }
 }
 
 export default RaportWrapper;

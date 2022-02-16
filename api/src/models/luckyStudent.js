@@ -83,10 +83,25 @@ export default createModel({
                 CALL randomizeLuckyStudentsForAllGroups(CURRENT_DATE);
             END
         `)
-        
+
+        await db.query(`
+            CREATE FUNCTION getCurrentLuckyStudentId(p_group_id INT) RETURNS INT
+            BEGIN
+                DECLARE result INT;
+
+                SELECT student_id INTO result
+                FROM LuckyStudent
+                WHERE group_id = p_group_id
+                ORDER BY date
+                LIMIT 1;
+
+                RETURN result;
+            END
+        `)
     },
 
     async deinitialize(db) {
+        await db.query(`DROP FUNCTION getCurrentLuckyStudentId`)
         await db.query(`DROP EVENT lucky_student_event`)
         await db.query(`DROP PROCEDURE IF EXISTS randomizeLuckyStudentsForAllGroups`)
         await db.query(`DROP PROCEDURE IF EXISTS randomizeLuckyStudentForGroup`)

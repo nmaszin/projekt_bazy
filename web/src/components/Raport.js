@@ -20,17 +20,8 @@ const Raport = (props) => {
                         props.data.map((row, index) => (
                             <tr className='tbodyTR-R' key={index}>
                                 {
-                                    props.columns.map((column, index) =>(
-                                        <td className='tbodyTD-R' key={index}>{
-                                            (() => {
-                                                // console.log(column);
-                                                if (column.type === 'list') {
-                                                    return <ApiSelectSpecjal value={column.value(row)} name={column.name} path={column.path}/>
-                                                } else {
-                                                    return column.value(row);
-                                                }
-                                            })()
-                                        }</td>
+                                    props.columns.map((column, index) => (
+                                        <td className='tbodyTD-R' key={index}>{column.value(row)}</td>
                                     ))
                                 }
                             </tr>

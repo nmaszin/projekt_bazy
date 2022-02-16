@@ -53,13 +53,28 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
+        title: 'Piętra',
+        path: '/raporty/pietra',
+        cName: 'sub-nav'
+      },
+      {
         title: 'Pokoje',
         path: '/raporty/pokoje',
         cName: 'sub-nav'
       },
       {
-        title: 'Piętra',
-        path: '/raporty/pietra',
+        title: 'Grupy',
+        path: '/raporty/grupy',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Legitymacje',
+        path: '/raporty/legitymacje',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Koła',
+        path: '/raporty/koła',
         cName: 'sub-nav'
       },
     ]

@@ -1,7 +1,39 @@
 import React from 'react';
 import RaportWrapper from '../components/RaportWrapper';
 import PermissionsChecker from '../components/PermissionsChecker';
+import dateFormat from 'dateformat';
 import '../styles/Raporty.css'
+
+// Original code of this function come from https://stackoverflow.com/a/2901298
+function moneyFormatter(x) {
+  const base = Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  const rest = Math.floor((x % 1) * 100).toString().padStart(2, '0');
+  return base + ',' + rest;
+}
+
+// It's not perfect but we can assume that capacity of room never exceeds 10
+function capacityFormatter(value) {
+  if (value === 1) {
+    return `${value} osoba`;
+  } else if (value >= 2 && value <= 4) {
+    return `${value} osoby`;
+  } else {
+    return `${value} osób`;
+  }
+}
+
+function personFormatter(degree, firstName, lastName) {
+  return `${degree ? (degree + ' '): ''}${firstName} ${lastName}`
+}
+
+function dateFormatter(dateText) {
+  return dateFormat(new Date(dateText), 'dd.mm.yyyy') + ' r.'
+}
+
+function academicYearFormatter(semesterYear) {
+  return `${semesterYear}/${semesterYear + 1}`
+}
+
 
 export const RaportyR = () => {
   return (
@@ -16,22 +48,18 @@ export const OsobyR = () => {
     {
       label: 'PESEL',
       value: data => data.pesel,
-      type: 'text'
     },
     {
       label: 'Imię',
       value: data => data.firstName,
-      type: 'text'
     },
     {
       label: 'Nazwisko',
       value: data => data.lastName,
-      type: 'text'
     },
     {
       label: 'Adres',
       value: data => data.address,
-      type: 'text'
     },
   ]
 
@@ -48,44 +76,50 @@ export const OsobyR = () => {
 export const StudenciR = () => {
   const c = [
     {
-      label: 'Imie',
-      path: 'people',
-      name: data => data.firstName,
-      value: data => data.personId,
-      type: 'list'
+      label: 'Stopień naukowy',
+      value: data => data.degree,
+    },
+    {
+      label: 'Imię',
+      value: data => data.firstName,
     },
     {
       label: 'Nazwisko',
-      path: 'people',
-      name: data => data.lastName,
-      value: data => data.personId,
-      type: 'list'
+      value: data => data.lastName,
     },
     {
       label: 'PESEL',
-      path: 'people',
-      name: data => data.pesel,
-      value: data => data.personId,
-      type: 'list'
+      value: data => data.pesel,
+    },
+    {
+      label: 'Adres',
+      value: data => data.address,
     },
     {
       label: 'Numer albumu',
       value: data => data.identifier,
-      type: 'text'
     },
     {
-      label: 'Stopień naukowy',
-      value: data => data.degree ? data.degree : '',
-      type: 'text'
+      label: 'Grupa dziekańska',
+      value: data => data.groupName,
     },
     {
-      label: 'Grupa laboratoryjna',
-      path: 'groups',
-      name: data => data.name,
-      value: data => data.groupId,
-      type: 'list'
-    }
-  ]
+      label: 'Rok akademicki',
+      value: data => academicYearFormatter(data.semesterYear),
+    },
+    {
+      label: 'Numer semestru',
+      value: data => data.semesterNumber,
+    },
+    {
+      label: 'Kierunek',
+      value: data => data.subjectName,
+    },
+    {
+      label: 'Wydział',
+      value: data => data.facultyName,
+    },
+  ];
 
   return(
     <div className='reports'>
@@ -101,32 +135,26 @@ export const StudenciR = () => {
 export const PracownicyR = () => {
   const c = [
     {
-      label: 'Imie',
-      path: 'people',
-      name: data => data.firstName,
-      value: data => data.personId,
-      type: 'list'
+      label: 'Stopień naukowy',
+      value: data => data.degree,
+    },
+    {
+      label: 'Imię',
+      value: data => data.firstName,
     },
     {
       label: 'Nazwisko',
-      path: 'people',
-      name: data => data.lastName,
-      value: data => data.personId,
-      type: 'list'
+      value: data => data.lastName,
     },
     {
       label: 'PESEL',
-      path: 'people',
-      name: data => data.pesel,
-      value: data => data.personId,
-      type: 'list'
+      value: data => data.pesel,
     },
     {
-      label: 'Stopień naukowy',
-      value: data => data.degree,
-      type: 'text'
-    },
-  ]
+      label: 'Adres',
+      value: data => data.address,
+    }
+  ];
 
   return (
     <div className='reports'>
@@ -142,13 +170,11 @@ export const WydzialyR = () => {
   const c = [
     {
       label: 'Nazwa wydziału',
-      value: data => data.name,
-      type: 'text'
+      value: data => data.name
     },
     {
       label: 'Adres',
-      value: data => data.address,
-      type: 'text'
+      value: data => data.address
     },
   ]
 
@@ -166,15 +192,19 @@ export const ZakladyR = () => {
   const c = [
     {
       label: 'Nazwa zakładu',
-      value: data => data.name,
-      type: 'text'
+      value: data => data.laboratoryName,
+    },
+    {
+      label: 'Kierownik',
+      value: data => `${data.managerDegree} ${data.managerFirstName} ${data.managerLastName}`,
     },
     {
       label: 'Nazwa wydziału',
-      path: 'faculties',
-      value: data => data.facultyId,
-      name: data => data.name,
-      type: 'list'
+      value: data => data.facultyName
+    },
+    {
+      label: 'Adres',
+      value: data => data.facultyAddress
     },
   ]
 
@@ -191,35 +221,20 @@ export const ZakladyR = () => {
 export const WynagrodzeniaR = () => {
   const c = [
     {
-      label: 'Imię',
-      path: 'people',
-      value: data => data.employeeId,
-      name: data => data.firstName,
-      type: 'list'
-    },
-    {
-      label: 'Nazwisko',
-      path: 'people',
-      value: data => data.employeeId,
-      name: data => data.lastName,
-      type: 'list'
-    },
-    {
       label: 'PESEL',
-      path: 'people',
-      value: data => data.employeeId,
-      name: data => data.pesel,
-      type: 'list'
+      value: data => data.pesel,
     },
     {
-      label: 'Płaca podstawowa [PLN]',
-      value: data => data.baseSalary,
-      type: 'text'
+      label: 'Pracownik',
+      value: data => `${data.degree} ${data.firstName} ${data.lastName}`,
     },
     {
-      label: 'Premia roczna [PLN]',
-      value: data => data.yearBonus,
-      type: 'text'
+      label: 'Płaca podstawowa',
+      value: data => moneyFormatter(data.baseSalary) + ' zł',
+    },
+    {
+      label: 'Premia roczna',
+      value: data => moneyFormatter(data.yearBonus) + ' zł',
     },
   ]
 
@@ -237,22 +252,13 @@ export const WynagrodzeniaR = () => {
 export const KierunkiR = () => {
   const c = [
     {
-      label: 'Identyfikator',
-      value: data => data.id,
-      type: 'immutable'
-    },
-    {
       label: 'Nazwa kierunku',
-      value: data => data.name,
-      type: 'text'
+      value: data => data.subjectName,
     },
     {
       label: 'Nazwa wydziału',
-      value: data => data.facultyId,
-      name: data => data.name,
-      path: 'faculties',
-      type: 'list'
-    }
+      value: data => data.facultyName,
+    },
   ]
 
   return (
@@ -270,22 +276,23 @@ export const PrzedmiotyR = () => {
   const c = [
     {
       label: 'Nazwa przedmiotu',
-      value: data => data.name,
-      type: 'text'
+      value: data => data.courseName
     },
     {
-      label: 'Numer semestru',
-      value: data => data.semesterId,
-      name: data => data.number,
-      path: 'semesters',
-      type: 'list'
+      label: 'Kierunek',
+      value: data => data.subjectName,
+    },
+    {
+      label: 'Semestr',
+      value: data => data.semesterNumber
     },
     {
       label: 'Rok akademicki',
-      value: data => data.semesterId,
-      name: data => `${data.year}/${data.year + 1}`,
-      path: 'semesters',
-      type: 'list'
+      value: data => `${data.semesterYear}/${data.semesterYear + 1}`
+    },
+    {
+      label: 'Wydział',
+      value: data => data.facultyName
     }
   ]
 
@@ -304,12 +311,10 @@ export const AkademikiR = () => {
     {
       label: 'Nazwa akademika',
       value: data => data.name,
-      type: 'text'
     },
     {
       label: 'Adres',
       value: data => data.address,
-      type: 'text'
     },
   ]
 
@@ -323,68 +328,167 @@ export const AkademikiR = () => {
   );
 };
 
-export const PokojeR = () => {
+export const PietraR = () => {
   const c = [
     {
-      label: 'Numer pokoju',
-      value: data => data.number,
-      type: 'text'
+      label: 'Nazwa akademika',
+      value: data => data.dormitoryName,
     },
     {
-      label: 'Pojemność pokoju',
-      value: data => data.capacity,
-      type: 'text'
+      label: 'Adres',
+      value: data => data.dormitoryAddress,
     },
     {
-      label: 'Cena wynajmu',
-      value: data => data.cost,
-      type: 'text'
-    },
-    {
-      label: 'Numer pokoju',
-      value: data => data.number,
-      type: 'text'
-    },
-    {
-      label: 'Numer piętra',
-      value: data => data.floorId,
-      name: data => data.number,
-      path: 'floors',
-      type: 'list'
+      label: 'Piętro',
+      value: data => data.floorNumber,
     }
   ]
 
   return (
     <div className='reports'>
-      <h1>Raporty/przedmioty</h1>
+      <h1>Raporty/piętra</h1>
       <PermissionsChecker minRole={0}>
-        <RaportWrapper path='courses' columns={c} />
+        <RaportWrapper path='floors' columns={c} />
       </PermissionsChecker>
     </div>
   );
 };
 
-export const PietraR = () => {
+export const PokojeR = () => {
   const c = [
     {
       label: 'Nazwa akademika',
-      value: data => data.dormitoryId,
-      name: data => data.name,
-      path: 'dormitories',
-      type: 'list'
+      value: data => data.dormitoryName,
     },
     {
-      label: 'Numer piętra',
-      value: data => data.number,
-      type: 'text'
+      label: 'Adres',
+      value: data => data.dormitoryAddress,
+    },
+    {
+      label: 'Piętro',
+      value: data => data.floorNumber,
+    },
+    {
+      label: 'Numer pokoju',
+      value: data => data.roomNumber,
+    },
+    {
+      label: 'Pojemność pokoju',
+      value: data => capacityFormatter(data.roomCapacity),
+    },
+    {
+      label: 'Cena wynajmu',
+      value: data => moneyFormatter(data.roomCost) + ' zł',
     },
   ]
 
   return (
     <div className='reports'>
-      <h1>Raporty/przedmioty</h1>
+      <h1>Raporty/pokoje</h1>
       <PermissionsChecker minRole={0}>
-        <RaportWrapper path='courses' columns={c} />
+        <RaportWrapper path='rooms' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const GrupyR = () => {
+  const c = [
+    {
+      label: 'Nazwa grupy',
+      value: data => data.groupName,
+    },
+    {
+      label: 'Rok akademicki',
+      value: data => academicYearFormatter(data.semesterYear),
+    },
+    {
+      label: 'Numer semestru',
+      value: data => data.semesterNumber,
+    },
+    {
+      label: 'Kierunek',
+      value: data => data.subjectName,
+    },
+    {
+      label: 'Wydział',
+      value: data => data.facultyName,
+    },
+    {
+      label: 'Szczęśliwy indeksik',
+      value: data => {
+        if (!data.luckyStudentId) {
+          return '';
+        }
+
+        const name = personFormatter(data.luckyStudentDegree, data.luckyStudentFirstName, data.luckyStudentLastName);
+
+        return `${name} (${data.luckyStudentIdentifier})`
+      }
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/grupy</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='groups' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const LegitymacjeR = () => {
+  const c = [
+    {
+      label: 'Właściciel',
+      value: data => personFormatter(data.ownerDegree, data.ownerFirstName, data.ownerLastName)
+    },
+    {
+      label: 'Numer albumu',
+      value: data => data.ownerIdentifier
+    },
+    {
+      label: 'Data wydania',
+      value: data => dateFormatter(data.dateOfIssue)
+    },
+    {
+      label: 'Data ważności',
+      value: data => dateFormatter(data.expiryDate)
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/legitymacje</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='cards' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const KolaR = () => {
+  const c = [
+    {
+      label: 'Nazwa koła',
+      value: data => data.clubName
+    },
+    {
+      label: 'Adres',
+      value: data => data.clubAddress
+    },
+    {
+      label: 'Opiekun',
+      value: data => personFormatter(data.leaderDegree, data.leaderFirstName, data.leaderLastName)
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/koła</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='clubs' columns={c} />
       </PermissionsChecker>
     </div>
   );

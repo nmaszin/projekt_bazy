@@ -15,7 +15,9 @@ import CourseView from '@/models/courseView'
 import DormitoryView from '@/models/dormitoryView'
 import FloorView from '@/models/floorView'
 import RoomView from '@/models/roomView'
-
+import GroupView from '@/models/groupView'
+import CardView from '@/models/cardView'
+import ClubView from '@/models/clubView'
 
 const views = {
     people: PersonView,
@@ -28,7 +30,10 @@ const views = {
     courses: CourseView,
     dormitories: DormitoryView,
     floors: FloorView,
-    rooms: RoomView
+    rooms: RoomView,
+    groups: GroupView,
+    cards: CardView,
+    clubs: ClubView
 }
 
 
