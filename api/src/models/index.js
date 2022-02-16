@@ -22,7 +22,9 @@ export function flattenSelect(row) {
 export function injectDb(callback) {
     return async (...params) => {
         const db = await database.connect()
-        return callback(db, ...params)
+        const result = callback(db, ...params)
+        await db.end()
+        return result
     }
 }
 
