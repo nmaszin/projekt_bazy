@@ -5,6 +5,7 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
+import OutsideAlerter from "./OutsideAlerter";
 import { IconContext } from 'react-icons/lib';
 import '../styles/main.css'
 import Cookies from 'universal-cookie'
@@ -38,7 +39,7 @@ const Sidebar = () => {
   }
 
   return (
-    <>
+    <OutsideAlerter hideSidebar={() => setSidebar(false)}>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='gora'>
           <div className="NavIcon" to='#'>
@@ -63,7 +64,7 @@ const Sidebar = () => {
         </SidebarNav>
       </IconContext.Provider>
       <script src='../../public/button.js'></script>
-    </>
+    </OutsideAlerter>
   );
 };
 
