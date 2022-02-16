@@ -1,5 +1,6 @@
 import { createForm } from '@/forms'
 import Person from '@/models/person'
+import Group from '@/models/group'
 
 export default createForm({
     constraints: {
@@ -33,6 +34,14 @@ export default createForm({
                 { type: 'integer' },
                 { validIdentifier: true },
                 { foreignKey: Person }
+            ]
+        },
+        groupId: {
+            chain: [
+                { presence: true },
+                { type: 'integer' },
+                { validIdentifier: true },
+                { foreignKey: Group }
             ]
         }
     },
