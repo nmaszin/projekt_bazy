@@ -112,3 +112,9 @@ td {
 .updated-row {
     background-color: rgb(233, 192, 115);
 }
+
+input {
+    border: none;
+    outline: none;
+    background: none;
+}

@@ -9,6 +9,11 @@ export const SidebarData = [
 
     subNav: [
       {
+        title: 'Osoby',
+        path: '/raporty/osoby',
+        cName: 'sub-nav'
+      },
+      {
         title: 'Studenci',
         path: '/raporty/studenci',
         cName: 'sub-nav'
@@ -23,11 +28,6 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Uczelnia',
-        path: '/raporty/uczelnia',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Zakłady',
         path: '/raporty/zakłady',
         cName: 'sub-nav'
@@ -38,28 +38,13 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Dane Osobowe',
-        path: '/raporty/dane_osobowe',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Kierunki',
         path: '/raporty/kierunki',
         cName: 'sub-nav'
       },
       {
-        title: 'Opiekunowie',
-        path: '/raporty/opiekunowie',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Przedmioty',
         path: '/raporty/przedmioty',
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Prowadzący',
-        path: '/raporty/prowadzacy',
         cName: 'sub-nav'
       },
       {
@@ -77,11 +62,6 @@ export const SidebarData = [
         path: '/raporty/pietra',
         cName: 'sub-nav'
       },
-      {
-        title: 'Mieszkańcy',
-        path: '/raporty/mieszkancy',
-        cName: 'sub-nav'
-      }
     ]
   },
   {
