@@ -8,14 +8,13 @@ export default createModel({
         luckyStudentId: 'lucky_student_id',
         semesterNumber: 'semester_number',
         semesterYear: 'semester_year',
-        subjectName: 'subjectName',
-        facultyName: 'facultyName',
-        facultyAddress: 'facaultyAddress',
+        subjectName: 'subject_name',
+        facultyName: 'faculty_name',
+        facultyAddress: 'faculty_address',
 
         luckyStudentDegree: 'lucky_student_degree',
         luckyStudentFirstName: 'lucky_student_first_name',
         luckyStudentLastName: 'lucky_student_last_name',
-
 
         semesterId: 'semester_id',
         subjectId: 'subject_id',
@@ -51,8 +50,8 @@ export default createModel({
                 subject_id,
                 faculty_id
             FROM GGroup
-            INNER JOIN Student ON Student.id = getCurrentLuckyStudentId(GGroup.id)
-            INNER JOIN Person ON Person.id = Student.id
+            LEFT OUTER JOIN Student ON Student.id = getCurrentLuckyStudentId(GGroup.id)
+            LEFT OUTER JOIN Person ON Person.id = Student.id
             INNER JOIN Semester ON Semester.id = GGroup.semester_id
             INNER JOIN Subject ON Subject.id = Semester.subject_id
             INNER JOIN Faculty ON Faculty.id = Subject.faculty_id

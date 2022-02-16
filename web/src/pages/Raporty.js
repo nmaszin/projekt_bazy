@@ -1,6 +1,7 @@
 import React from 'react';
 import RaportWrapper from '../components/RaportWrapper';
 import PermissionsChecker from '../components/PermissionsChecker';
+import dateFormat from 'dateformat';
 import '../styles/Raporty.css'
 
 // Original code of this function come from https://stackoverflow.com/a/2901298
@@ -9,7 +10,6 @@ function moneyFormatter(x) {
   const rest = Math.floor((x % 1) * 100).toString().padStart(2, '0');
   return base + ',' + rest;
 }
-
 
 // It's not perfect but we can assume that capacity of room never exceeds 10
 function capacityFormatter(value) {
@@ -20,6 +20,14 @@ function capacityFormatter(value) {
   } else {
     return `${value} osób`;
   }
+}
+
+function personFormatter(degree, firstName, lastName) {
+  return `${degree ? (degree + ' '): ''}${firstName} ${lastName}`
+}
+
+function dateFormatter(dateText) {
+  return dateFormat(new Date(dateText), 'dd.mm.yyyy') + ' r.'
 }
 
 
@@ -375,6 +383,100 @@ export const PokojeR = () => {
       <h1>Raporty/pokoje</h1>
       <PermissionsChecker minRole={0}>
         <RaportWrapper path='rooms' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const GrupyR = () => {
+  const c = [
+    {
+      label: 'Nazwa grupy',
+      value: data => data.groupName,
+    },
+    {
+      label: 'Rok rozpoczęcia studiów',
+      value: data => data.semesterYear,
+    },
+    {
+      label: 'Numer semestru',
+      value: data => data.semesterNumber,
+    },
+    {
+      label: 'Kierunek',
+      value: data => data.subjectName,
+    },
+    {
+      label: 'Wydział',
+      value: data => data.facultyName,
+    },
+    {
+      label: 'Szczęśliwy indeksik',
+      value: data => personFormatter(data.luckyStudentDegree, data.luckyStudentFirstName, data.luckyStudentLastName),
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/grupy</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='groups' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const LegitymacjeR = () => {
+  const c = [
+    {
+      label: 'Właściciel',
+      value: data => personFormatter(data.ownerDegree, data.ownerFirstName, data.ownerLastName)
+    },
+    {
+      label: 'Numer albumu',
+      value: data => data.ownerIdentifier
+    },
+    {
+      label: 'Data wydania',
+      value: data => dateFormatter(data.dateOfIssue)
+    },
+    {
+      label: 'Data ważności',
+      value: data => dateFormatter(data.expiryDate)
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/legitymacje</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='cards' columns={c} />
+      </PermissionsChecker>
+    </div>
+  );
+};
+
+export const KolaR = () => {
+  const c = [
+    {
+      label: 'Nazwa koła',
+      value: data => data.clubName
+    },
+    {
+      label: 'Adres',
+      value: data => data.clubAddress
+    },
+    {
+      label: 'Opiekun',
+      value: data => personFormatter(data.leaderDegree, data.leaderFirstName, data.leaderLastName)
+    }
+  ]
+
+  return (
+    <div className='reports'>
+      <h1>Raporty/koła</h1>
+      <PermissionsChecker minRole={0}>
+        <RaportWrapper path='clubs' columns={c} />
       </PermissionsChecker>
     </div>
   );

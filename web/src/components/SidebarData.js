@@ -62,6 +62,21 @@ export const SidebarData = [
         path: '/raporty/pokoje',
         cName: 'sub-nav'
       },
+      {
+        title: 'Grupy',
+        path: '/raporty/grupy',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Legitymacje',
+        path: '/raporty/legitymacje',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Koła',
+        path: '/raporty/koła',
+        cName: 'sub-nav'
+      },
     ]
   },
   {

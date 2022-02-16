@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Forgot from './pages/Forgot';
 import Main from './pages/Main'
 import Nawigacja from './pages/Nawigacja'
-import { RaportyR, OsobyR, StudenciR, PracownicyR, WydzialyR, ZakladyR, WynagrodzeniaR, KierunkiR, PrzedmiotyR, AkademikiR, PokojeR, PietraR } from './pages/Raporty';
+import { RaportyR, OsobyR, StudenciR, PracownicyR, WydzialyR, ZakladyR, WynagrodzeniaR, KierunkiR, PrzedmiotyR, AkademikiR, PokojeR, PietraR, GrupyR, LegitymacjeR, KolaR } from './pages/Raporty';
 import { RaportyT, StudenciT, PracownicyT, WydzialyT, UczelniaT, ZakladyT, WynagrodzeniaT, Dane_osoboweT, KierunkiT, OpiekunowieT, PrzedmiotyT, ProwadzacyT, AkademikiT, PokojeT, PietraT, MieszkancyT } from './pages/Tabele';
 import { Autorzy } from './pages/Autorzy';
 import { Kontakt } from './pages/Kontakt';
@@ -31,6 +31,9 @@ const LoggedUserPage = () => {
         <Route path='/raporty/akademiki' exact component={AkademikiR} />
         <Route path='/raporty/pokoje' exact component={PokojeR} />
         <Route path='/raporty/pietra' exact component={PietraR} />
+        <Route path='/raporty/grupy' exact component={GrupyR} />
+        <Route path='/raporty/legitymacje' exact component={LegitymacjeR} />
+        <Route path='/raporty/koła' exact component={KolaR} />
 
         <Route path='/tabele' exact component={RaportyT} />
         <Route path='/tabele/studenci' exact component={StudenciT} />
