@@ -65,7 +65,7 @@ export default createModel({
          async updateById(db, id, user) {
             if (user.password) {
                 const salt = await bcrypt.genSalt()
-                const hash = await bcrypt.hash(password, salt)
+                const hash = await bcrypt.hash(user.password, salt)
                 return db.query(`
                     UPDATE User
                     SET

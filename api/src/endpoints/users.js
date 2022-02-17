@@ -71,7 +71,7 @@ router.put('/users/:id(\\d+)',
             })
         }
 
-        res.status(200).send({ data })
+        res.status(200).send({})
     })
 )
 
