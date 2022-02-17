@@ -40,10 +40,27 @@ const Tabela = (props) => {
     const handleUpdate = async (event) => {
         event.preventDefault();
 
-        const newData = data.map(row => Object.fromEntries(
+        /*const newData = data.map(row => Object.fromEntries(
             Object.entries(row)
                 .filter(([_, value]) => value !== '')
-        ))
+        ))*/
+
+        const newData = props.columns
+            .reduce((data, column) =>
+                data.map(row => ({
+                    ...row,
+                    [column.value]: ((value) => {
+                        if (value === '') {
+                            return undefined;
+                        } else if (column.type === 'number') {
+                            return parseFloat(value);
+                        } else {
+                            return value;
+                        }
+                    })(row[column.value])
+                })),
+                data
+            )
 
         const updatedRows = updated.map(idx => newData[idx]).filter(row => row.id !== undefined);
         const deletedRows = deleted.map(idx => newData[idx]).filter(row => row.id !== undefined);
@@ -126,7 +143,7 @@ const Tabela = (props) => {
                                                 return row[column.value];
                                                 } else if(column.type === 'list') {
                                                     return (
-                                                        <ApiSelect onChange={handleInput(rowIndex, column)} path={column.path} name={column.name} value={row[column.value]}/>
+                                                        <ApiSelect onChange={handleInput(rowIndex, column)} path={column.path} name={column.name} value={row[column.value]} required={!column.optional && !deleted.includes(rowIndex)} />
                                                     )
                                                 } else {
                                                 return (
