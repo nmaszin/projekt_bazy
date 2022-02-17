@@ -104,11 +104,6 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Uczelnia',
-        path: '/tabele/uczelnia',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Zakłady',
         path: '/tabele/zakłady',
         cName: 'sub-nav'
@@ -119,18 +114,8 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Dane Osobowe',
-        path: '/tabele/dane_osobowe',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Kierunki',
         path: '/tabele/kierunki',
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Opiekunowie',
-        path: '/tabele/opiekunowie',
         cName: 'sub-nav'
       },
       {
@@ -139,18 +124,8 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Prowadzący',
-        path: '/tabele/prowadzacy',
-        cName: 'sub-nav'
-      },
-      {
         title: 'Akademiki',
         path: '/tabele/akademiki',
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Pokoje',
-        path: '/tabele/pokoje',
         cName: 'sub-nav'
       },
       {
@@ -159,10 +134,25 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
       {
-        title: 'Mieszkańcy',
-        path: '/tabele/mieszkancy',
+        title: 'Pokoje',
+        path: '/tabele/pokoje',
         cName: 'sub-nav'
-      }
+      },
+      {
+        title: 'Grupy',
+        path: '/tabele/grupy',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Legitymacje',
+        path: '/tabele/legitymacje',
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Koła naukowe',
+        path: '/tabele/kola',
+        cName: 'sub-nav'
+      },
     ]
   },
   {

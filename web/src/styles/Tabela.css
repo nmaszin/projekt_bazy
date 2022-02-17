@@ -48,7 +48,7 @@ td {
     border-bottom: 1px solid #bdb4b4;
 }
 
-.tr-T:nth-child() {
+.tr-T:last-child {
     border-bottom: none;
 }
 

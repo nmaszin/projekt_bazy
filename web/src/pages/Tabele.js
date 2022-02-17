@@ -2,39 +2,8 @@ import React from 'react';
 import '../styles/Tabele.css'
 import TabelaWrapper from '../components/TabelaWrapper';
 import PermissionsChecker from '../components/PermissionsChecker';
-import '../styles/Raporty.css'
-
-const letters = 'A-Za-zŻżÓóŁłĆćĘęŚśĄąŹźŃń';
-const digits = '0-9';
-const special = '.,;:/\\-';
-const whitespace = ' ';
-
-const regexFactory = (allowConf, min, max) => {
-  const allowed = [...allowConf]
-    .map(e => {
-      if (e === 'l') {
-        return letters;
-      } else if (e === 'd') {
-        return digits;
-      } else if (e === 's') {
-        return special;
-      } else if (e === 'w') {
-        return whitespace;
-      } else {
-        return '';
-      }
-    })
-    .join('');
-
-  let length;
-  if (max === undefined) {
-    length = `${min}`;
-  } else {
-    length = `${min},${max}`
-  }
-
-  return `[${allowed}]{${length}}`
-}
+import { moneyFormatter, capacityFormatter, personFormatter, dateFormatter, academicYearFormatter, regexFactory } from '../formatters';
+import '../styles/Raporty.css';
 
 export const RaportyT = () => {
   return (
@@ -96,15 +65,32 @@ export const StudenciT = () => {
       type: 'immutable'
     },
     {
-      label: 'Imie',
-      value: 'firstName',
-      type: 'text'
+      label: 'Stopień naukowy',
+      value: 'degree',
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 30),
+      optional: true
     },
     {
-      label: 'Nazwisko',
-      value: 'lastName',
-      type: 'text'
-    }
+      label: 'Nr albumu',
+      value: 'identifier',
+      type: 'text',
+      pattern: regexFactory('d', 5, 10)
+    },
+    {
+      label: 'Osoba',
+      value: 'personId',
+      path: 'people',
+      name: data => personFormatter(undefined, data.firstName, data.lastName),
+      type: 'list'
+    },
+    {
+      label: 'Grupa',
+      value: 'groupId',
+      path: 'views/groups',
+      name: data => `${data.groupName}(${data.subjectName} sem. ${data.semesterNumber}/${data.semesterYear})`,
+      type: 'list'
+    },
   ]
 
   return (
@@ -118,11 +104,35 @@ export const StudenciT = () => {
 };
 
 export const PracownicyT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Stopień naukowy',
+      value: 'degree',
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 30)
+    },
+    {
+      label: 'Osoba',
+      value: 'personId',
+      path: 'people',
+      name: data => personFormatter(undefined, data.firstName, data.lastName),
+      type: 'list'
+    }
+  ]
+
   return (
     <div className='reports'>
       <h1>Tabele/pracownicy</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='employees' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
+  )
 };
 
 export const WydzialyT = () => {
@@ -135,17 +145,20 @@ export const WydzialyT = () => {
     {
       label: 'Nazwa Wydziału',
       value: 'name',
-      type: 'text'
+      type: 'text',
+      pattern: regexFactory('lw', 1, 100)
     },
     {
       label: 'Adres',
       value: 'address',
-      type: 'text'
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 100)
     }
   ]
 
   return(
-    <div className='faculties'>
+    <div className='reports'>
+      <h1>Tabele/pracownicy</h1>
       <PermissionsChecker minRole={1}>
         <TabelaWrapper path='faculties' columns={c} />
       </PermissionsChecker>
@@ -153,40 +166,82 @@ export const WydzialyT = () => {
   )
 };
 
-export const UczelniaT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/uczelnia</h1>
-    </div>
-  );
-};
-
 export const ZakladyT = () => {
-  return (
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa zakładu',
+      value: 'name',
+      type: 'text',
+      pattern: regexFactory('lw', 1, 100)
+    },
+    {
+      label: 'Wydział',
+      value: 'facultyId',
+      type: 'list',
+      path: 'views/faculties',
+      name: data => data.name
+    },
+    {
+      label: 'Kierownik',
+      value: 'managerId',
+      type: 'list',
+      path: 'views/employees',
+      name: data => personFormatter(data.degree, data.firstName, data.lastName)
+    },
+  ]
+
+  return(
     <div className='reports'>
-      <h1>Tabele/zaklady</h1>
+      <h1>Tabele/zakłady</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='laboratories' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
+  )
 };
 
 export const WynagrodzeniaT = () => {
-  return (
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Pracownik',
+      value: 'employeeId',
+      type: 'list',
+      path: 'views/employees',
+      name: data => personFormatter(data.degree, data.firstName, data.lastName)
+    },
+    {
+      label: 'Płaca podstawowa',
+      value: 'baseSalary',
+      type: 'number'
+    },
+    {
+      label: 'Premia roczna',
+      value: 'yearBonus',
+      type: 'number'
+    },
+  ]
+
+  return(
     <div className='reports'>
       <h1>Tabele/wynagrodzenia</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='salaries' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
-};
-
-export const Dane_osoboweT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/dane_osobowe</h1>
-    </div>
-  );
+  )
 };
 
 export const KierunkiT = () => {
-
   const c = [
     {
       label: 'Identyfikator',
@@ -217,58 +272,241 @@ export const KierunkiT = () => {
   )
 };
 
-export const OpiekunowieT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/opiekunowie</h1>
-    </div>
-  );
-};
 
 export const PrzedmiotyT = () => {
-  return (
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa',
+      value: 'name',
+      type: 'text',
+      pattern: regexFactory('lw', 1, 100)
+    },
+    {
+      label: 'Semester',
+      path: 'views/semesters',
+      name: data => `Semestr ${data.semesterNumber} (${data.subjectName} rok ${data.semesterYear})`,
+      value: 'semesterId',
+      type: 'list'
+    }
+  ]
+
+  return(
     <div className='reports'>
       <h1>Tabele/przedmioty</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='courses' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
-};
-
-export const ProwadzacyT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/prowadzacy</h1>
-    </div>
-  );
+  )
 };
 
 export const AkademikiT = () => {
-  return (
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa',
+      value: 'name',
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 100)
+    },
+    {
+      label: 'Adres',
+      value: 'address',
+      type: 'text',
+      pattern: regexFactory('ldsw', 1, 100)
+    },
+  ]
+
+  return(
     <div className='reports'>
       <h1>Tabele/akademiki</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='dormitories' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
-};
-
-export const PokojeT = () => {
-  return (
-    <div className='reports'>
-      <h1>Tabele/pokoje</h1>
-    </div>
-  );
+  )
 };
 
 export const PietraT = () => {
-  return (
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Numer',
+      value: 'number',
+      type: 'number'
+    },
+    {
+      label: 'Akademik',
+      path: 'views/dormitories',
+      name: data => `${data.name}, ${data.address}`,
+      value: 'dormitoryId',
+      type: 'list'
+    }
+  ]
+
+  return(
     <div className='reports'>
-      <h1>Tabele/pietra</h1>
+      <h1>Tabele/piętra</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='floors' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
+  )
 };
 
-export const MieszkancyT = () => {
-  return (
+export const PokojeT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Numer pokoju',
+      value: 'number',
+      type: 'number'
+    },
+    {
+      label: 'Pojemność',
+      value: 'capacity',
+      type: 'number'
+    },
+    {
+      label: 'Koszt',
+      value: 'cost',
+      type: 'number'
+    },
+    {
+      label: 'Piętro',
+      path: 'views/floors',
+      name: data => `Piętro nr ${data.floorNumber} - ${data.dormitoryName}, ${data.dormitoryAddress}`,
+      value: 'floorId',
+      type: 'list'
+    }
+  ]
+
+  return(
     <div className='reports'>
-      <h1>Tabele/mieszkancy</h1>
+      <h1>Tabele/pokoje</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='rooms' columns={c} />
+      </PermissionsChecker>
     </div>
-  );
+  )
+};
+
+export const GrupyT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa grupy',
+      value: 'name',
+      type: 'text'
+    },
+    {
+      label: 'Semester',
+      path: 'views/semesters',
+      name: data => `Semestr ${data.semesterNumber} (${data.subjectName} rok ${data.semesterYear})`,
+      value: 'semesterId',
+      type: 'list'
+    }
+  ]
+
+  return(
+    <div className='reports'>
+      <h1>Tabele/grupy</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='groups' columns={c} />
+      </PermissionsChecker>
+    </div>
+  )
+};
+
+export const LegitymacjeT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Student',
+      path: 'views/semesters',
+      name: data => `Semestr ${data.semesterNumber} (${data.subjectName} rok ${data.semesterYear})`,
+      value: 'studentId',
+      type: 'list'
+    },
+    {
+      label: 'Data wydania',
+      value: 'dateOfIssue',
+      type: 'text'
+    },
+    {
+      label: 'Data wygaśnięcia',
+      value: 'expiryDate',
+      type: 'text'
+    },
+  ]
+
+  return(
+    <div className='reports'>
+      <h1>Tabele/legitymacje</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='cards' columns={c} />
+      </PermissionsChecker>
+    </div>
+  )
+};
+
+export const KolaT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa',
+      value: 'name',
+      type: 'text'
+    },
+    {
+      label: 'Adres',
+      value: 'address',
+      type: 'text'
+    },
+    {
+      label: 'Opiekun',
+      path: 'views/employees',
+      name: data => personFormatter(data.degree, data.firstName, data.lastName),
+      value: 'leaderId',
+      type: 'list'
+    },
+  ]
+
+  return(
+    <div className='reports'>
+      <h1>Tabele/koła</h1>
+      <PermissionsChecker minRole={1}>
+        <TabelaWrapper path='clubs' columns={c} />
+      </PermissionsChecker>
+    </div>
+  )
 };

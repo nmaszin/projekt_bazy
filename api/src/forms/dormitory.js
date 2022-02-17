@@ -10,8 +10,8 @@ export default createForm({
                 { length: { minimum: 1, maximum: 100 } },
                 {
                     format: {
-                        pattern: /[ \p{L}]*/u,
-                        message: 'have to consist of a letters and spaces'
+                        pattern: /[ \p{L}\p{N}\p{P}]*/u,
+                        message: 'have to consist of a letters, spaces, numbers and punctuation'
                     }
                 }
             ]

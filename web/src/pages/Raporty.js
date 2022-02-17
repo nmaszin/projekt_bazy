@@ -1,38 +1,10 @@
 import React from 'react';
 import RaportWrapper from '../components/RaportWrapper';
 import PermissionsChecker from '../components/PermissionsChecker';
-import dateFormat from 'dateformat';
+import { moneyFormatter, capacityFormatter, personFormatter, dateFormatter, academicYearFormatter, regexFactory } from '../formatters';
 import '../styles/Raporty.css'
 
-// Original code of this function come from https://stackoverflow.com/a/2901298
-function moneyFormatter(x) {
-  const base = Math.floor(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  const rest = Math.floor((x % 1) * 100).toString().padStart(2, '0');
-  return base + ',' + rest;
-}
 
-// It's not perfect but we can assume that capacity of room never exceeds 10
-function capacityFormatter(value) {
-  if (value === 1) {
-    return `${value} osoba`;
-  } else if (value >= 2 && value <= 4) {
-    return `${value} osoby`;
-  } else {
-    return `${value} osób`;
-  }
-}
-
-function personFormatter(degree, firstName, lastName) {
-  return `${degree ? (degree + ' '): ''}${firstName} ${lastName}`
-}
-
-function dateFormatter(dateText) {
-  return dateFormat(new Date(dateText), 'dd.mm.yyyy') + ' r.'
-}
-
-function academicYearFormatter(semesterYear) {
-  return `${semesterYear}/${semesterYear + 1}`
-}
 
 
 export const RaportyR = () => {

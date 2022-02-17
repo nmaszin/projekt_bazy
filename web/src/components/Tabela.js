@@ -40,20 +40,25 @@ const Tabela = (props) => {
     const handleUpdate = async (event) => {
         event.preventDefault();
 
-        const updatedRows = updated.map(idx => data[idx]).filter(row => row.id !== undefined);
-        const deletedRows = deleted.map(idx => data[idx]).filter(row => row.id !== undefined);
-        const addedRows = data.filter((_, index) => !deleted.includes(index)).filter(row => row.id === undefined);
+        const newData = data.map(row => Object.fromEntries(
+            Object.entries(row)
+                .filter(([_, value]) => value !== '')
+        ))
+
+        const updatedRows = updated.map(idx => newData[idx]).filter(row => row.id !== undefined);
+        const deletedRows = deleted.map(idx => newData[idx]).filter(row => row.id !== undefined);
+        const addedRows = newData.filter((_, index) => !deleted.includes(index)).filter(row => row.id === undefined);
 
         console.log('Deleted', deletedRows);
         console.log('Added', addedRows);
         console.log('Updated', updatedRows);
 
+        await sleep(5000);
+
         await Promise.all(updatedRows.map(props.update)).catch(e => console.log(e));
         await Promise.all(deletedRows.map(props.delete)).catch(e => console.log(e));
         await Promise.all(addedRows.map(props.add)).catch(e => console.log(e));
-
-        console.log('Skończyłem')
-        window.location.reload();
+        //window.location.reload();
     }
 
     const handleInput = (index, column) => (event) => {
@@ -125,7 +130,7 @@ const Tabela = (props) => {
                                                     )
                                                 } else {
                                                 return (
-                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]} pattern={column.pattern} required />
+                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]} pattern={column.pattern} required={!column.optional && !deleted.includes(rowIndex)} />
                                                 )
                                                 }
                                             })()
