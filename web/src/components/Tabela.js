@@ -28,22 +28,13 @@ const Tabela = (props) => {
             console.log(newDeleted);
         } else {
             setDeleted([...deleted, index]);
-        }
-        // const without = (array, index) => [...array.slice(0, index), ...array.slice(index + 1)];
-        // const newData = without(data, index);
-        // setData(newData);
-        // console.log(newData);        
+        } 
     }
 
     const sleep = duration => new Promise(resolve => setInterval(() => resolve(), duration))
 
     const handleUpdate = async (event) => {
         event.preventDefault();
-
-        /*const newData = data.map(row => Object.fromEntries(
-            Object.entries(row)
-                .filter(([_, value]) => value !== '')
-        ))*/
 
         const newData = props.columns
             .reduce((data, column) =>
@@ -60,7 +51,7 @@ const Tabela = (props) => {
                     })(row[column.value])
                 })),
                 data
-            )
+            );
 
         const updatedRows = updated.map(idx => newData[idx]).filter(row => row.id !== undefined);
         const deletedRows = deleted.map(idx => newData[idx]).filter(row => row.id !== undefined);
@@ -79,7 +70,7 @@ const Tabela = (props) => {
     }
 
     const handleInput = (index, column) => (event) => {
-        const newData = [...data]; // TO MOŻE BYĆ POTENCJALNE ŹRÓDŁO BŁĘDU
+        const newData = [...data];
         newData[index][column.value] = event.target.value;
         if (column.type === 'list') {
             newData[index][column.value] = parseInt(newData[index][column.value]);
@@ -103,7 +94,7 @@ const Tabela = (props) => {
 
     const handleRestore = (index) => () => {
         if (updated.includes(index)) {
-            const newData = [...data]; // TO MOŻE BYĆ POTENCJALNE ŹRÓDŁO BŁĘDU
+            const newData = [...data];
             if (props.data[index] === undefined) {
                 newData[index] = Object.fromEntries(Object.entries(newData[index]).map(([key, _]) => [key, '']))
             } else {
@@ -138,7 +129,6 @@ const Tabela = (props) => {
                                     props.columns.map((column, columnIndex) =>(
                                         <td className='td-T' key={rowIndex * 997 + columnIndex + 112}>{   
                                             (() => {
-                                                // console.log(column)
                                                 if (column.type === 'immutable') {
                                                 return row[column.value];
                                                 } else if(column.type === 'list') {

@@ -46,7 +46,7 @@ const defaultImplementation = model => ({
         },
         many: {
             async selectAll(db) {
-                return db.query(`SELECT * FROM ${model.name}`)
+                return db.query(`SELECT * FROM ${model.name} ORDER BY id`)
             },
         }
     },

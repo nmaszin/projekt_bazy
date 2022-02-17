@@ -44,8 +44,9 @@ const ApiSelect = (props) => {
       if (error || !isLoaded) {
         return <select></select>;
       } else {
+        console.log(props.required)
         return (
-            <select onChange={props.onChange}>
+            <select onChange={props.onChange} required={props.required}>
               <option disabled selected={props.value ? false : true} value>Wybierz z listy</option>
               {items.map((item, index) => 
               <option 

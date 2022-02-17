@@ -158,7 +158,7 @@ const RaportWrapper = (props) => {
       } else if (!isLoaded) {
         return <></>;
       } else {
-        return <Tabela columns={props.columns} data={items} add={handleAdd} update={handleUpdate} delete={handleDelete}/>
+        return <Tabela columns={props.columns} data={items} add={handleAdd} update={handleUpdate} delete={handleDelete} />
       }
 
 }
