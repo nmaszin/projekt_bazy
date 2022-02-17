@@ -510,3 +510,37 @@ export const KolaT = () => {
     </div>
   )
 };
+
+export const UzytkownicyT = () => {
+  const c = [
+    {
+      label: 'Identyfikator',
+      value: 'id',
+      type: 'immutable'
+    },
+    {
+      label: 'Nazwa użytkownika',
+      value: 'username',
+      type: 'text'
+    },
+    {
+      label: 'Hasło',
+      value: 'password',
+      type: 'password'
+    },
+    {
+      label: 'Rola',
+      value: 'role',
+      type: 'text'
+    },
+  ]
+
+  return(
+    <div className='reports'>
+      <h1>Tabele/użytkownicy</h1>
+      <PermissionsChecker minRole={2}>
+        <TabelaWrapper path='users' columns={c} />
+      </PermissionsChecker>
+    </div>
+  )
+};

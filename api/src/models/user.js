@@ -60,6 +60,32 @@ export default createModel({
         }
     },
 
+    update: {
+         // Override
+         async updateById(db, id, user) {
+            if (user.password) {
+                const salt = await bcrypt.genSalt()
+                const hash = await bcrypt.hash(password, salt)
+                return db.query(`
+                    UPDATE User
+                    SET
+                        username = ?,
+                        password = ?,
+                        role = ?
+                    WHERE id = ?
+                `, [username, hash, role, id])
+            } else {
+                return db.query(`
+                    UPDATE User
+                    SET
+                        username = ?,
+                        role = ?
+                    WHERE id = ?
+                `, [username, role, id])
+            }
+        }
+    },
+
     custom: {
         async verify(db, username, password) {
             const [[user], _] = await db.query(`

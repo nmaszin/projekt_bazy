@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import User from '@/models/user'
 import UserForm from '@/forms/user'
+import UserUpdateForm from '@/forms/userUpdate'
 import { controller } from '@/middlewares/controller'
 import { validator } from '@/middlewares/validator'
 import { jwtAuth } from '@/middlewares/auth'
@@ -55,6 +56,22 @@ router.post('/users',
                 role: user.data.role
             }
         })
+    })
+)
+
+router.put('/users/:id(\\d+)',
+    jwtAuth,
+    atLeastAdmin,
+    validator(UserUpdateForm),
+    controller(async (req, res) => {
+        const id = parseInt(req.params.id)
+        if (!await User.updateById(id, req.body)) {
+            return res.status(404).send({
+                message: `User with given id does not exist`
+            })
+        }
+
+        res.status(200).send({ data })
     })
 )
 

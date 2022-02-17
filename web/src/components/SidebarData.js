@@ -29,7 +29,7 @@ export const SidebarData = [
       },
       {
         title: 'Zakłady',
-        path: '/raporty/zakłady',
+        path: '/raporty/zaklady',
         cName: 'sub-nav'
       },
       {
@@ -74,7 +74,7 @@ export const SidebarData = [
       },
       {
         title: 'Koła',
-        path: '/raporty/koła',
+        path: '/raporty/kola',
         cName: 'sub-nav'
       },
     ]
@@ -105,7 +105,7 @@ export const SidebarData = [
       },
       {
         title: 'Zakłady',
-        path: '/tabele/zakłady',
+        path: '/tabele/zaklady',
         cName: 'sub-nav'
       },
       {
@@ -153,11 +153,16 @@ export const SidebarData = [
         path: '/tabele/kola',
         cName: 'sub-nav'
       },
+      {
+        title: 'Użytkownicy',
+        path: '/tabele/uzytkownicy',
+        cName: 'sub-nav'
+      },
     ]
   },
   {
     title: 'Autorzy',
-    path: '/authors',
+    path: '/autorzy',
   },
   {
     title: 'Kontakt',
