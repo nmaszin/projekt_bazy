@@ -59,16 +59,10 @@ const Tabela = (props) => {
         const deletedRows = deleted.map(idx => newData[idx]).filter(row => row.id !== undefined);
         const addedRows = newData.filter((_, index) => !deleted.includes(index)).filter(row => row.id === undefined);
 
-        console.log('Deleted', deletedRows);
-        console.log('Added', addedRows);
-        console.log('Updated', updatedRows);
-
-        await sleep(10000);
-
         await Promise.all(updatedRows.map(props.update)).catch(e => console.log(e));
         await Promise.all(deletedRows.map(props.delete)).catch(e => console.log(e));
         await Promise.all(addedRows.map(props.add)).catch(e => console.log(e));
-        // window.location.reload();
+        window.location.reload();
     }
 
     const handleInput = (index, column) => (event) => {
