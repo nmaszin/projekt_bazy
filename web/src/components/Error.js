@@ -20,8 +20,14 @@ const getErrorMessage = (statusCode) => {
 const Error = props => {
     return (
         <div className="error">
-            Operacja nie powiodła się
-            {getErrorMessage(props.responseStatusCode)}
+            {(() => {
+                if (props.responseStatusCode) {
+                    return `Operacja nie powiodła się${getErrorMessage(props.responseStatusCode)}`
+                } else if (props.permissionsError) {
+                    return 'Nie masz wystarczających uprawnień aby zobaczyć tę stronę'
+                }
+            })()}
+            
         </div>
     )
 }

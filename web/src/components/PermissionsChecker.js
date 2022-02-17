@@ -1,5 +1,6 @@
 import React from 'react'
 import Cookies from 'universal-cookie'
+import Error from './Error'
 import { decodeToken } from 'react-jwt'
 
 const PermissionsChecker = props => {
@@ -8,7 +9,7 @@ const PermissionsChecker = props => {
 
     const payload = decodeToken(token)
     if (payload.role === undefined || payload.role < props.minRole) {
-        return <div>You don't have permissions to this resource</div>;
+        return <Error permissionsError />;
     } else {
         return <>{props.children}</>;
     }

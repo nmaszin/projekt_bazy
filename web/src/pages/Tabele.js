@@ -526,12 +526,13 @@ export const UzytkownicyT = () => {
     {
       label: 'Hasło',
       value: 'password',
-      type: 'password'
+      type: 'password',
+      default: 'Nie podglądaj!'
     },
     {
       label: 'Rola',
       value: 'role',
-      type: 'text'
+      type: 'number'
     },
   ]
 

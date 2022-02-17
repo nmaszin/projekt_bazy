@@ -45,6 +45,8 @@ const Tabela = (props) => {
                             return undefined;
                         } else if (column.type === 'number') {
                             return parseFloat(value);
+                        } else if (column.default && value === column.default) {
+                            return undefined;
                         } else {
                             return value;
                         }
@@ -61,12 +63,12 @@ const Tabela = (props) => {
         console.log('Added', addedRows);
         console.log('Updated', updatedRows);
 
-        // await sleep(5000);
+        await sleep(10000);
 
         await Promise.all(updatedRows.map(props.update)).catch(e => console.log(e));
         await Promise.all(deletedRows.map(props.delete)).catch(e => console.log(e));
         await Promise.all(addedRows.map(props.add)).catch(e => console.log(e));
-        window.location.reload();
+        // window.location.reload();
     }
 
     const handleInput = (index, column) => (event) => {
@@ -130,15 +132,15 @@ const Tabela = (props) => {
                                         <td className='td-T' key={rowIndex * 997 + columnIndex + 112}>{   
                                             (() => {
                                                 if (column.type === 'immutable') {
-                                                return row[column.value];
-                                                } else if(column.type === 'list') {
+                                                    return row[column.value];
+                                                } else if (column.type === 'list') {
                                                     return (
                                                         <ApiSelect onChange={handleInput(rowIndex, column)} path={column.path} name={column.name} value={row[column.value]} required={!column.optional && !deleted.includes(rowIndex)} />
                                                     )
                                                 } else {
-                                                return (
-                                                    <input onChange={handleInput(rowIndex, column)} type={column.type} value={row[column.value]} pattern={column.pattern} required={!column.optional && !deleted.includes(rowIndex)} />
-                                                )
+                                                    return (
+                                                        <input onChange={handleInput(rowIndex, column)} type={column.type} value={column.default ? (row[column.value] || column.default) : row[column.value]} pattern={column.pattern} required={!column.optional && !deleted.includes(rowIndex)} />
+                                                    )
                                                 }
                                             })()
                                         }</td>
