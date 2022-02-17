@@ -73,7 +73,7 @@ export default createModel({
                         password = ?,
                         role = ?
                     WHERE id = ?
-                `, [username, hash, role, id])
+                `, [user.username, hash, user.role, id])
             } else {
                 return db.query(`
                     UPDATE User
@@ -81,7 +81,7 @@ export default createModel({
                         username = ?,
                         role = ?
                     WHERE id = ?
-                `, [username, role, id])
+                `, [user.username, user.role, id])
             }
         }
     },
