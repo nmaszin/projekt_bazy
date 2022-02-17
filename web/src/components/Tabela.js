@@ -61,12 +61,12 @@ const Tabela = (props) => {
         console.log('Added', addedRows);
         console.log('Updated', updatedRows);
 
-        await sleep(5000);
+        // await sleep(5000);
 
         await Promise.all(updatedRows.map(props.update)).catch(e => console.log(e));
         await Promise.all(deletedRows.map(props.delete)).catch(e => console.log(e));
         await Promise.all(addedRows.map(props.add)).catch(e => console.log(e));
-        //window.location.reload();
+        window.location.reload();
     }
 
     const handleInput = (index, column) => (event) => {

@@ -68,7 +68,7 @@ export const StudenciT = () => {
       label: 'Stopień naukowy',
       value: 'degree',
       type: 'text',
-      pattern: regexFactory('ldsw', 1, 30),
+      pattern: regexFactory('lsw', 1, 30),
       optional: true
     },
     {

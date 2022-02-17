@@ -23,7 +23,7 @@ export default createForm({
                 {
                     format: {
                         pattern: /[\p{L}\p{P} ]*/u,
-                        message: 'have to consist of letters or punctuation'
+                        message: 'have to consist of letters, punctuation or spaces'
                     }
                 }
             ],
